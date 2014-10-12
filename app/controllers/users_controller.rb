@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-
+	skip_before_filter :verify_authenticity_token
 
 	APP208_ANGELCO_CLIENT_ID = '88382b671bafbc2f58f8d6cc75a2ddb2'
 	APP208_ANGELCO_CLIENT_TOKEN = '125bcdfa25cd0c6d82e4ce4988334e9a'
@@ -66,13 +66,11 @@ class UsersController < ApplicationController
 		render xml: @response
 	end
 
-	
 
 
 
 	def login_email
 		@response = {errors: []}
-
 
 		unless params[:email].blank?
 

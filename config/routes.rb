@@ -2,7 +2,6 @@ App208::Application.routes.draw do
 
 
 
-  get "companies/fill_db"
   root  'static_pages#home'
 
 
@@ -11,18 +10,18 @@ App208::Application.routes.draw do
 
 
 
-  match '/user/:user_id',                   to: 'users#show',                        via: 'get'
+  match '/user/:user_id',                   to: 'users#show',                        via: 'post'
 
-  match '/user/:user_id/companies',         to: 'users#followed_companies',          via: 'get'
+  match '/user/:user_id/companies',         to: 'users#followed_companies',          via: 'post'
 
   match '/user/:user_id/company/:company_id',
-                                            to: 'users#display_company',             via: 'get'
+                                            to: 'users#display_company',             via: 'post'
 
   match '/user/:user_id/company/:company_id/follow',
-                                            to: 'users#follow_company',              via: 'get'
+                                            to: 'users#follow_company',              via: 'post'
 
   match '/user/:user_id/company/:company_id/notfollow',
-                                            to: 'users#notfollow_company',           via: 'get'
+                                            to: 'users#notfollow_company',           via: 'post'
 
 
   match '/refill_companies_db',             to: 'companies#fill_db',                 via: 'get'
