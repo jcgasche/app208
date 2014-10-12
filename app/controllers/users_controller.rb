@@ -109,11 +109,12 @@ class UsersController < ApplicationController
 	def show
 		@response = {errors: [], companies: []}
 		user = User.find(params[:user_id])
-		companies = user.unviewed_companies[0..9]
 
-		puts user.unviewed_companies.inspect
-		@response[:companies] = companies
-		puts companies.inspect
+		user.unviewed_companies[0..9].each do |unviewed_company|
+			company = {name: unviewed_company.name, id: unviewed_company.id, 
+				logo_url: unviewed_company.logo_url, product_desc: unviewed_company.product_desc}
+			@response[:companies].push(company)
+		end
 
 		render xml: @response
 	end

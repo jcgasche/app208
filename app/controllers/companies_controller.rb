@@ -14,14 +14,22 @@ class CompaniesController < ApplicationController
 
 		companies = response_hash['startups']
 
+		
 
 		# Take each company individually and create company in database 
 		companies.each do |company| 
-			unless Company.find_by(angel_id: company['id'])
-				Company.new(angel_id: company['id'], name: company['name']).save!
+			puts company['logo_url']
+			if Company.find_by(angel_id: company['id'])
+				c = Company.find_by(angel_id: company['id'])
+				c.logo_url = company['logo_url']
+				c.product_desc = company['product_desc']
+				c.save!
+			else
+				Company.new( angel_id: company['id'], name: company['name'], 
+					logo_url: company['logo_url'], product_desc: company['product_desc'] ).save!
 			end
 		end
-
+		render xml: Company.all
 	end
 
 end
