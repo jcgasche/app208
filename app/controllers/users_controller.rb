@@ -48,10 +48,10 @@ class UsersController < ApplicationController
 				#create a new user, return the logins (id and email)
 				user = User.new(angel_id: response_hash["id"], token: access_token, name: response_hash["name"])
 				user.investor = response_hash["investor"] == 'true'
-				@response[:id] = user.id
-				@response[:investor] = user.investor?.to_s
-
+				
 				if user.save
+					@response[:id] = user.id
+					@response[:investor] = user.investor?.to_s
 					@response[:status]= "success"
 				else
 					@response[:status]= "unsure"
@@ -86,10 +86,10 @@ class UsersController < ApplicationController
 				#create a new user, return the logins (id)
 				user = User.new(email: params[:email])
 				user.investor = false
-				@response[:id] = user.id
-				@response[:investor] = user.investor?.to_s
 
 				if user.save
+					@response[:id] = user.id
+					@response[:investor] = user.investor?.to_s
 					@response[:status]= "success"
 				else
 					@response[:status]= "failure"

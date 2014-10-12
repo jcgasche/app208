@@ -6,7 +6,7 @@ App208::Application.routes.draw do
 
 
   match '/angel_callback',                  to: 'users#login_angelco',         via: 'get'
-  match '/login_email/:email',              to: 'users#login_email',           via: 'get'
+  match '/login_email/:email',              to: 'users#login_email',           via: 'post'
 
 
 
