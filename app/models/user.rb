@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
 
-	has_many :relationships, dependent: :destroy
-	has_many :viewed_companies, through: :relationships, source: :company_id, class_name: "Company" 
+	has_many :relationships, foreign_key: "user_id", dependent: :destroy
+	has_many :companies, through: :relationships, source: :company, class_name: "Company" 
 
 	before_save do
 		self.email = email.downcase unless email.blank?
@@ -30,9 +30,12 @@ class User < ActiveRecord::Base
 
 	def followed_companies
 		relationship_list = relationships.where("(user_id = ? AND following = ?)", self.id, true)
+		following_companies = []
 
-		relationship_list.each do |rel|
-			following_companies = viewed_companies.where("(id = ?)", rel.company_id)
+		if relationship_list.any?
+			relationship_list.each do |rel|
+				following_companies = Company.where("(id = ?)", rel.company_id)
+			end
 		end
 		return following_companies
 	end
