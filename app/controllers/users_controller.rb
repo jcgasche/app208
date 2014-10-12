@@ -15,7 +15,7 @@ class UsersController < ApplicationController
 
 			uri = "https://angel.co/api/oauth/token?client_id=#{APP208_ANGELCO_CLIENT_ID}&client_secret=#{APP208_ANGELCO_CLIENT_SECRET}&code=#{params[:code]}&grant_type=authorization_code"
 			uri = URI.parse(uri)
-			response = Net::HTTP.post_form(uri)
+			response = Net::HTTP.post_form(uri, {})
 
 			#now that request has been issued, parse request to get access token
 			response_hash = JSON.parse response.body
