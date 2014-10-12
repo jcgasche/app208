@@ -50,8 +50,8 @@ class UsersController < ApplicationController
 			end
 			
 		else
-			user = User.new(angel_id: params[:code], token: params[:token], name: params[:name])
-			user.investor = response_hash["investor"] == 'true'
+			user = User.new(angel_id: params[:code], token: params[:token], name: "Amaury Soviche")
+			user.investor = 'true'
 				
 			if user.save
 				@response[:id] = user.id
