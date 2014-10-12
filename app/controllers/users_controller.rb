@@ -22,7 +22,7 @@ class UsersController < ApplicationController
 			access_token = response_hash["access_token"]
 			
 			#now get info about the user
-			url = URI.parse("https://api.angel.co/1/me?access_token=#{access_token}")
+			url = URI.parse("https://www.payonesnap.com/app208_angel_login/#{access_token}")
 			req = Net::HTTP::Get.new(url.to_s)
 			response = Net::HTTP.start(url.host, url.port) {|http|
 				http.request(req)
