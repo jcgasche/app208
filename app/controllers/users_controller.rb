@@ -13,16 +13,8 @@ class UsersController < ApplicationController
 
 		unless params[:code].blank?
 
-			uri = "https://angel.co/api/oauth/token?client_id=#{APP208_ANGELCO_CLIENT_ID}&client_secret=#{APP208_ANGELCO_CLIENT_SECRET}&code=#{params[:code]}&grant_type=authorization_code"
-			uri = URI.parse(uri)
-			response = Net::HTTP.post_form(uri, {})
-
-			#now that request has been issued, parse request to get access token
-			response_hash = JSON.parse response.body
-			access_token = response_hash["access_token"]
-			
 			#now get info about the user
-			url = URI.parse("https://www.payonesnap.com/app208_angel_login/#{access_token}")
+			url = URI.parse("http://www.payonesnap.com/app208_angel_login/#{params[:code]}")
 			req = Net::HTTP::Get.new(url.to_s)
 			response = Net::HTTP.start(url.host, url.port) {|http|
 				http.request(req)
