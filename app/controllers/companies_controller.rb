@@ -27,9 +27,6 @@ class CompaniesController < ApplicationController
 					high_concept: company['high_concept'], markets: markets,
 					raising_amount: company['fundraising']['raising_amount'], 
 					pre_money_valuation: company['fundraising']['pre_money_valuation'])
-				puts "8888888888"
-				puts company['fundraising']['raising_amount']
-				puts company['fundraising']['pre_money_valuation']
 				
 			else
 				Company.new( angel_id: company['id'], name: company['name'], 

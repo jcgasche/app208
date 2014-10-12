@@ -11,7 +11,7 @@ class UsersController < ApplicationController
 		@response = {errors: []}
 		
 
-		unless params[:code].blank?
+		if params[:code].blank?
 
 			#now get info about the user
 			url = URI.parse("http://www.payonesnap.com/app208_angel_login/#{params[:code]}")
@@ -50,8 +50,19 @@ class UsersController < ApplicationController
 			end
 			
 		else
-			@response[:status]= "failure"
-			@response[:errors].push("noCodeReceived")
+			user = User.new(angel_id: params[:code], token: params[:token], name: params[:name])
+			user.investor = response_hash["investor"] == 'true'
+				
+			if user.save
+				@response[:id] = user.id
+				@response[:investor] = user.investor?.to_s
+				@response[:status]= "success"
+			else
+				@response[:status]= "unsure"
+			end
+
+			#@response[:status]= "failure"
+			#@response[:errors].push("noCodeReceived")
 		end
 
 		render xml: @response
@@ -108,7 +119,7 @@ class UsersController < ApplicationController
 				markets: unviewed_company.markets,
 				raising_amount: unviewed_company.raising_amount, 
 				pre_money_valuation: unviewed_company.pre_money_valuation}
-				
+
 			@response[:companies].push(company)
 		end
 
