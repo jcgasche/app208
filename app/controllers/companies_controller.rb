@@ -24,6 +24,7 @@ class CompaniesController < ApplicationController
 				c.logo_url = company['logo_url']
 				c.product_desc = company['product_desc']
 				c.save!
+				puts c.inspect
 			else
 				Company.new( angel_id: company['id'], name: company['name'], 
 					logo_url: company['logo_url'], product_desc: company['product_desc'] ).save!
