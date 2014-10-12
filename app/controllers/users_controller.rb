@@ -176,7 +176,7 @@ class UsersController < ApplicationController
 		end
 
 		@response[:users_following] = company.followers.count
-		@response[:total_views] = company.viewers.count
+		@response[:total_views] = company.users.count
 
 
 		@response[:status] = "success"
