@@ -81,13 +81,13 @@ class UsersController < ApplicationController
 			if user
 				#user already exists, update angel_token and return its logins (id)
 				@response[:id] = user.id
-				@response[:investor] = "false"
+				@response[:investor] = "true"
 				@response[:status] = "success"
 
 			else
 				#create a new user, return the logins (id)
 				user = User.new(email: params[:email])
-				user.investor = false
+				user.investor = true
 
 				if user.save
 					@response[:id] = user.id
@@ -154,7 +154,7 @@ class UsersController < ApplicationController
 		@response = {errors: [], companies: []}
 		user = User.find(params[:user_id])
 		puts user.followed_companies.inspect
-		
+
 		user.followed_companies.each do |followed_company|
 			company = {name: followed_company.name, id: followed_company.id, 
 				logo_url: followed_company.logo_url, product_desc: followed_company.product_desc}
