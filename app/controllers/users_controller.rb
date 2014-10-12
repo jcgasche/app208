@@ -157,7 +157,8 @@ class UsersController < ApplicationController
 
 		user.followed_companies.each do |followed_company|
 			company = {name: followed_company.name, id: followed_company.id, 
-				logo_url: followed_company.logo_url, product_desc: followed_company.product_desc}
+				logo_url: followed_company.logo_url, product_desc: followed_company.product_desc, 
+				users_following: company.followers.count, total_views: company.users.count}
 			@response[:companies].push(company)
 		end
 
