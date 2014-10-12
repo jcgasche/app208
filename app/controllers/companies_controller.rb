@@ -3,7 +3,7 @@ class CompaniesController < ApplicationController
 	def fill_db
 
 		# Get companies raising - from AngelCo API
-		url = URI.parse("https://api.angel.co/1//startups?filter=raising")
+		url = URI.parse("http://api.angel.co/1//startups?filter=raising")
 		req = Net::HTTP::Get.new(url.to_s)
 		response = Net::HTTP.start(url.host, url.port) {|http|
 			http.request(req)

@@ -5,10 +5,6 @@ class UsersController < ApplicationController
 	APP208_ANGELCO_CLIENT_TOKEN = '125bcdfa25cd0c6d82e4ce4988334e9a'
 	APP208_ANGELCO_CLIENT_SECRET = '1c002227a66cc1147eca0f025e3138bc'
 
-
-
-
-
 	#redirect from:
 	#https://angel.co/api/oauth/authorize?client_id=88382b671bafbc2f58f8d6cc75a2ddb2&scope=message%20email%20comment%20talent&response_type=code
 	def login_angelco

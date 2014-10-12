@@ -1,5 +1,9 @@
 # Load the Rails application.
 require File.expand_path('../application', __FILE__)
+require 'net/http'
+require 'net/https'
+require 'uri'
+
 
 # Initialize the Rails application.
 App208::Application.initialize!
