@@ -14,20 +14,26 @@ class CompaniesController < ApplicationController
 
 		companies = response_hash['startups']
 
-		
-
 		# Take each company individually and create company in database 
 		companies.each do |company| 
-			puts company['logo_url']
+			markets = ""
+			company['markets'].each do |market_tag|
+				markets = markets << market_tag['display_name'] << ", "
+			end
+			markets = markets[0..-3]
 			if Company.find_by(angel_id: company['id'])
-				c = Company.find_by(angel_id: company['id'])
-				c.logo_url = company['logo_url']
-				c.product_desc = company['product_desc']
-				c.save!
-				puts c.inspect
+				Company.find_by(angel_id: company['id']).update_attributes(angel_id: company['id'], name: company['name'], 
+					logo_url: company['logo_url'], product_desc: company['product_desc'], 
+					high_concept: company['high_concept'], markets: markets,
+					raising_amount: company['fundraising']['raising_amount'], 
+					pre_money_valuation: company['fundraising']['pre_money_valuation'])
+				
 			else
 				Company.new( angel_id: company['id'], name: company['name'], 
-					logo_url: company['logo_url'], product_desc: company['product_desc'] ).save!
+					logo_url: company['logo_url'], product_desc: company['product_desc'], 
+					high_concept: company['high_concept'], markets: markets,
+					raising_amount: company['fundraising']['raising_amount'], 
+					pre_money_valuation: company['fundraising']['pre_money_valuation'] ).save!
 			end
 		end
 		render xml: Company.all

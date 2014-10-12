@@ -22,7 +22,7 @@ class UsersController < ApplicationController
 			access_token = response_hash["access_token"]
 			
 			#now get info about the user
-			url = URI.parse("http://api.angel.co/1/me?access_token=#{access_token}")
+			url = URI.parse("https://api.angel.co/1/me?access_token=#{access_token}")
 			req = Net::HTTP::Get.new(url.to_s)
 			response = Net::HTTP.start(url.host, url.port) {|http|
 				http.request(req)
@@ -148,16 +148,10 @@ class UsersController < ApplicationController
 		user = User.find(params[:user_id])
 
 		user.followed_companies.each do |followed_company|
-			url = URI.parse("https://api.angel.co/1/startups/#{followed_company.angel_id}")
-			req = Net::HTTP::Get.new(url.to_s)
-			response = Net::HTTP.start(url.host, url.port) {|http|
-				http.request(req)
-			}
-			company_info = JSON.parse response.body
-			company_hash = {id: followed_company.id, angel_info: company_info}
-			@response[:companies].push(company_hash)
+			company = {name: followed_company.name, id: followed_company.id, 
+				logo_url: followed_company.logo_url, product_desc: followed_company.product_desc}
+			@response[:companies].push(company)
 		end
-
 
 		@response[:status] = "success"
 		@response[:user_id] = params[:user_id]

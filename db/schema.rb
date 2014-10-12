@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141012161017) do
+ActiveRecord::Schema.define(version: 20141012165202) do
 
   create_table "companies", force: true do |t|
     t.integer  "angel_id"
@@ -20,6 +20,10 @@ ActiveRecord::Schema.define(version: 20141012161017) do
     t.datetime "updated_at"
     t.text     "logo_url"
     t.text     "product_desc"
+    t.text     "high_concept"
+    t.text     "markets"
+    t.string   "raising_amount"
+    t.string   "pre_money_valuation"
   end
 
   create_table "relationships", force: true do |t|
