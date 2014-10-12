@@ -31,10 +31,11 @@ class User < ActiveRecord::Base
 	def followed_companies
 		relationship_list = relationships.where("(user_id = ? AND following = ?)", self.id, true)
 		following_companies = []
+		puts "rel list" << relationship_list.inspect
 
 		if relationship_list.any?
 			relationship_list.each do |rel|
-				following_companies = Company.where("(id = ?)", rel.company_id)
+				following_companies.push( Company.find(rel.company_id) )
 			end
 		end
 		return following_companies

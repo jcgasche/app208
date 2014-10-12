@@ -153,7 +153,8 @@ class UsersController < ApplicationController
 	def followed_companies
 		@response = {errors: [], companies: []}
 		user = User.find(params[:user_id])
-
+		puts user.followed_companies.inspect
+		
 		user.followed_companies.each do |followed_company|
 			company = {name: followed_company.name, id: followed_company.id, 
 				logo_url: followed_company.logo_url, product_desc: followed_company.product_desc}
