@@ -104,7 +104,11 @@ class UsersController < ApplicationController
 
 		user.unviewed_companies[0..9].each do |unviewed_company|
 			company = {name: unviewed_company.name, id: unviewed_company.id, 
-				logo_url: unviewed_company.logo_url, product_desc: unviewed_company.product_desc}
+				logo_url: unviewed_company.logo_url, product_desc: unviewed_company.product_desc,
+				markets: unviewed_company.markets,
+				raising_amount: unviewed_company.raising_amount, 
+				pre_money_valuation: unviewed_company.pre_money_valuation}
+				
 			@response[:companies].push(company)
 		end
 
