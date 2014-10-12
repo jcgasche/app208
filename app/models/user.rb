@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
 	has_many :viewed_companies, through: :relationships, source: :company_id, class_name: "Company" 
 
 	before_save do
-		self.email = email.downcase
+		self.email = email.downcase unless email.blank?
 	end
 
 	validates_inclusion_of :investor, :in => [true, false]
@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
 	end
 
 	def viewed?(company)
-		relationships.where("(company_id = ?)", company.id)
+		relationships.where("(company_id = ?)", company.id).nil?
 	end
 
 	def follow!(company)
@@ -40,7 +40,9 @@ class User < ActiveRecord::Base
 	def unviewed_companies
 		unviewed_companies = []
 		Company.all.each do |comp|
+			puts "viewed: " << viewed?(comp).to_s
 			unviewed_companies.push(comp) unless viewed?(comp)
+			puts "unviewed_companies: " << unviewed_companies.inspect
 		end
 		return unviewed_companies
 	end
