@@ -131,8 +131,12 @@ class UsersController < ApplicationController
 		@response = {errors: []}
 		company = Company.find(params[:company_id])
 		user = User.find(params[:user_id])
-		user.follow!(company)
-		@response[:status] = "success"
+		unless user.companies.include?(company)
+			user.follow!(company) 
+			@response[:status] = "success"
+		else
+			@response[:status] = "failure"
+		end
 		@response[:company_id] = params[:company_id]
 		@response[:user_id] = params[:user_id]
 		render xml: @response
@@ -142,8 +146,12 @@ class UsersController < ApplicationController
 		@response = {errors: []}
 		company = Company.find(params[:company_id])
 		user = User.find(params[:user_id])
-		user.notfollow!(company)
-		@response[:status] = "success"
+		unless user.companies.include?(company)
+			user.notfollow!(company) 
+			@response[:status] = "success"
+		else
+			@response[:status] = "failure"
+		end
 		@response[:company_id] = params[:company_id]
 		@response[:user_id] = params[:user_id]
 		render xml: @response

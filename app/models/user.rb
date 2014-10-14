@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
 	def unviewed_companies
 		unviewed_companies = []
 		Company.all.each do |comp|
-			unviewed_companies.push(comp) unless viewed?(comp)
+			unviewed_companies.push(comp) unless self.viewed?(comp)
 		end
 		return unviewed_companies
 	end

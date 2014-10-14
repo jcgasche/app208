@@ -26,14 +26,18 @@ class CompaniesController < ApplicationController
 					logo_url: company['logo_url'], product_desc: company['product_desc'], 
 					high_concept: company['high_concept'], markets: markets,
 					raising_amount: company['fundraising']['raising_amount'], 
-					pre_money_valuation: company['fundraising']['pre_money_valuation'])
+					pre_money_valuation: company['fundraising']['pre_money_valuation'],
+					url: company['company_url']
+					)
 				
 			else
 				Company.new( angel_id: company['id'], name: company['name'], 
 					logo_url: company['logo_url'], product_desc: company['product_desc'], 
 					high_concept: company['high_concept'], markets: markets,
 					raising_amount: company['fundraising']['raising_amount'], 
-					pre_money_valuation: company['fundraising']['pre_money_valuation'] ).save!
+					pre_money_valuation: company['fundraising']['pre_money_valuation'],
+					url: company['company_url']
+					).save!
 			end
 		end
 		render xml: Company.all

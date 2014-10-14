@@ -558,6 +558,7 @@ header.jumbotron{
 .services p {
     margin:0;
     margin-bottom:24px;
+    text-align: center;
 }
 
 
@@ -649,9 +650,14 @@ header.jumbotron{
   font-size: 40px;
 }
 
-#skills .skills h2 {
-    margin:0 0 80px;
+#skills h2 {
     color: $indian;
+    text-align: center;
+    margin:0 0 80px;
+}
+
+#skills .skills h2 {
+    margin:0px 0px 80px 0px;
     font-size:24px;
     font-weight:300;
 }
@@ -979,7 +985,7 @@ header.jumbotron{
 }
 
 .modal-body h1{
-    color:$red;
+    color:$indian;
     margin:200px 0 24px;
     font-size:32px;
 }

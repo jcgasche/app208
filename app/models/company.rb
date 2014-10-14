@@ -13,4 +13,12 @@ class Company < ActiveRecord::Base
 	end
 
 
+	def like_percentage
+		if self.users.count > 0
+			return (self.followers.count.to_f / self.users.count.to_f * 100 ).to_f.round()
+		else 
+			return 0
+		end
+	end
+
 end
