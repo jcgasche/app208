@@ -11,9 +11,7 @@
 		<link rel="apple-touch-icon" sizes="72x72" href="assets/apple-touch-icon-72x72.png">
 		<link rel="apple-touch-icon" sizes="114x114" href="assets/apple-touch-icon-114x114.png">
 		
-		<link href='http://fonts.googleapis.com/css?family=Lato:400,300,300italic,400italic,700,700italic,900' rel='stylesheet' type='text/css'>
-		<script type="text/javascript" src="js/libs/modernizr.min.js"></script>
-		
+		<link href='http://fonts.googleapis.com/css?family=Lato:400,300,300italic,400italic,700,700italic,900' rel='stylesheet' type='text/css'>		
 		
 	</head>
   
@@ -66,11 +64,11 @@
 					
 						<ul class="slides">
 						
-							<li><p>Designer</p></li>
+							<li><p>Startups</p></li>
 							
-							<li><p>Developer</p></li>
+							<li><p>Products</p></li>
 							
-							<li><p>Expert</p></li>
+							<li><p>Money</p></li>
 							
 						</ul>
 						
@@ -131,7 +129,7 @@
 			
 		</section>
 		
-		<section id="about">
+		<section id="about" class="gradient-background">
 		
 			<div class="container">
 			
@@ -207,7 +205,7 @@
 				<div id="projects-container">
 					<a class="project-item web-design" href="http://www.google.com" data-images="assets/projects/webdesign6_540x310_1.jpg,assets/projects/webdesign6_540x310_2.jpg,assets/projects/webdesign6_540x310_3.jpg">
 						
-						<img class="img-responsive project-image" src="assets/projects/webdesign6.jpg"  alt="">
+						<%= image_tag "projects/webdesign6.jpg", class: "img-responsive project-image" %>
 						
 						<div class="hover-mask">
 							<h2 class="project-title">Project &amp;One</h2>
@@ -224,8 +222,8 @@
 					</a>
 					<a class="project-item icons ui-kits" href="#somelink" data-images="assets/projects/ui3_540x310.jpg">
 						
-						<img class="img-responsive project-image" src="assets/projects/ui3.jpg" alt="">
-						
+						<%= image_tag "projects/ui3.jpg", class: "img-responsive project-image" %>
+
 						<div class="hover-mask">
 							<h2 class="project-title">Project Two</h2>
 						</div>
@@ -243,8 +241,8 @@
 
 					<a class="project-item web-design ui-kits" href="#somelink" data-images="assets/projects/webdesign1_540x310_1.jpg,assets/projects/webdesign1_540x310_2.jpg,assets/projects/webdesign1_540x310_3.jpg">
 						
-						<img class="img-responsive project-image" src="assets/projects/webdesign1.jpg"  alt="">
-						
+						<%= image_tag "projects/webdesign1.jpg", class: "img-responsive project-image" %>
+
 						<div class="hover-mask">
 							<h2 class="project-title">Project Three</h2>
 						</div>
@@ -262,8 +260,8 @@
 
 					<a class="project-item ui-kits" href="http://www.google.com" data-images="assets/projects/ui1_540x310.jpg">
 						
-						<img class="img-responsive project-image" src="assets/projects/ui1.jpg"  alt="">
-						
+						<%= image_tag "projects/ui1.jpg", class: "img-responsive project-image" %>
+
 						<div class="hover-mask">
 							<h2 class="project-title">Project Four</h2>
 						</div>
@@ -281,8 +279,8 @@
 
 					<a class="project-item icons" href="#somelink" data-images="assets/projects/icons2_540x310.jpg">
 						
-						<img class="img-responsive project-image" src="assets/projects/icons2.jpg"  alt="">
-						
+						<%= image_tag "projects/icons2.jpg", class: "img-responsive project-image" %>
+
 						<div class="hover-mask">
 							<h2 class="project-title">Project Five</h2>
 						</div>
@@ -300,8 +298,8 @@
 
 					<a class="project-item web-design" href="#somelink" data-images="assets/projects/webdesign2_540x310_1.jpg,assets/projects/webdesign2_540x310_2.jpg,assets/projects/webdesign2_540x310_3.jpg">
 						
-						<img class="img-responsive project-image" src="assets/projects/webdesign2.jpg"  alt="">
-						
+						<%= image_tag "projects/webdesign2.jpg", class: "img-responsive project-image" %>
+
 						<div class="hover-mask">
 							<h2 class="project-title">Project Six</h2>
 						</div>
@@ -319,8 +317,8 @@
 
 					<a class="project-item web-design" href="http://www.google.com" data-images="assets/projects/webdesign5_540x310_1.jpg,assets/projects/webdesign5_540x310_2.jpg,assets/projects/webdesign5_540x310_3.jpg">
 						
-						<img class="img-responsive project-image" src="assets/projects/webdesign5.jpg"  alt="">
-						
+						<%= image_tag "projects/webdesign5.jpg", class: "img-responsive project-image" %>
+
 						<div class="hover-mask">
 							<h2 class="project-title">Project Seven</h2>
 						</div>
@@ -336,7 +334,7 @@
 					
 					<a class="project-item icons" href="#somelink" data-images="assets/projects/icons1_540x310_1.jpg,assets/projects/icons1_540x310_2.jpg,assets/projects/icons1_540x310_3.jpg">
 						
-						<img class="img-responsive project-image" src="assets/projects/icons1.jpg"  alt="">
+						<%= image_tag "projects/icons1.jpg", class: "img-responsive project-image" %>
 						
 						<div class="hover-mask">
 							<h2 class="project-title">Project Eight</h2>
@@ -347,26 +345,6 @@
 							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sapien risus, blandit at fringilla ac, varius sed dolor. Donec augue lacus, vulputate sed consectetur facilisis, interdum pharetra ligula. Nulla suscipit erat nibh, ut porttitor nisl dapibus eu.</p>
 							<img class="img-responsive img-center" src="assets/projects/microsoft-logo.png" alt="">
 							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sapien risus, blandit at fringilla ac, varius sed dolor. Donec augue lacus, vulputate sed consectetur facilisis, interdum pharetra ligula. Nulla suscipit erat nibh, ut porttitor nisl dapibus eu. Nam eget urna pellentesque nisl ultrices dapibus. Mauris accumsan vehicula nisl, sed tempus mauris facilisis eu. Donec a iaculis nisi, quis malesuada justo. Pellentesque ut enim sit amet ipsum dignissim egestas. Morbi tincidunt rhoncus urna eget placerat.</p>
-						</div>
-						
-					</a>
-					
-					<a class="project-item web-design" href="#somelink" data-images="assets/projects/webdesign4_540x310_1.jpg,assets/projects/webdesign4_540x310_2.jpg">
-						
-						<img class="img-responsive project-image" src="assets/projects/webdesign4.jpg" alt="">
-						
-						<div class="hover-mask">
-							<h2 class="project-title">Explore</h2>
-							<p>amazon.com</p>
-						</div>
-						
-				
-						
-						<div class="sr-only project-description">
-							<p class="clearfix">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sapien risus, blandit at fringilla ac, varius sed dolor. Donec augue lacus, vulputate sed consectetur facilisis, interdum pharetra ligula. Nulla suscipit erat nibh, ut porttitor nisl dapibus eu.</p>
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sapien risus, blandit at fringilla ac, varius sed dolor. Donec augue lacus, vulputate sed consectetur facilisis, interdum pharetra ligula. Nulla suscipit erat nibh, ut porttitor nisl dapibus eu.</p>
-							<img class="img-responsive img-center" src="assets/projects/amazon-logo.png"  alt="">
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sapien risus, blandit at fringilla ac, varius sed dolor. Donec augue lacus, vulputate sed consectetur facilisis, interdum pharetra ligula. Nulla suscipit erat nibh, ut porttitor nisl dapibus eu.</p>
 						</div>
 						
 					</a>

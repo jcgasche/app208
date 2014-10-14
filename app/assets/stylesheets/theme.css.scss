@@ -41,14 +41,28 @@ $ghost: #35203B;
 
 
 .main-layer{
-  background: -webkit-linear-gradient(-45deg, $aqua, $green); /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient(-45deg, $aqua, $green); /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient(-45deg, $aqua, $green); /* For Firefox 3.6 to 15 */
-  background: linear-gradient(-45deg, $aqua, $green); /* Standard syntax */
+  background: -webkit-linear-gradient(-45deg, $red, $indian); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(-45deg, $red, $indian); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(-45deg, $red, $indian); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(-45deg, $red, $indian); /* Standard syntax */
   overflow: hidden;
   min-width: 100%; min-height: 100%;
   width: auto; height: auto; z-index: -100;
   z-index: 2;
+}
+
+.header{
+  background: -webkit-linear-gradient(-45deg, $red, $indian); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(-45deg, $red, $indian); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(-45deg, $red, $indian); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(-45deg, $red, $indian); /* Standard syntax */
+}
+
+.gradient-background{
+  background: -webkit-linear-gradient(135deg, $red, $indian) !important; /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(135deg, $red, $indian) !important; /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(135deg, $red, $indian) !important; /* For Firefox 3.6 to 15 */
+  background: linear-gradient(135deg, $red, $indian) !important; /* Standard syntax */
 }
 
 .img-center{
@@ -64,7 +78,7 @@ $ghost: #35203B;
 	text-indent: 200%;
 	white-space: nowrap;
 	overflow: hidden;
-    background: url("../assets/logo.png");
+    background: url("images/logo.png");
 }
 
 #main-nav a.ir-logo span{
@@ -92,7 +106,7 @@ h4,
 h5,
 h6{
 	font-family: Lato, sans-serif;
-	color:#74c7d5;
+	color: $red;
 }
 
 h1 {
@@ -110,7 +124,7 @@ h1.section-title{
     line-height:64px;
     font-weight:300;
     text-align:center;
-    color:#74c7d5;
+    color:$red;
     z-index:1;
 }
 
@@ -152,13 +166,13 @@ a:focus {
 }
 
 a {
-  color: #228Ca8;
+  color: $indian;
   text-decoration: none;
 }
 
 a:hover,
 a:focus {
-  color: #229Cc8;
+  color: $indian;
   text-decoration: none;
 }
 
@@ -186,7 +200,7 @@ body {
 
 .btn-theme{
 	color:#fff;
-	background-color:#74c7d5;
+	background-color:$red;
 	padding:15px 90px;
 	font-size:24px;
 	font-weight:300;
@@ -227,7 +241,7 @@ body {
 .btn-theme.transparent:hover,
 .btn-theme.transparent:focus,
 .btn-theme.transparent:active{
-	color:#74C7D5;
+	color:$red;
 	background-color:#fff;
 	border:2px solid #fff;
 	opacity:1;
@@ -254,7 +268,7 @@ body {
 }
 
 #main-nav.scrolled .navbar-brand{
-    color:#74c7d5;
+    color:$red;
 }
 
 #main-nav{
@@ -271,12 +285,12 @@ body {
 }
 
 #main-nav.scrolled .navbar-toggle{
-    color:#74c7d5;
-    border-color:#74c7d5;
+    color:$red;
+    border-color:$red;
 }
 
 #main-nav.scrolled .navbar-toggle .icon-bar{
-    background:#74c7d5;
+    background:$red;
 }
 
 #main-nav .container{
@@ -304,7 +318,7 @@ body {
 #main-nav.scrolled .nav a,
 #main-nav.scrolled .nav a:active,
 #main-nav.scrolled .nav a:hover{
-    color:#74c7d5;
+    color:$red;
 }
 
 
@@ -349,8 +363,8 @@ body {
 
 #main-nav.scrolled .nav a:hover:before,
 #main-nav.scrolled .nav li.active a:before {
-	color: #74c7d5;
-	text-shadow: 12px 0 #74c7d5, -12px 0 #74c7d5;
+	color: $red;
+	text-shadow: 12px 0 $red, -12px 0 $red;
 }
 
 .no-textshadow #main-nav .nav a:before {
@@ -367,7 +381,7 @@ body {
 
 .jumbotron {
     background:transparent;
-    color:#74c7d5;
+    color:$red;
 }
 
 header.jumbotron{
@@ -455,7 +469,7 @@ header.jumbotron{
 
 #services .row.line {
     height:6px;
-    background:#74C7D5;
+    background:$red;
     margin-bottom:24px;
 }
 
@@ -464,7 +478,7 @@ header.jumbotron{
     display:block;
     width:20px;
     height:20px;
-    background:#74C7D5;
+    background:$red;
     border:5px solid #fff;
     border-radius:50%;
 }
@@ -481,7 +495,7 @@ header.jumbotron{
     line-height:130px;
     color:#ccc;
     background:none;
-    border:10px solid #74C7D5;
+    border:10px solid $red;
     border-radius:50%;
     z-index:1;
     -webkit-transition:color 0.2s ease-in;
@@ -498,9 +512,9 @@ header.jumbotron{
     position:absolute;
     width:100%;
     height:100%;
-    background:#74C7D5;
+    background:$red;
     border-radius:50%;
-    border:2px solid #74C7D5;
+    border:2px solid $red;
 	-webkit-box-sizing: content-box; 
 	-moz-box-sizing: content-box; 
 	box-sizing: content-box;
@@ -556,7 +570,7 @@ header.jumbotron{
 ------------------------*/
 
 #about {
-    background:#74C7D5;
+    background:$red;
     color:#fff;
     padding:80px 0;
 }
@@ -598,7 +612,7 @@ header.jumbotron{
 #skills {
     padding-top:80px;
 	background:#fff;
-    color:#228Ca8;
+    color: $indian;
 }
 
 .skills .col-sm-3 {
@@ -637,7 +651,7 @@ header.jumbotron{
 
 #skills .skills h2 {
     margin:0 0 80px;
-    color:#228Ca8;
+    color: $indian;
     font-size:24px;
     font-weight:300;
 }
@@ -652,7 +666,7 @@ header.jumbotron{
 }
 
 #portfolio .section-title {
-    color:#228Ca8;
+    color: $indian;
     font-weight:300;
     margin-bottom:60px;
 }
@@ -711,7 +725,7 @@ header.jumbotron{
 
 #filter-works ul li:hover a,
 #filter-works ul li.active a{
-    color:#74C7D5;
+    color:$red;
 }
 
 .masonry-wrapper{
@@ -771,7 +785,7 @@ header.jumbotron{
     height:100%;
     top:0;
     left:0;
-    background:#74C7D5;
+    background:$red;
     opacity:0;
 	filter:alpha(opacity=0);
     -webkit-transition:all 0.3s ease-out;
@@ -924,7 +938,7 @@ header.jumbotron{
 .modal-header{
     height:60px;
     border:none;
-    border-bottom:1px solid #74c7d5;
+    border-bottom:1px solid $red;
     margin-bottom:10px;
 }
 
@@ -937,7 +951,7 @@ header.jumbotron{
 }
 
 .modal-header .close:hover{
-    color:#74c7d5;
+    color:$red;
     opacity:1;
 }
 
@@ -965,7 +979,7 @@ header.jumbotron{
 }
 
 .modal-body h1{
-    color:#74c7d5;
+    color:$red;
     margin:200px 0 24px;
     font-size:32px;
 }
@@ -988,7 +1002,7 @@ header.jumbotron{
     margin-left:-10px;
     width:30px;
     height:30px;
-    background:url('../assets/loader.gif') no-repeat 50% 50%;
+    background:url('../images/loader.gif') no-repeat 50% 50%;
 }
 
 .modal-body .image-wrapper{
@@ -1013,7 +1027,7 @@ header.jumbotron{
 
 #twitter {
     color:#fff;
-    background:#74C7D5;
+    background:$red;
     padding:60px 0;
 }
 
@@ -1025,6 +1039,12 @@ header.jumbotron{
 
 #twitter h1{
     position:relative;
+    color: #fff;
+}
+
+#twitter h3{
+    position:relative;
+    color: #fff;
 }
 
 #twitter .tweet{
@@ -1123,12 +1143,12 @@ header.jumbotron{
 }
 
 #contact .section-title {
-    color:#fff;
+    color: $red;
     margin-bottom:84px;
 }
 
 #contact .section-title [class*=icon]{
-    color:#74c7d5;
+    color:$red;
 	-webkit-transform: rotate(-15deg);
 	-moz-transform: rotate(-15deg);
 	-ms-transform: rotate(-15deg);
@@ -1144,6 +1164,7 @@ header.jumbotron{
     font-size:18px;
     line-height:30px;
     font-weight:400;
+    color: $red;
 }
 
 
@@ -1176,7 +1197,7 @@ header.jumbotron{
 
 #contact .socials li a:hover{
     padding:0;
-    color:#74c7d5;
+    color:$red;
     text-decoration:none;
 }
 
@@ -1187,6 +1208,7 @@ header.jumbotron{
     line-height:24px;
     font-weight:400;
     text-transform:uppercase;
+    color: $red;
 }
 
 #contact-form.no-placeholder .form-group label{
@@ -1205,7 +1227,7 @@ header.jumbotron{
     font-size:30px;
     line-height:48px;
     font-weight:300;
-    color:#74c7d5;
+    color:$red;
     padding-left:64px;
 }
 
@@ -1219,7 +1241,7 @@ header.jumbotron{
     position:absolute;
     top:0;
     left:5px;
-    color:#74c7d5;
+    color:$red;
     font-size:32px;
     line-height:68px;
     text-align:center;
@@ -1247,22 +1269,22 @@ header.jumbotron{
 }
 
 #contact-form .form-control::-webkit-input-placeholder { /* WebKit browsers */
-    color:    #74c7d5;
+    color:    $red;
 }
 #contact-form .form-control:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-    color:    #74c7d5;
+    color:    $red;
     opacity:1;
 }
 #contact-form .form-control::-moz-placeholder { /* Mozilla Firefox 19+ */
-    color:    #74c7d5;
+    color:    $red;
     opacity:1;
 }
 #contact-form .form-control:-ms-input-placeholder { /* Internet Explorer 10+ */
-    color:    #74c7d5;
+    color:    $red;
 }
 
 #contact-form .error-message {
-    background:#74c7d5;
+    background:$red;
     padding:10px 20px;
     position:absolute;
     top:-10px;
@@ -1276,7 +1298,7 @@ header.jumbotron{
 ------------------------*/
 #main-footer {
     background:#fff;
-    color:#74c7d5;
+    color:$red;
     padding:30px 0;
 }
 
@@ -1287,7 +1309,7 @@ header.jumbotron{
     font-size:24px;
     line-height:24px;
     font-weight:normal;
-    color:#74c7d5;
+    color:$red;
 }
 
 #main-footer .small-logo span {
@@ -1310,7 +1332,7 @@ header.jumbotron{
     display:inline-block;
     padding:0 15px;
     line-height:24px;
-    border-right:1px solid #74c7d5;
+    border-right:1px solid $red;
 }
 
 #main-footer ul.footer-nav li:first-child{
@@ -1322,7 +1344,7 @@ header.jumbotron{
 }
 
 #main-footer ul.footer-nav li a{
-    color:#74c7d5;
+    color:$red;
     text-decoration:none;
     font-size:14px;
     line-height:24px;
@@ -1336,12 +1358,12 @@ header.jumbotron{
 
 #main-footer ul.footer-nav li a:hover,
 #main-footer ul.footer-nav li a:active{
-    color:#229Cc8;
+    color: $indian;
     text-decoration:none;
 }
 
 #main-footer p{
-    color:#74c7d5;
+    color:$red;
     font-size:14px;
     line-height:24px;
     font-weight:400;
@@ -1539,7 +1561,7 @@ header.jumbotron{
 @media (max-width: 768px) {
 
 #main-nav .navbar-brand{
-    color:#74c7d5;
+    color:$red;
 }
 
 #main-nav{
@@ -1548,12 +1570,12 @@ header.jumbotron{
 }
 
 #main-nav .navbar-toggle{
-    color:#74c7d5;
-    border-color:#74c7d5;
+    color:$red;
+    border-color:$red;
 }
 
 #main-nav .navbar-toggle .icon-bar{
-    background:#74c7d5;
+    background:$red;
 }
 
 #main-nav .container{
@@ -1563,7 +1585,7 @@ header.jumbotron{
 #main-nav .nav a,
 #main-nav .nav a:active,
 #main-nav .nav a:hover{
-    color:#74c7d5;
+    color:$red;
     line-height:42px;
     text-align:center;
 }
