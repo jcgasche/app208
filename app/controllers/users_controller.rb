@@ -159,7 +159,7 @@ class UsersController < ApplicationController
 			company = { name: followed_company.name, id: followed_company.id, 
 				logo_url: followed_company.logo_url, 
 				high_concept: followed_company.high_concept, 
-				markets: followed_company.markets
+				markets: followed_company.markets,
 				users_following: followed_company.followers.count, 
 				total_views: followed_company.users.count
 			}
