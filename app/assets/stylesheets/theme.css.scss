@@ -742,14 +742,22 @@ header.jumbotron{
 
 #projects-container {
     margin:0 auto;
+    border-left: 1px solid $lightGrey;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 0px;
     visibility:hidden;
+    background-color: #fff;
 }
+
 
 #projects-container .project-item{
     display:block;
     position:relative;
-    margin:0;
-    width:350px;
+    border-right: 1px solid $lightGrey;
+    border-bottom: 1px solid $lightGrey;
+    background-color: #fff;
+    width:349px;
 	-webkit-transform: scale(1);
 	-moz-transform: scale(1);
 	-ms-transform: scale(1);
