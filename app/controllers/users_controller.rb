@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
 	skip_before_filter :verify_authenticity_token
+	#before_action :correct_user,   except: [ :login_angelco, :login_email ]
 
 	APP208_ANGELCO_CLIENT_ID = '88382b671bafbc2f58f8d6cc75a2ddb2'
 	APP208_ANGELCO_CLIENT_TOKEN = '125bcdfa25cd0c6d82e4ce4988334e9a'
@@ -95,15 +96,14 @@ class UsersController < ApplicationController
 					@response[:investor] = user.investor?.to_s
 					@response[:status]= "success"
 				else
-					puts "else 2 " << SecureRandom.hex(8)
+					@response[:errors].push("validationFailed")
 					@response[:status]= "failure"
 				end
 			end
 			
 		else
-			puts "else 1 " << SecureRandom.hex(8)
 			@response[:status]= "failure"
-			@response[:errors].push("invalidCredentials")
+			@response[:errors].push("emailMissing")
 		end
 
 		render xml: @response
@@ -207,7 +207,8 @@ class UsersController < ApplicationController
 				location: company.location,
 				raising_amount: company.raising_amount,
 				pre_money_valuation: company.pre_money_valuation,
-				raised_amount: company.raised_amount
+				raised_amount: company.raised_amount,
+				website_url: company.url
 			}
 
 		if user.investor? && user.following?(company)
@@ -225,6 +226,15 @@ class UsersController < ApplicationController
 
 
 
+	private
+
+		def correct_user
+			unless User.find_by(id: params[:user_id]).token == params[:token]
+				@response[:errors] = ["invalidCredentials"]
+				@response[:status] = "failure"
+				render xml: @response
+			end
+		end
 
 
 end
