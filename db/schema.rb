@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141014164117) do
+ActiveRecord::Schema.define(version: 20141015062507) do
 
   create_table "companies", force: true do |t|
     t.integer  "angel_id"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20141014164117) do
     t.string   "raising_amount"
     t.string   "pre_money_valuation"
     t.string   "url"
+    t.string   "location"
   end
 
   create_table "relationships", force: true do |t|
