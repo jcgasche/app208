@@ -108,22 +108,24 @@ class UsersController < ApplicationController
 	end
 
 
-
+					
 
 	def show
 		@response = {errors: [], companies: []}
 		user = User.find(params[:user_id])
 
-		user.unviewed_companies[0..9].each do |unviewed_company|
-			company = {name: unviewed_company.name, id: unviewed_company.id, 
-				logo_url: unviewed_company.logo_url, 
-				product_desc: unviewed_company.product_desc,
-				high_concept: unviewed_company.high_concept,
-				markets: unviewed_company.markets,
-				location: unviewed_company.location,
-				raising_amount: unviewed_company.raising_amount,
-				raised_amount: unviewed_company.raised_amount, 
-				pre_money_valuation: unviewed_company.pre_money_valuation}
+		user.unviewed_companies[0..9].each do |company|
+			company = {name: company.name, 
+				id: company.id, 
+				logo_url: company.logo_url, 
+				product_desc: company.product_desc,
+				high_concept: company.high_concept,
+				markets: company.markets,
+				location: company.location,
+				raising_amount: company.raising_amount,
+				pre_money_valuation: company.pre_money_valuation,
+				raised_amount: company.raised_amount
+			}
 
 			@response[:companies].push(company)
 		end
@@ -136,12 +138,14 @@ class UsersController < ApplicationController
 		@response = {errors: []}
 		company = Company.find(params[:company_id])
 		user = User.find(params[:user_id])
-		unless user.companies.include?(company)
+		unless user.viewed?(company)
 			user.follow!(company) 
 			@response[:status] = "success"
 		else
 			@response[:status] = "failure"
+			@response[:errors].push('alreadySwipedCompany')
 		end
+
 		@response[:company_id] = params[:company_id]
 		@response[:user_id] = params[:user_id]
 		render xml: @response
@@ -151,11 +155,12 @@ class UsersController < ApplicationController
 		@response = {errors: []}
 		company = Company.find(params[:company_id])
 		user = User.find(params[:user_id])
-		unless user.companies.include?(company)
+		unless user.viewed?(company)
 			user.notfollow!(company) 
 			@response[:status] = "success"
 		else
 			@response[:status] = "failure"
+			@response[:errors].push('alreadySwipedCompany')
 		end
 		@response[:company_id] = params[:company_id]
 		@response[:user_id] = params[:user_id]
@@ -186,9 +191,22 @@ class UsersController < ApplicationController
 
 
 	def display_company
-		@response = {errors: [], followers: []}
+		
 		company = Company.find(params[:company_id])
 		user = User.find(params[:user_id])
+
+		@response = {errors: [], followers: [],
+				name: company.name, 
+				id: company.id, 
+				logo_url: company.logo_url, 
+				product_desc: company.product_desc,
+				high_concept: company.high_concept,
+				markets: company.markets,
+				location: company.location,
+				raising_amount: company.raising_amount,
+				pre_money_valuation: company.pre_money_valuation,
+				raised_amount: company.raised_amount
+			}
 
 		if user.investor? && user.following?(company)
 			@response[:followers] = company.investor_followers

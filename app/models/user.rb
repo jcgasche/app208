@@ -18,11 +18,15 @@ class User < ActiveRecord::Base
 	end
 
 	def viewed?(company)
-		relationships.where("(company_id = ?)", company.id).nil?
+		self.companies.include?(company)
 	end
 
 	def follow!(company)
+		puts "4444444444444"
+		puts "relationships before: " << relationships.find_by(company_id: company.id).inspect
 		relationships.create!(company_id: company.id, following: true) unless relationships.find_by(company_id: company.id)
+		puts "55555555555555"
+		puts "relationships after: " << relationships.find_by(company_id: company.id).inspect
 	end
 
 	def notfollow!(company)
