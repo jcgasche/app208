@@ -21,25 +21,36 @@ class CompaniesController < ApplicationController
 				markets = markets << market_tag['display_name'] << ", "
 			end
 			markets = markets[0..-3]
+
+			location = company['locations'].first['display_name'] unless company['locations'].empty?
+			raising = company['fundraising']['raising_amount'] unless company['fundraising'].empty?
+			valuation = company['fundraising']['pre_money_valuation'] unless company['fundraising'].empty?
+			raised = company['fundraising']['raised_amount'] unless company['fundraising'].empty?
+
+
 			if Company.find_by(angel_id: company['id'])
-				Company.find_by(angel_id: company['id']).update_attributes(angel_id: company['id'], name: company['name'], 
+
+				Company.find_by(angel_id: company['id']).update_attributes(
+					name: company['name'], 
 					logo_url: company['logo_url'], product_desc: company['product_desc'], 
 					high_concept: company['high_concept'], markets: markets,
-					raising_amount: company['fundraising']['raising_amount'], 
-					pre_money_valuation: company['fundraising']['pre_money_valuation'],
-					raised_amount: company['fundraising']['raised_amount'],
-					location: company['locations']['display_name'],
+					raising_amount: raising, 
+					pre_money_valuation: valuation,
+					raised_amount: raised,
+					location: location,
 					url: company['company_url']
 					)
 				
 			else
-				Company.new( angel_id: company['id'], name: company['name'], 
+
+				Company.new( angel_id: company['id'], 
+					name: company['name'], 
 					logo_url: company['logo_url'], product_desc: company['product_desc'], 
 					high_concept: company['high_concept'], markets: markets,
-					raising_amount: company['fundraising']['raising_amount'], 
-					pre_money_valuation: company['fundraising']['pre_money_valuation'],
-					raised_amount: company['fundraising']['raised_amount'],
-					location: company['locations']['display_name'],
+					raising_amount: raising, 
+					pre_money_valuation: valuation,
+					raised_amount: raised,
+					location: location,
 					url: company['company_url']
 					).save!
 			end

@@ -3,14 +3,17 @@ class User < ActiveRecord::Base
 	has_many :relationships, foreign_key: "user_id", dependent: :destroy
 	has_many :companies, through: :relationships, source: :company, class_name: "Company" 
 
+
+	before_validation do
+		self.token = SecureRandom.hex(8)
+	end
+
 	before_save do
 		self.email = email.downcase unless email.blank?
-		self.token = SecureRandom.hex(8)
 	end
 
 	validates_inclusion_of :investor, :in => [true, false]
 	validates :token, presence: true
-
 
 
 	def following?(company)

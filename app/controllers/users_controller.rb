@@ -90,16 +90,18 @@ class UsersController < ApplicationController
 				user = User.new(email: params[:email])
 				user.investor = true
 
-				if user.save
+				if user.save!
 					@response[:id] = user.id
 					@response[:investor] = user.investor?.to_s
 					@response[:status]= "success"
 				else
+					puts "else 2 " << SecureRandom.hex(8)
 					@response[:status]= "failure"
 				end
 			end
 			
 		else
+			puts "else 1 " << SecureRandom.hex(8)
 			@response[:status]= "failure"
 			@response[:errors].push("invalidCredentials")
 		end
