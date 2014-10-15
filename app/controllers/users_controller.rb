@@ -55,6 +55,7 @@ class UsersController < ApplicationController
 				
 			if user.save
 				@response[:id] = user.id
+				@response[:token] = user.token
 				@response[:investor] = user.investor?.to_s
 				@response[:status]= "success"
 			else

@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
 
 	before_save do
 		self.email = email.downcase unless email.blank?
+		self.token = SecureRandom.hex(8)
 	end
 
 	validates_inclusion_of :investor, :in => [true, false]
