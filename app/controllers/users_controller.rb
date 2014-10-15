@@ -121,7 +121,8 @@ class UsersController < ApplicationController
 				high_concept: unviewed_company.high_concept,
 				markets: unviewed_company.markets,
 				location: unviewed_company.location,
-				raising_amount: unviewed_company.raising_amount, 
+				raising_amount: unviewed_company.raising_amount,
+				raised_amount: unviewed_company.raised_amount, 
 				pre_money_valuation: unviewed_company.pre_money_valuation}
 
 			@response[:companies].push(company)

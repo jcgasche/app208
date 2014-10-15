@@ -27,6 +27,7 @@ class CompaniesController < ApplicationController
 					high_concept: company['high_concept'], markets: markets,
 					raising_amount: company['fundraising']['raising_amount'], 
 					pre_money_valuation: company['fundraising']['pre_money_valuation'],
+					raised_amount: company['fundraising']['raised_amount'],
 					location: company['locations']['display_name'],
 					url: company['company_url']
 					)
@@ -37,6 +38,7 @@ class CompaniesController < ApplicationController
 					high_concept: company['high_concept'], markets: markets,
 					raising_amount: company['fundraising']['raising_amount'], 
 					pre_money_valuation: company['fundraising']['pre_money_valuation'],
+					raised_amount: company['fundraising']['raised_amount'],
 					location: company['locations']['display_name'],
 					url: company['company_url']
 					).save!
