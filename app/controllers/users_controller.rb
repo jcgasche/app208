@@ -126,7 +126,8 @@ class UsersController < ApplicationController
 				location: company.location,
 				raising_amount: company.raising_amount,
 				pre_money_valuation: company.pre_money_valuation,
-				raised_amount: company.raised_amount
+				raised_amount: company.raised_amount,
+				website_url: company.url
 			}
 
 			@response[:companies].push(company)
