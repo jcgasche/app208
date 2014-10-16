@@ -12,8 +12,33 @@ class UsersController < ApplicationController
 		@response = {errors: []}
 		
 
-		if params[:code].blank?
+		unless params[:code].blank?
 
+
+			uri = "https://angel.co/api/oauth/token?client_id=88382b671bafbc2f58f8d6cc75a2ddb2&client_secret=1c002227a66cc1147eca0f025e3138bc&code=#{params[:code]}&grant_type=authorization_code"
+			uri = URI.parse(uri)
+			response = Net::HTTP.post_form(uri, {})
+
+			puts response.body.inspect
+			#now that request has been issued, parse request to get access token
+			response_hash = JSON.parse response.body
+
+			puts response_hash.inspect
+
+			access_token = response_hash["access_token"]
+
+			puts access_token
+
+			url = URI.parse("https://api.angel.co/1/me?access_token=#{access_token}")
+			req = Net::HTTP::Get.new(url.to_s)
+			response = Net::HTTP.start(url.host, url.port) {|http|
+				http.request(req)
+			}
+			response_hash = JSON.parse response.body
+
+			user = User.find_by_angel_id(response_hash["id"]) unless response_hash["id"].blank?
+
+=begin
 			#now get info about the user
 			url = URI.parse("http://www.payonesnap.com/app208_angel_login/#{params[:code]}")
 			req = Net::HTTP::Get.new(url.to_s)
@@ -25,7 +50,9 @@ class UsersController < ApplicationController
 			puts response_hash.inspect
 
 			user = User.find_by_angel_id(response_hash["id"]) unless response_hash["id"].blank?
-				
+=end		
+
+
 
 			if user
 				#user already exists, update token and return its logins (id and email)
@@ -51,7 +78,7 @@ class UsersController < ApplicationController
 			end
 			
 		else
-			user = User.new(angel_id: params[:code], token: params[:token], name: "Amaury Soviche")
+			user = User.new(angel_id: params[:code], token: params[:token], name: "Test User")
 			user.investor = 'true'
 				
 			if user.save
