@@ -58,4 +58,16 @@ class CompaniesController < ApplicationController
 		render xml: Company.all
 	end
 
+
+	def index
+		@companies = Company.all
+
+
+	end
+
+
+
+
+
+
 end

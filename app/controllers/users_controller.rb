@@ -64,18 +64,29 @@ class UsersController < ApplicationController
 
 			if user
 				#user already exists, update token and return its logins (id and email)
-				user.token = access_token
+				user.angel_token = access_token
 				user.investor = response_hash["investor"] == 'true'
-				@response[:id] = user.id
-				@response[:investor] = user.investor?.to_s
-				@response[:status] = "success"
+				user.email = response_hash["email"]
+				if user.save
+					@response[:id] = user.id
+					@response[:token] = user.token
+					@response[:investor] = user.investor?.to_s
+					@response[:status]= "success"
+				else
+					@response[:id] = user.id
+					@response[:investor] = user.investor?.to_s
+					@response[:token] = user.token
+					@response[:status]= "unsure"
+				end
 				
-
 			else
 				#create a new user, return the logins (id and email)
-				user = User.new(angel_id: response_hash["id"], token: access_token, name: response_hash["name"])
+				user = User.new(angel_id: response_hash["id"], 
+					angel_token: access_token, name: response_hash["name"],
+					)
 				user.investor = response_hash["investor"] == 'true'
-				
+				user.email = response_hash["email"]
+
 				if user.save
 					@response[:id] = user.id
 					@response[:token] = user.token
