@@ -29,16 +29,24 @@ class UsersController < ApplicationController
 
 			puts access_token
 
+			res = Net::HTTP.get_response(URI("https://api.angel.co/1/me?access_token=#{access_token}"))
+			puts res.body if res.is_a?(Net::HTTPSuccess)
+
+			response_hash = JSON.parse res.body
+			user = User.find_by_angel_id(response_hash["id"]) unless response_hash["id"].blank?
+			
+=begin
+
 			url = URI.parse("https://api.angel.co/1/me?access_token=#{access_token}")
 			req = Net::HTTP::Get.new(url.to_s)
 			response = Net::HTTP.start(url.host, url.port) {|http|
 				http.request(req)
 			}
 			response_hash = JSON.parse response.body
-
 			user = User.find_by_angel_id(response_hash["id"]) unless response_hash["id"].blank?
+			
 
-=begin
+
 			#now get info about the user
 			url = URI.parse("http://www.payonesnap.com/app208_angel_login/#{params[:code]}")
 			req = Net::HTTP::Get.new(url.to_s)
