@@ -70,6 +70,7 @@ class UsersController < ApplicationController
 				
 				if user.save
 					@response[:id] = user.id
+					@response[:token] = user.token
 					@response[:investor] = user.investor?.to_s
 					@response[:status]= "success"
 				else
@@ -118,8 +119,9 @@ class UsersController < ApplicationController
 				user = User.new(email: params[:email])
 				user.investor = true
 
-				if user.save!
+				if user.save
 					@response[:id] = user.id
+					@response[:token] = user.token
 					@response[:investor] = user.investor?.to_s
 					@response[:status]= "success"
 				else
