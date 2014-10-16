@@ -10,21 +10,22 @@ App208::Application.routes.draw do
 
 
 
-  match '/user/:user_id',                   to: 'users#show',                        via: 'post'
+  match '/user/:user_id',                   to: 'users#show',                         via: 'post'
 
-  match '/user/:user_id/companies',         to: 'users#followed_companies',          via: 'post'
+  match '/user/:user_id/companies',         to: 'users#followed_companies',           via: 'post'
 
   match '/user/:user_id/company/:company_id',
-                                            to: 'users#display_company',             via: 'post'
+                                            to: 'users#display_company',              via: 'post'
 
   match '/user/:user_id/company/:company_id/follow',
-                                            to: 'users#follow_company',              via: 'post'
+                                            to: 'users#follow_company',               via: 'post'
 
   match '/user/:user_id/company/:company_id/notfollow',
-                                            to: 'users#notfollow_company',           via: 'post'
+                                            to: 'users#notfollow_company',            via: 'post'
 
 
-  match '/refill_companies_db',             to: 'companies#fill_db',                 via: 'get'
+  match '/refill_companies_db',             to: 'companies#fill_db',                  via: 'get'
+  match '/companies',                       to: 'companies#index',                    via: 'get'
 
 
 

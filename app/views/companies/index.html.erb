@@ -1,315 +1,63 @@
 
-<!DOCTYPE html>
-<html lang="en-US" class="no-js">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		
-		<link rel="shortcut icon" href="assets/favicon.ico">
-		<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-		<link rel="apple-touch-icon" sizes="72x72" href="assets/apple-touch-icon-72x72.png">
-		<link rel="apple-touch-icon" sizes="114x114" href="assets/apple-touch-icon-114x114.png">
-		
-		<link href='http://fonts.googleapis.com/css?family=Lato:400,300,300italic,400italic,700,700italic,900' rel='stylesheet' type='text/css'>		
-		
-	</head>
-  
-	<body data-spy="scroll" data-target="#main-nav" data-offset="200">
-	<div id="main-nav" class="navbar navbar-fixed-top">
-			<div class="container">
-			
-				<div class="navbar-header">
-				
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#site-nav">
-						<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand scrollto" href="#home">2 0 8<br><span>App</span></a>
-				
-				</div>
-				
-				<div id="site-nav" class="navbar-collapse collapse">
-					<ul class="nav navbar-nav navbar-right">
-						<li class="sr-only">
-							<a href="#home" class="scrollto">Home</a>
-						</li>
-						<li>
-							<a href="#about" class="scrollto">About</a>
-						</li>
 
-						<li>
-							<a href="#portfolio" class="scrollto">Selection</a>
-						</li>
+<section class="banner gradient-background">
 
-						<li>
-							<a href="#download" class="scrollto">Download</a>
-						</li>
+	<div class="container">
 
-						<li>
-							<a href="#services" class="scrollto">Features</a>
-						</li>
-
-						<li>
-							<a href="#contact" class="scrollto">Submit</a>
-						</li>
-						
-					</ul>
-				</div>
-				
+		<div class="row">
+			<div class="col-sm-6 col-sm-offset-3 scrollimation scale-in">
+				<h1>index</h1>
+				<p>All our companies</p>
+				<!-- <a href="#portfolio" class="btn btn-theme transparent scrollto">Download the app</a> -->
 			</div>
 		</div>
-		<header id="home" class="jumbotron">
+
+	</div>
+
+</section>
+
+
+
+
+
+<section id="skills">
+
+	<div class="container">
+		<% @companies.each do |company| %>
 		
-			<div class="container">
-			
-				<div class="message-box clearfix">
-				
-					<div class="left-col">
-						<p><span>2 0 8</span><br/>App </p>
-					</div>	
-					
-					<div class="right-col flexslider home-slider" style="z-index:1;">
-					
-						<ul class="slides">
-						
-							<li><p>Startups</p></li>
-							
-							<li><p>Products</p></li>
-							
-							<li><p>Money</p></li>
-							
-						</ul>
-						
-					</div>
-					
+		<div class="row skills" style="border: 1px solid #ddd; padding-top: 20px; margin-bottom: 20px;">
+
+			<div class="col-sm-6 col-md-3 text-center">
+				<div style="min-height: 200px; min-width: 100px; padding: 7%; padding-top: 14%;">
+					<%= image_tag "#{company.logo_url}", class: "img-responsive project-image", style: "margin-left: auto; margin-right: auto; max-height: 100px;" %>
+					<h2 class="text-center" style="margin-top: 20px; margin-bottom: 10px;"><%= company.name %></h2>
+					<p class="text-center" style="margin-bottom: 10px;"><%= company.high_concept %></p>
 				</div>
 				
-			</div>
+
+				<span class="chart" data-percent="<%= company.like_percentage %>"><span class="percent"><%= company.like_percentage %></span></span>
+				<p class="project-title" style="margin-top: -40px; text-align: center;"><%= company.location %></p>
 			
-		</header>
-
-		<section id="about" class="gradient-background">
-		
-			<div class="container">
-			
-				<div class="row">
-					<div class="col-sm-4 col-sm-offset-1 scrollimation fade-right">
-						<!-- <%= image_tag "header-bg.jpg", class: "img-responsive img-circle img-center" %> -->
-					</div>
-					<div class="col-sm-6 col-sm-offset-1 scrollimation fade-left">
-						<h1>Termsheet</h1>
-						<p>You never get one until you get a hundred. <br />Investors see what other investors like.<br />Make your startup a hot deal.</p>
-						<a href="#portfolio" class="btn btn-theme transparent scrollto">Submit your Product</a>
-
-					</div>
-				</div>
-				
-			</div>
-			
-		</section>
-
-		<section id="skills">
-		
-			<div class="container">
-				<h2 class="section-title scrollimation scale-in">Today's<span>Trending </span>Startups<i class="icon-chevron-up"></i></h2>
-
-				<div class="row skills">
-
-				<% @best_startups.each do |company| %>
-					<div class="col-sm-6 col-md-3 text-center">
-						<span class="chart" data-percent="<%= company.like_percentage %>"><span class="percent"><%= company.like_percentage %></span></span>
-						<h2 class="text-center"><%= company.name %></h2>
-					</div>
-				<% end %>
-					
-				</div>
-				
-			</div>
-			
-		</section>	
-
-		
-		
-			
-		<section  id="portfolio">
-		
-			<div id="portfolio-header" class="text-center">
-				
-				<h1 class="section-title scrollimation scale-in">Selection<i class="icon-pencil"></i></h1>
-				
-				<div id="filter-works">
-					<ul>
-						<li class="active">
-							<a href="#" data-filter="*">All</a>
-						</li>
-						<% if @markets.any? %>
-							<% @markets.each do |market| %>
-								<li>
-									<a href="#" data-filter=".<%= market.gsub(/( )/, '-').downcase %>"><%= market %></a>
-								</li>
-							<% end %>
-						<% end %>
-					</ul>
-				</div>
-				
-			</div>
-			
-			<div class="container masonry-wrapper scrollimation fade-in">
-			
-				<div id="projects-container">
-
-					<% 
-
-					@random_startups.each do |company| 
-						market_list = []
-						company.markets.split(%r{,\s*}).each do |market|
-							market_list.push(market.gsub(/( )/, '-').downcase)
-						end
-
-					%>
-
-
-					<a class="project-item <%= market_list.join(" ") %>" href="<%= company.url %>" data-images="<%= company.logo_url %>">
-
-						<div style="min-height: 200px; min-width: 100px; padding: 7%; padding-top: 14%;">
-							<%= image_tag "#{company.logo_url}", class: "img-responsive project-image", style: "margin-left: auto; margin-right: auto; max-height: 100px;" %>
-							<p class="project-title" style="margin-top: 20px; text-align: center;"><%= company.name %></p>
-						</div>
-
-						
-							<div class="hover-mask">
-								<h2 class="project-title"><%= company.name %></h2>
-								<p><%= company.high_concept unless company.high_concept.blank? %><%= company.url if company.high_concept.blank? %></p>
-							</div>
-						
-
-						<div class="sr-only project-description">
-							<p><%= company.product_desc %></p>
-						</div>
-						
-					</a>
-
-					<% end %>
-
-						
-				</div> 
 				
 			</div>
 
-
-		<section id="download" class="gradient-background">
-		
-			<div class="container">
 			
-				<div class="row">
-					<div class="col-sm-6 col-sm-offset-3 scrollimation scale-in">
-						<h1>ios</h1>
-						<p>Soon available on the Apple App Store</p>
-						<!-- <a href="#portfolio" class="btn btn-theme transparent scrollto">Download the app</a> -->
-					</div>
-				</div>
-				
+			<div class="col-sm-6 col-md-6">
+				<p><%= company.product_desc %></p>
 			</div>
-			
-		</section>
 
+			<div class="col-sm-6 col-md-3 text-justify">
+				<h3><%= company.markets %></p>
+				<p>Raising: <%= company.raising_amount %><br />Valuation: <%= company.pre_money_valuation %><br />Raised: <%= company.raised_amount %></p>
+			</div>
+		</div>
+		<div class="row skills">
+			
 
-		<section id="services">
-		
-			<div class="container">
-			
-				<h1 class="section-title scrollimation scale-in"><span>Features</span><i class="icon-wrench"></i></h1>
-				
-				<div class="row services scrollimation fade-left">
-					<div class="col-md-3 text-center">
-						<a class="icon"><i class="icon-exchange"></i></a>
-						<h2>Swipe</h2>
-					</div>
-					<div class="col-md-3 details">
-						<p style="text-align: left;">Got free time?<br />What would you better swipe?</p>
-					</div>
-					<div class="col-md-3 text-center">
-						<a class="icon"><i class="icon-tasks"></i></a>
-						<h2>Investors</h2>
-					</div>
-					<div class="col-md-3 details">
-						<p style="text-align: left;">Investors see which other investor also liked a startup. Login with angel.co for that.</p>
-					</div>
-				</div>
-				<div class="row line visible-md visible-lg">
-					<div class="col-md-3"><span class="spot"></span></div>
-					<div class="col-md-3"><span class="spot"></span></div>
-					<div class="col-md-3"><span class="spot"></span></div>
-					<div class="col-md-3"><span class="spot"></span></div>
-				</div><!--End row -->
-				
-				<div class="row services bottom-row scrollimation fade-right">
-					<div class="col-md-3 text-center col-md-push-3">
-						<h2>Startups</h2>
-						<a class="icon"><i class="icon-usd"></i></a>
-					</div>
-					<div class="col-md-3 details col-md-pull-3">
-						<p style="text-align: right;">Raising funds or launching. <br />Stay tuned about all the new trendy companies and products.</p>
-					</div>
-					<div class="col-md-3 text-center  col-md-push-3">
-						<h2>Followers</h2>
-						<a class="icon"><i class="icon-thumbs-up"></i></a>
-					</div>
-					<div class="col-md-3 details  col-md-pull-3">
-						<p style="text-align: right;">Like and follow a company: Give an upvote to the companies you like by swiping right.</p>
-					</div>
-				</div>
-			
-			</div>
-			
-		</section>
+		</div>
+		<% end %>
+	</div>
 
-			<div id="project-modal" class="modal fade">
-			
-				<div class="modal-dialog">
-				
-					<div class="modal-content">
-					
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						</div>
-						
-						<div class="modal-body">
-						
-							<div class="left-col">
-								<img class="img-responsive" src="assets/imac.png" alt="">
-								<div class="loader"></div>
-								<div class="image-wrapper"></div>
-							</div>
-							
-							<h1></h1>
-							
-							<div class="project-descr"></div>
-							
-							<div class="clearfix"></div>
-							
-							<p class="text-center"><a class="btn btn-theme"><i class="icon-external-link"></i>Visit Website</a></p>
-						
-						</div>
-						
-					</div>
-					
-				</div>
-				
-			</div>
-			
-		</section>
-		<section id="twitter" class="gradient-background">
-			<div class="container">
-				<div class="row scrollimation fade-in">
-					<div class="col-sm-1 twitter-icon">
-						<i class="icon-twitter"></i>
-					</div>
-					<div class="col-sm-11">
-					<h3>Twitter feed</h3>
-					</div>
-				</div>
-			</div>
-			
-		</section>
+</section>	
+
 

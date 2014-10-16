@@ -375,6 +375,52 @@ body {
 	margin-left:-15px;
 }
 
+
+/*-----------------------
+------BANNER-------
+------------------------*/
+
+.banner {
+    background:$red;
+    color:#fff;
+    padding:80px 0;
+    text-align: center;
+}
+
+.banner h1 {
+    color:#fff;
+    font-size:36px;
+    line-height:42px;
+    font-weight:300;
+    margin-bottom:24px;
+    position:relative;
+}
+
+.banner p {
+    font-size:24px;
+    line-height:36px;
+    font-weight:300;
+    margin-bottom:42px;
+}
+
+.banner a:hover{
+    text-decoration:underline;
+} 
+
+.banner .btn-theme.transparent {
+    font-size:18px;
+    text-decoration:none;
+}
+
+.banner img {
+    max-width: 100px;
+}
+
+
+
+
+
+
 /*----------------------
 -----Header Styles------
 ------------------------*/
