@@ -21,4 +21,26 @@ class Company < ActiveRecord::Base
 		end
 	end
 
+	def info
+		{ 	name: self.name, 
+			id: self.id, 
+			logo_url: self.logo_url, 
+			product_desc: self.product_desc,
+			high_concept: self.high_concept,
+			markets: self.markets,
+			location: self.location,
+			raising_amount: self.raising_amount,
+			pre_money_valuation: self.pre_money_valuation,
+			raised_amount: self.raised_amount,
+			website_url: self.url,
+			users_following: self.followers.count,
+			total_views: self.users.count
+		}
+	end
+
+
+
+
 end
+
+

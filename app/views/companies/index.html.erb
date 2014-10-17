@@ -48,7 +48,7 @@
 
 			<div class="col-sm-6 col-md-3 text-justify">
 				<h3><%= company.markets %></p>
-				<p>Raising: <%= company.raising_amount %><br />Valuation: <%= company.pre_money_valuation %><br />Raised: <%= company.raised_amount %></p>
+				<p>Raising: <%= number_to_currency(company.raising_amount.to_f) if ( company.raising_amount && company.raising_amount.to_f > 0 )  %><br />Valuation: <%= number_to_currency(company.pre_money_valuation.to_f) if ( company.pre_money_valuation && company.pre_money_valuation.to_f > 0 ) %><br />Raised: <%= number_to_currency(company.raised_amount.to_f) if ( company.raised_amount && company.raised_amount.to_f > 0 )  %></p>
 			</div>
 		</div>
 		<div class="row skills">

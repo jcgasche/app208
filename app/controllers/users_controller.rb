@@ -34,32 +34,6 @@ class UsersController < ApplicationController
 
 			response_hash = JSON.parse res.body
 			user = User.find_by_angel_id(response_hash["id"]) unless response_hash["id"].blank?
-			
-=begin
-
-			url = URI.parse("https://api.angel.co/1/me?access_token=#{access_token}")
-			req = Net::HTTP::Get.new(url.to_s)
-			response = Net::HTTP.start(url.host, url.port) {|http|
-				http.request(req)
-			}
-			response_hash = JSON.parse response.body
-			user = User.find_by_angel_id(response_hash["id"]) unless response_hash["id"].blank?
-			
-
-
-			#now get info about the user
-			url = URI.parse("http://www.payonesnap.com/app208_angel_login/#{params[:code]}")
-			req = Net::HTTP::Get.new(url.to_s)
-			response = Net::HTTP.start(url.host, url.port) {|http|
-				http.request(req)
-			}
-			response_hash = JSON.parse response.body
-
-			puts response_hash.inspect
-
-			user = User.find_by_angel_id(response_hash["id"]) unless response_hash["id"].blank?
-=end		
-
 
 
 			if user
@@ -162,33 +136,18 @@ class UsersController < ApplicationController
 
 	def show
 		@response = {errors: [], companies: []}
-		user = User.find(params[:user_id])
-
-		user.unviewed_companies[0..9].each do |company|
-			company = {name: company.name, 
-				id: company.id, 
-				logo_url: company.logo_url, 
-				product_desc: company.product_desc,
-				high_concept: company.high_concept,
-				markets: company.markets,
-				location: company.location,
-				raising_amount: company.raising_amount,
-				pre_money_valuation: company.pre_money_valuation,
-				raised_amount: company.raised_amount,
-				website_url: company.url
-			}
-
-			@response[:companies].push(company)
-		end
-
+		User.find(params[:user_id]).unviewed_companies[0..9].each { |company| @response[:companies].push(company.info) }
 		render xml: @response
 	end
 
 
 	def follow_company
-		@response = {errors: []}
+		
 		company = Company.find(params[:company_id])
 		user = User.find(params[:user_id])
+
+		@response = {errors: []}
+		
 		unless user.viewed?(company)
 			user.follow!(company) 
 			@response[:status] = "success"
@@ -197,15 +156,18 @@ class UsersController < ApplicationController
 			@response[:errors].push('alreadySwipedCompany')
 		end
 
-		@response[:company_id] = params[:company_id]
-		@response[:user_id] = params[:user_id]
 		render xml: @response
 	end
 
+
+
 	def notfollow_company
-		@response = {errors: []}
+		
 		company = Company.find(params[:company_id])
 		user = User.find(params[:user_id])
+
+		@response = {errors: []}
+
 		unless user.viewed?(company)
 			user.notfollow!(company) 
 			@response[:status] = "success"
@@ -213,26 +175,19 @@ class UsersController < ApplicationController
 			@response[:status] = "failure"
 			@response[:errors].push('alreadySwipedCompany')
 		end
-		@response[:company_id] = params[:company_id]
-		@response[:user_id] = params[:user_id]
+		
 		render xml: @response
 	end
 
 
 	def followed_companies
-		@response = {errors: [], companies: []}
+		
 		user = User.find(params[:user_id])
-		puts user.followed_companies.inspect
+
+		@response = {errors: [], companies: []}
 
 		user.followed_companies.each do |followed_company|
-			company = { name: followed_company.name, id: followed_company.id, 
-				logo_url: followed_company.logo_url, 
-				high_concept: followed_company.high_concept, 
-				markets: followed_company.markets,
-				users_following: followed_company.followers.count, 
-				total_views: followed_company.users.count
-			}
-			@response[:companies].push(company)
+			@response[:companies].push(company.info)
 		end
 
 		@response[:status] = "success"
@@ -246,30 +201,13 @@ class UsersController < ApplicationController
 		company = Company.find(params[:company_id])
 		user = User.find(params[:user_id])
 
-		@response = {errors: [], followers: [],
-				name: company.name, 
-				id: company.id, 
-				logo_url: company.logo_url, 
-				product_desc: company.product_desc,
-				high_concept: company.high_concept,
-				markets: company.markets,
-				location: company.location,
-				raising_amount: company.raising_amount,
-				pre_money_valuation: company.pre_money_valuation,
-				raised_amount: company.raised_amount,
-				website_url: company.url
-			}
+		@response = { errors: [], investor_followers: [], company: company.info }
 
 		if user.investor? && user.following?(company)
-			@response[:followers] = company.investor_followers
+			@response[:investor_followers] = company.investor_followers
 		end
 
-		@response[:users_following] = company.followers.count
-		@response[:total_views] = company.users.count
-
-
 		@response[:status] = "success"
-		@response[:user_id] = params[:user_id]
 		render xml: @response
 	end
 
