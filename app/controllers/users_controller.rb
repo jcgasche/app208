@@ -186,7 +186,7 @@ class UsersController < ApplicationController
 
 		@response = {errors: [], companies: []}
 
-		user.followed_companies.each do |followed_company|
+		user.followed_companies.each do |company|
 			@response[:companies].push(company.info)
 		end
 
