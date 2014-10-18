@@ -105,7 +105,7 @@ class UsersController < ApplicationController
 				#user already exists, update angel_token and return its logins (id)
 				@response[:id] = user.id
 				@response[:token] = user.token
-				@response[:investor] = "true"
+				@response[:investor] = user.investor?.to_s
 				@response[:status] = "success"
 
 			else
