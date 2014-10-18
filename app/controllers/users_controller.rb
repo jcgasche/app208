@@ -223,7 +223,7 @@ class UsersController < ApplicationController
 
 		def correct_user
 			unless User.find_by(id: params[:user_id]).token == params[:token]
-				@response[:errors] = ["invalidCredentials"]
+				@response = {errors: ["invalidCredentials"]}
 				@response[:status] = "failure"
 				render xml: @response
 			end
