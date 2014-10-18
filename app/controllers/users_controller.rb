@@ -104,12 +104,15 @@ class UsersController < ApplicationController
 			if user
 				#user already exists, update angel_token and return its logins (id)
 				@response[:id] = user.id
+				@response[:token] = user.token
 				@response[:investor] = "true"
 				@response[:status] = "success"
 
 			else
 				#create a new user, return the logins (id)
 				user = User.new(email: params[:email])
+
+				#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				user.investor = true
 
 				if user.save
@@ -140,7 +143,7 @@ class UsersController < ApplicationController
 		if @response.empty?
 			@response[:status] = "failure"
 		else
-			@response[:status] = "sucess"
+			@response[:status] = "success"
 		end
 
 		render xml: @response
