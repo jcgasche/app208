@@ -213,7 +213,9 @@ class UsersController < ApplicationController
 		@response = { errors: [], investor_followers: [], company: company.info }
 
 		if user.investor? && user.following?(company)
-			@response[:investor_followers] = company.investor_followers
+			company.investor_followers.each do |investor|
+				@response[:investor_followers].push( investor.name )
+			end
 		end
 
 		@response[:status] = "success"
