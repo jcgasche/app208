@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 	skip_before_filter :verify_authenticity_token
-	#before_action :correct_user,   except: [ :login_angelco, :login_email ]
+	before_action :correct_user,   except: [ :login_angelco, :login_email ]
 
 	APP208_ANGELCO_CLIENT_ID = '88382b671bafbc2f58f8d6cc75a2ddb2'
 	APP208_ANGELCO_CLIENT_TOKEN = '125bcdfa25cd0c6d82e4ce4988334e9a'
@@ -136,7 +136,13 @@ class UsersController < ApplicationController
 
 	def show
 		@response = {errors: [], companies: []}
-		User.find(params[:user_id]).unviewed_companies[0..9].each { |company| @response[:companies].push(company.info) }
+		User.find(params[:user_id]).unviewed_companies.shuffle[0..9].each { |company| @response[:companies].push(company.info) }
+		if @response.empty?
+			@response[:status] = "failure"
+		else
+			@response[:status] = "sucess"
+		end
+
 		render xml: @response
 	end
 

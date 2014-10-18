@@ -23,39 +23,44 @@
 <section id="skills">
 
 	<div class="container">
-		<% @companies.each do |company| %>
-		
-		<div class="row skills" style="border: 1px solid #ddd; padding-top: 20px; margin-bottom: 20px;">
+		<% if @companies.any? %>
+			<%= will_paginate @companies%>
+			<% @companies.each do |company| %>
+			
+			<div class="row skills" style="border: 1px solid #ddd; padding-top: 20px; margin-bottom: 20px;">
 
-			<div class="col-sm-6 col-md-3 text-center">
-				<div style="min-height: 200px; min-width: 100px; padding: 7%; padding-top: 14%;">
-					<%= image_tag "#{company.logo_url}", class: "img-responsive project-image", style: "margin-left: auto; margin-right: auto; max-height: 100px;" %>
-					<h2 class="text-center" style="margin-top: 20px; margin-bottom: 10px;"><%= company.name %></h2>
-					<p class="text-center" style="margin-bottom: 10px;"><%= company.high_concept %></p>
+				<div class="col-sm-6 col-md-3 text-center">
+					<div style="min-height: 200px; min-width: 100px; padding: 7%; padding-top: 14%;">
+						<%= image_tag "#{company.logo_url}", class: "img-responsive project-image", style: "margin-left: auto; margin-right: auto; max-height: 100px;" %>
+						<h2 class="text-center" style="margin-top: 20px; margin-bottom: 10px;"><%= company.name %></h2>
+						<p class="text-center" style="margin-bottom: 10px;"><%= company.high_concept %></p>
+					</div>
+					
+
+					<span class="chart" data-percent="<%= company.like_percentage %>"><span class="percent"><%= company.like_percentage %></span></span>
+					<p class="project-title" style="margin-top: -40px; text-align: center;"><%= company.location %></p>
+				
+					
 				</div>
+
+				
+				<div class="col-sm-6 col-md-6">
+					<p><%= company.product_desc %></p>
+				</div>
+
+				<div class="col-sm-6 col-md-3 text-justify">
+					<h3><%= company.markets %></p>
+					<p>Raising: <%= number_to_currency(company.raising_amount.to_f) if ( company.raising_amount && company.raising_amount.to_f > 0 )  %><br />Valuation: <%= number_to_currency(company.pre_money_valuation.to_f) if ( company.pre_money_valuation && company.pre_money_valuation.to_f > 0 ) %><br />Raised: <%= number_to_currency(company.raised_amount.to_f) if ( company.raised_amount && company.raised_amount.to_f > 0 )  %></p>
+				</div>
+			</div>
+			<div class="row skills">
 				
 
-				<span class="chart" data-percent="<%= company.like_percentage %>"><span class="percent"><%= company.like_percentage %></span></span>
-				<p class="project-title" style="margin-top: -40px; text-align: center;"><%= company.location %></p>
-			
-				
 			</div>
-
-			
-			<div class="col-sm-6 col-md-6">
-				<p><%= company.product_desc %></p>
-			</div>
-
-			<div class="col-sm-6 col-md-3 text-justify">
-				<h3><%= company.markets %></p>
-				<p>Raising: <%= number_to_currency(company.raising_amount.to_f) if ( company.raising_amount && company.raising_amount.to_f > 0 )  %><br />Valuation: <%= number_to_currency(company.pre_money_valuation.to_f) if ( company.pre_money_valuation && company.pre_money_valuation.to_f > 0 ) %><br />Raised: <%= number_to_currency(company.raised_amount.to_f) if ( company.raised_amount && company.raised_amount.to_f > 0 )  %></p>
-			</div>
-		</div>
-		<div class="row skills">
-			
-
-		</div>
+			<% end %>
+			<%= will_paginate @conversation_items%>
 		<% end %>
+
 	</div>
 
 </section>	
