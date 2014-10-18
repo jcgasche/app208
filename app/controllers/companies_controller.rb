@@ -75,7 +75,7 @@ class CompaniesController < ApplicationController
 
 		end while companies_to_load?( page, last_page, limit)
 
-		redirect_to index_path
+		redirect_to companies_path
 	end
 
 
