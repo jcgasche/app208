@@ -166,7 +166,7 @@
         CABasicAnimation* animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
         animation.fromValue = [NSNumber numberWithFloat:0.0f];
         animation.toValue = [NSNumber numberWithFloat: 2*M_PI];
-        animation.duration = 10.0f;
+        animation.duration = 3.0f;
         animation.repeatCount = INFINITY;
         [self.ImageViewLoadingDart.layer addAnimation:animation forKey:@"SpinAnimation"];
     }

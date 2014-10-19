@@ -40,6 +40,11 @@
 		AAA1C34A19F07F5600C257FE /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAA1C34919F07F5600C257FE /* Accounts.framework */; };
 		AAA1C34C19F07F5B00C257FE /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAA1C34B19F07F5B00C257FE /* Twitter.framework */; };
 		AAA1C34E19F082FB00C257FE /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAA1C34D19F082FB00C257FE /* Social.framework */; };
+		AAB59BE419F43CD6001F0EFA /* MyCustomSeguePushForward.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB59BE319F43CD6001F0EFA /* MyCustomSeguePushForward.m */; };
+		AAB59BE719F43D25001F0EFA /* MyCustomSeguePushBackward.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB59BE619F43D25001F0EFA /* MyCustomSeguePushBackward.m */; };
+		AAB59BEA19F44F03001F0EFA /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB59BE919F44F03001F0EFA /* ShareViewController.m */; };
+		AAB59BED19F4693E001F0EFA /* ShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = AAB59BEC19F4693E001F0EFA /* ShareView.m */; };
+		AAB59BEF19F46948001F0EFA /* ShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAB59BEE19F46948001F0EFA /* ShareView.xib */; };
 		AABE084219F1AC79009AF8D1 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AABE084019F1AC79009AF8D1 /* Bolts.framework */; };
 		AABE084319F1AC79009AF8D1 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AABE084119F1AC79009AF8D1 /* Parse.framework */; };
 		AABE084519F1AC8B009AF8D1 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AABE084419F1AC8B009AF8D1 /* AudioToolbox.framework */; };
@@ -120,6 +125,15 @@
 		AAA1C34919F07F5600C257FE /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		AAA1C34B19F07F5B00C257FE /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		AAA1C34D19F082FB00C257FE /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		AAB59BE219F43CD6001F0EFA /* MyCustomSeguePushForward.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCustomSeguePushForward.h; sourceTree = "<group>"; };
+		AAB59BE319F43CD6001F0EFA /* MyCustomSeguePushForward.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCustomSeguePushForward.m; sourceTree = "<group>"; };
+		AAB59BE519F43D25001F0EFA /* MyCustomSeguePushBackward.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCustomSeguePushBackward.h; sourceTree = "<group>"; };
+		AAB59BE619F43D25001F0EFA /* MyCustomSeguePushBackward.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCustomSeguePushBackward.m; sourceTree = "<group>"; };
+		AAB59BE819F44F03001F0EFA /* ShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShareViewController.h; path = ../ShareViewController.h; sourceTree = "<group>"; };
+		AAB59BE919F44F03001F0EFA /* ShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShareViewController.m; path = ../ShareViewController.m; sourceTree = "<group>"; };
+		AAB59BEB19F4693E001F0EFA /* ShareView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareView.h; sourceTree = "<group>"; };
+		AAB59BEC19F4693E001F0EFA /* ShareView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareView.m; sourceTree = "<group>"; };
+		AAB59BEE19F46948001F0EFA /* ShareView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareView.xib; sourceTree = "<group>"; };
 		AABE084019F1AC79009AF8D1 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		AABE084119F1AC79009AF8D1 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		AABE084419F1AC8B009AF8D1 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -172,6 +186,9 @@
 		AA930A3719E9F00E0084A250 = {
 			isa = PBXGroup;
 			children = (
+				AAB59BEB19F4693E001F0EFA /* ShareView.h */,
+				AAB59BEC19F4693E001F0EFA /* ShareView.m */,
+				AAB59BEE19F46948001F0EFA /* ShareView.xib */,
 				AAB59BE119F3773B001F0EFA /* lib */,
 				AA930A4219E9F00E0084A250 /* 208 */,
 				AA930A5C19E9F00E0084A250 /* 208Tests */,
@@ -198,6 +215,12 @@
 				AA930ACF19EAFF0F0084A250 /* ListViewController.h */,
 				AA930AD019EAFF0F0084A250 /* ListViewController.m */,
 				AA930A4D19E9F00E0084A250 /* Main.storyboard */,
+				AAB59BE819F44F03001F0EFA /* ShareViewController.h */,
+				AAB59BE919F44F03001F0EFA /* ShareViewController.m */,
+				AAB59BE219F43CD6001F0EFA /* MyCustomSeguePushForward.h */,
+				AAB59BE319F43CD6001F0EFA /* MyCustomSeguePushForward.m */,
+				AAB59BE519F43D25001F0EFA /* MyCustomSeguePushBackward.h */,
+				AAB59BE619F43D25001F0EFA /* MyCustomSeguePushBackward.m */,
 				AA7EFFCB19ED051400CB3A2B /* SettingsViewController.h */,
 				AA7EFFCC19ED051400CB3A2B /* SettingsViewController.m */,
 				AAFF4C0319EB140500729296 /* FirstVCViewController.h */,
@@ -387,6 +410,7 @@
 				AA930ACE19EAF41F0084A250 /* JosefinSans-Regular.ttf in Resources */,
 				AA72138F19F34F6E003DEDEA /* GGdragViewStartupDetail.xib in Resources */,
 				AA72138D19F336BF003DEDEA /* GGdragViewStartup.xib in Resources */,
+				AAB59BEF19F46948001F0EFA /* ShareView.xib in Resources */,
 				AA72138819F32A78003DEDEA /* TestView.xib in Resources */,
 				AA930A5119E9F00E0084A250 /* Images.xcassets in Resources */,
 				AA3DFA3E19EE3D1B003F4920 /* ProximaNova-Semibold.otf in Resources */,
@@ -409,22 +433,26 @@
 			files = (
 				AA7EFFD019ED9ADF00CB3A2B /* DetaillsStartupViewController.m in Sources */,
 				AA930AB619EA0CED0084A250 /* GGDraggableView.m in Sources */,
+				AAB59BEA19F44F03001F0EFA /* ShareViewController.m in Sources */,
 				AA930AB319EA03FB0084A250 /* StartupsViewController.m in Sources */,
 				AAA1C34819EF460800C257FE /* ScrollViewController.m in Sources */,
 				AA7EFFCD19ED051400CB3A2B /* SettingsViewController.m in Sources */,
 				AA930A4C19E9F00E0084A250 /* ViewController.m in Sources */,
 				AA930AB019EA02890084A250 /* MenuViewController.m in Sources */,
+				AAB59BED19F4693E001F0EFA /* ShareView.m in Sources */,
 				AA930A4919E9F00E0084A250 /* AppDelegate.m in Sources */,
 				AA930ABF19EA0F1A0084A250 /* LoginViewController.m in Sources */,
 				AA930AC219EA8B420084A250 /* LogInAngelListViewController.m in Sources */,
 				AA930ABC19EA0DF10084A250 /* GGOverlayView.m in Sources */,
 				AA930AAD19EA026D0084A250 /* SWRevealViewController.m in Sources */,
+				AAB59BE419F43CD6001F0EFA /* MyCustomSeguePushForward.m in Sources */,
 				AAFF4C0519EB140500729296 /* FirstVCViewController.m in Sources */,
 				AA930AC519EA8C860084A250 /* LogInEMailViewController.m in Sources */,
 				AA72138B19F32BA0003DEDEA /* testView.m in Sources */,
 				AA7EFFD319ED9EBE00CB3A2B /* GGdraggableDetails.m in Sources */,
 				AA930AD119EAFF0F0084A250 /* ListViewController.m in Sources */,
 				AA930ACA19EAC4AB0084A250 /* XMLReader.m in Sources */,
+				AAB59BE719F43D25001F0EFA /* MyCustomSeguePushBackward.m in Sources */,
 				AA930A4619E9F00E0084A250 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

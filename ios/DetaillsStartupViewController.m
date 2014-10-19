@@ -10,6 +10,8 @@
 #import "GGdraggableDetails.h"
 #import "XMLReader.h"
 #import "ScrollViewController.h"
+#import "ShareViewController.h"
+#import "ShareView.h"
 
 @interface DetaillsStartupViewController ()
 @property (strong, nonatomic) IBOutlet UIWebView *webView;
@@ -19,9 +21,12 @@
 @property (strong, nonatomic) IBOutlet UISegmentedControl *segmentControl;
 @end
 
+
+
 @implementation DetaillsStartupViewController{
     GGdraggableDetails *dragView;
 }
+@synthesize shareView;
 
 -(void) viewWillAppear:(BOOL)animated{
     CGRect frame = self.segmentControl.frame;
@@ -221,8 +226,35 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 - (IBAction)share:(id)sender {
+    NSDictionary *DicStartup = [[[NSUserDefaults standardUserDefaults] objectForKey:@"DicLikedStartups"] objectForKey:self.startupId];
     
-    NSLog(@"share");
+    NSLog(@"dic to share : %@", [DicStartup description]);
+    
+    
+    shareView = [[ShareView alloc]init];
+    shareView.center = self.view.center;
+    shareView.hidden = NO;
+    shareView.delegate = self;
+    shareView.hightContent = [DicStartup objectForKey:@"highConcept"];
+    shareView.websiteStartup =[DicStartup objectForKey:@"website"];
+    shareView.startupName = [DicStartup objectForKey:@"name"];
+    shareView.messageToShare =  [NSString stringWithFormat:@"%@: %@, via @app208 \n%@", shareView.startupName,
+                                                     shareView.hightContent,
+                                                     shareView.websiteStartup];
+    [self.view addSubview:shareView];
+}
+
+#pragma mark custom view delegate
+
+-(void) dismissCustomView:(ShareView *)myUIView{
+//    shareView.hidden = YES;
+    [UIView animateWithDuration:0.3 animations:^{
+        CGRect frame = shareView.frame;
+        frame.origin.y = self.view.frame.size.height;
+        shareView.frame = frame;
+    } completion:^(BOOL finished) {
+        shareView.hidden = YES;
+    }];
 }
 
 

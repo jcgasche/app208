@@ -7,8 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ShareView.h"
 
-@interface DetaillsStartupViewController : UIViewController<UIWebViewDelegate>
+@interface DetaillsStartupViewController : UIViewController<UIWebViewDelegate, MyUIViewDelegate>{
+    ShareView* shareView;
+}
+@property (nonatomic, retain) IBOutlet ShareView* shareView;
+
 
 @property (nonatomic) NSString *startupId;
 
