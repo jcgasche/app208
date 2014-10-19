@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface ListViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
-
+-(void) refreshTableView;
 @end

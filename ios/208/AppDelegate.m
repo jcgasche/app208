@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import "ScrollViewController.h"
+#import <Parse/Parse.h>
 
 @interface AppDelegate ()
 
@@ -20,10 +22,44 @@
     
     [self chooseFirstViewController];
     
-
+//    NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
+//    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
     
+    [Parse setApplicationId:@"5Vlwz4wUFJa3WGpvl21csxEckUUGRDoqYtrn7rOG"
+                  clientKey:@"McPWIZZwPX6omFwRqHCLxYoWsCKJIL5hhmTfzg4O"];
+    [PFTwitterUtils initializeWithConsumerKey:@"K917OOOpGUbCIo2MmxVBrggcT"
+                               consumerSecret:@"Uo4k9Ui9wqjd5symgcPZSBImEWTpfkhGR4JBICG2efMHIBLn24"];
+    
+    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+
+
+    if ([self isUserLoggedIn]) { //user is logged in : show startup VC
+
+
+    UIStoryboard *mainstoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    ScrollViewController* loginViewController = [mainstoryboard      instantiateViewControllerWithIdentifier:@"ScrollViewController"];
+    [self.window makeKeyAndVisible];
+    [self.window.rootViewController presentViewController:loginViewController animated:NO completion:NULL];
+    }
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+//    [[UITextField appearance] setFont:[UIFont fontWithName:@"AvenirNextLTPro-Regular" size:17.0]];
+//    [[UITextView appearance] setFont:[UIFont fontWithName:@"AvenirNextLTPro-Regular" size:17.0]];
+//    [[UILabel appearance] setFont:[UIFont fontWithName:@"AvenirNextLTPro-Regular" size:17.0]];
+//    [[UINavigationBar appearance] setBarTintColor:UIColorFromRGB(Color_purpule_dark)];
+//    [[UITextField appearance].layer setBorderColor:UIColorFromRGB(Color_purpule_dark).CGColor];
+
     return YES;
 }
+
+-(BOOL) isUserLoggedIn{
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"userDictionary"]) {
+        return YES;
+    }
+    else return NO;
+}
+
 
 -(void) chooseFirstViewController{
     

@@ -10,4 +10,9 @@
 
 @interface StartupsViewController : UIViewController<NSURLConnectionDelegate, NSXMLParserDelegate, UIScrollViewDelegate, UITextFieldDelegate, UIAlertViewDelegate,UITextFieldDelegate,UIGestureRecognizerDelegate>
 
+@property(strong, nonatomic) IBOutlet UIImageView *ImageViewAccept;
+@property(strong, nonatomic) IBOutlet UIImageView *ImageViewDeny;
+
+@property (strong, nonatomic) IBOutlet UIImageView *ImageViewLoadingDart;
+
 @end

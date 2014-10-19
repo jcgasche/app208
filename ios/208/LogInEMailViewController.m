@@ -8,6 +8,8 @@
 
 #import "LogInEMailViewController.h"
 #import "StartupsViewController.h"
+#import "XMLReader.h"
+#import "ScrollViewController.h"
 
 @interface LogInEMailViewController ()
 @property (strong, nonatomic) IBOutlet UITextField *TextFieldemail;
@@ -40,6 +42,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    [self.TextFieldemail becomeFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -101,98 +105,6 @@
 
 }
 
-#pragma mark XML parsing
-
-- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName
-  namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName
-    attributes:(NSDictionary *)attributeDict{
-    
-    /* handle namespaces here if you want */
-    NSLog(@"name = %@", elementName);
-    if ([elementName isEqualToString:@"id"]){
-        currentElement=@"id";
-    }else if([elementName isEqualToString:@"investor"]){
-        currentElement = @"investor";
-    }
-    else if([elementName isEqualToString:@"status"]){
-        currentElement = @"status";
-    }else if ([elementName isEqualToString:@"email"]){
-        currentElement=@"email";
-    }else if ([elementName isEqualToString:@"user-id"]){
-        currentElement=@"user-id";
-    }else if ([elementName isEqualToString:@"user-token"]){
-        currentElement=@"user-token";
-    }else if ([elementName isEqualToString:@"user-partial-token"]){
-        currentElement=@"user-partial-token";
-    }else if ([elementName isEqualToString:@"message-to-customer"]){
-        currentElement=@"message-to-customer";
-    }else if ([elementName isEqualToString:@"error"]){
-        currentElement=@"error";
-    }
-}
-
-- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName
-  namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName{
-    
-    if([elementName isEqualToString:@"status"]){ //end of status
-        status = currentContentforElement;
-    }else if ([elementName isEqualToString:@"id"]){
-        id_user = currentContentforElement;
-    }else if ([elementName isEqualToString:@"investor"]){
-        investor = currentContentforElement ;
-    }
-    
-    else if ([elementName isEqualToString:@"email"]){
-        email = currentContentforElement;
-    }else if ([elementName isEqualToString:@"id"]){
-        user_id = currentContentforElement;
-    }else if ([elementName isEqualToString:@"user-token"]){
-        token = currentContentforElement;
-    }else if ([elementName isEqualToString:@"message-to-customer"]){
-        message_to_customer = currentContentforElement;
-    }else if ([elementName isEqualToString:@"error"]){
-        error_message = currentContentforElement;
-    }else if ([elementName isEqualToString:@"user-partial-token"]){
-        
-        partial_token = currentContentforElement;
-    }else if ([elementName isEqualToString:@"hash"]){
-        
-        //        [self enableFields:YES];
-        
-        if ([status isEqualToString:@"success"]) {
-            
-            //go to the next viewcontroller
-            NSDictionary *dicForNewUser = [NSDictionary dictionaryWithObjectsAndKeys:id_user,@"user_id",
-                                           investor, @"investor"
-                                           , nil];
-            [[NSUserDefaults standardUserDefaults] setObject:dicForNewUser forKey:@"userDictionary"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            
-            NSLog(@"dic is : %@", [[NSUserDefaults standardUserDefaults]objectForKey:@"userDictionary"]);
-            
-            dispatch_sync(dispatch_get_main_queue(), ^{
-            UIStoryboard*  sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                StartupsViewController *vc1 = [sb instantiateViewControllerWithIdentifier:@"StartupsViewController"];
-                [self presentViewController:vc1 animated:YES completion:nil];
-            });
-            
-            
-            
-        }else if ( [status isEqualToString:@"failure"]){
-            
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                
-                //                [self enableFields:YES];
-                
-                //                [Errors checkErrors:[NSArray arrayWithObject:error_message]];
-            });
-        }
-    }
-}
-
-- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string{
-    currentContentforElement = string;
-}
 
 #pragma mark connection
 
@@ -223,11 +135,35 @@
             
             NSLog(@"data response : %@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
             
-            NSData * XMLData = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] dataUsingEncoding:NSUnicodeStringEncoding];
-            NSXMLParser * parser = [[NSXMLParser alloc] initWithData:XMLData];
-            [parser setDelegate:self];
-            [parser setShouldProcessNamespaces:YES]; // if you need to
-            [parser parse]; // start parsing
+            NSError *error = nil;
+            NSDictionary *dict = [XMLReader dictionaryForXMLData:data
+                                                         options:XMLReaderOptionsProcessNamespaces
+                                                           error:&error];
+            NSLog(@"dic is : %@", dict);
+            
+            if ([[[[dict objectForKey:@"hash"]objectForKey:@"status"] objectForKey:@"text"] isEqualToString:@"success"]) {
+                
+                NSDictionary *dicForNewUser = [NSDictionary dictionaryWithObjectsAndKeys:
+                                               [[[dict objectForKey:@"hash"]objectForKey:@"id"] objectForKey:@"text"] , @"user_id",
+                                               [[[dict objectForKey:@"hash"]objectForKey:@"investor"] objectForKey:@"text"] , @"investor",
+                                               [[[dict objectForKey:@"hash"]objectForKey:@"token"] objectForKey:@"text"], @"token",
+                                               nil];
+                [[NSUserDefaults standardUserDefaults] setObject:dicForNewUser forKey:@"userDictionary"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    UIStoryboard*  sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                    ScrollViewController *vc1 = [sb instantiateViewControllerWithIdentifier:@"ScrollViewController"];
+                    [self presentViewController:vc1 animated:NO completion:nil];
+                });
+            }
+            
+//            NSData * XMLData = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] dataUsingEncoding:NSUnicodeStringEncoding];
+//            NSXMLParser * parser = [[NSXMLParser alloc] initWithData:XMLData];
+//            [parser setDelegate:self];
+//            [parser setShouldProcessNamespaces:YES]; // if you need to
+//            [parser parse]; // start parsing
             
         }
         else if (error)

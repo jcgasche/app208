@@ -8,7 +8,7 @@
 
 #import "GGDraggableView.h"
 #import "GGOverlayView.h"
-
+#import "QuartzCore/QuartzCore.h"
 
 @interface GGDraggableView ()
 @property (nonatomic, strong) UIPanGestureRecognizer *panGestureRecognizer;
@@ -24,30 +24,42 @@
 @implementation GGDraggableView{
     #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
+    #define color_red UIColorFromRGB(0xCA1C35)
+    #define color_gray UIColorFromRGB(0x929292)
+    #define color_gray_dark UIColorFromRGB(0x6C6c6c)
+    #define color_blue UIColorFromRGB(0x338390)
+    
+    UIImage *imageJobLocal;
     
 }
 
-@synthesize LabelName= _LabelName;
+//@synthesize LabelName= _LabelName;
 
 -(id) initWithCoder:(NSCoder *)aDecoder{
     self = [super initWithCoder:aDecoder];
     if (self) {
-        [self setup];
+
     }
     return self;
 }
 
--(void) setup{
-    [[NSBundle mainBundle] loadNibNamed:@"ViewStartup" owner:self options:nil];
-    [self addSubview:self.view];
-}
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (!self) return nil;
     
+    
+    //1. load xib file
+    [[NSBundle mainBundle] loadNibNamed:@"GGdragViewStartup" owner:self options:nil];
 
+    //2. adjust bounds
+    self.bounds = self.ViewXib.bounds;
+    
+    //3. add as a subview
+    [self addSubview:self.ViewXib];
+    
+    
     [self setBackgroundColor:[UIColor whiteColor]];
     
     self.panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(dragged:)];
@@ -56,102 +68,98 @@
     self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
     [self addGestureRecognizer:self.tapGestureRecognizer];
     
-    //    [self loadImageAndStyle];
-    
-    self.overlayView = [[GGOverlayView alloc] initWithFrame:self.bounds];
-    self.overlayView.alpha = 0;
-    [self addSubview:self.overlayView];
-    
-    
-    //    UIColor *colorRed2 = [UIColor colorWithRed:0.796 green:0.3019 blue:0.3607 alpha:1];
-    self.layer.cornerRadius = 3.0f;
+
+    self.layer.cornerRadius = 4.0f;
     self.layer.borderWidth = 1.0f;
-    self.layer.borderColor = [UIColorFromRGB(0xEB5745) CGColor];
+    self.layer.borderColor = color_blue.CGColor;
+    self.clipsToBounds = YES;
+    
     
 
-    
-//
+//    self.LabelStartupName = [[UILabel alloc]init];
+//    [self addSubview:self.LabelStartupName];
+//    self.LabelStartupName.adjustsFontSizeToFitWidth = YES;
+//    self.LabelStartupName.minimumFontSize = 0;
+    [self.LabelStartupName setFont:[UIFont fontWithName:@"ProximaNova-Semibold" size:21]];
+//    self.LabelStartupName.textColor = color_red ;
+//    self.LabelStartupName.frame = CGRectMake(120, 20, self.frame.size.width - 120 - 5, 35);
+
+//    self.HighConcept = [[UILabel alloc]init];
+//    [self addSubview:self.HighConcept];
+//    self.HighConcept.adjustsFontSizeToFitWidth = YES;
+//    self.HighConcept.minimumFontSize = 0;
+//    self.HighConcept.numberOfLines = 2;
+    [self.HighConcept setFont:[UIFont fontWithName:@"ProximaNova-Semibold" size:14]];
+//    self.HighConcept.textColor = color_gray ;
+//    self.HighConcept.frame = CGRectMake(120, 45, 160, 40);
 //    
-    self.LabelStartupName = [[UILabel alloc]init];
-    [self addSubview:self.LabelStartupName];
-//    [self.LabelDateJob setFont:[UIFont fontWithName:@"HelveticaNeue" size:11]];
-    self.LabelStartupName.frame = CGRectMake(115, 55, 190, 20);
-//    self.LabelDateJob.textColor = UIColorFromRGB(0x225378);
-    
-    
-    //labels
-    self.LabelStartupDescription = [[UITextView alloc]init];
-    [self addSubview:self.LabelStartupDescription];
+//    self.LabelLocation = [[UILabel alloc]init];
+//    [self addSubview:self.LabelLocation];
+    [self.LabelLocation setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:15]];
+//    self.LabelLocation.textColor = color_gray ;
+//    self.LabelLocation.frame = CGRectMake(120, 85, 160, 20);
+//
+//    UIView *line= [[UIView alloc]init]; //******************************************************************
+//    [self addSubview:line];
+//    line.backgroundColor = color_red;
+//    line.frame = CGRectMake(0, 115, self.frame.size.width, 1);
+//    
+//    //labels
+//    self.LabelStartupDescription = [[UITextView alloc]init];
+//    [self addSubview:self.LabelStartupDescription];
     self.LabelStartupDescription.editable=YES;
-    [self.LabelStartupDescription setFont:[UIFont fontWithName:@"JosefinSans-Regular" size:16]];
+    [self.LabelStartupDescription setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:14]];
+    self.LabelStartupDescription.textColor = color_gray_dark;
      self.LabelStartupDescription.editable=NO;
-    self.LabelStartupDescription.frame = CGRectMake(10, 140, 270,100);
-//    self.LabelDescriptionJob.textColor = UIColorFromRGB(0x225378);
-
-//
-    self.Market = [[UILabel alloc]init];
-    [self addSubview:self.Market];
-        [self.Market setFont:[UIFont fontWithName:@"HelveticaNeue" size:16]];
-    self.Market.frame = CGRectMake(10, 260, 270,20);
-    //    self.DistanceToUser.textColor = UIColorFromRGB(0x225378);
-    
-    self.RaisingAmount = [[UILabel alloc]init];
-    [self addSubview:self.RaisingAmount];
-    [self.RaisingAmount setFont:[UIFont fontWithName:@"HelveticaNeue" size:16]];
-    self.RaisingAmount.frame = CGRectMake(10, 290, 280,20);
-//    self.LabelPriceJob.textColor = UIColorFromRGB(0x225378);
-//
-    self.PreMoneyValuation = [[UILabel alloc]init];
-    [self addSubview:self.PreMoneyValuation];
-    [self.PreMoneyValuation setFont:[UIFont fontWithName:@"HelveticaNeue" size:16]];
-    self.PreMoneyValuation.frame = CGRectMake(10, 320, 280,20);
-//    self.LabelHourJob.textColor = UIColorFromRGB(0x225378);
-//
-
+//    self.LabelStartupDescription.frame = CGRectMake(17, 135, 257,115);
 //
 //    
-//    //ICONS
-//    
-//    UIImageView *iconLoc = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"icon-location"]];
-//    [self addSubview:iconLoc];
-//    iconLoc.contentMode = UIViewContentModeScaleAspectFit;
-//    iconLoc.frame = CGRectMake(10, 10, 30,35);
+//    self.Market = [[UILabel alloc]init];
+//    [self addSubview:self.Market];
+//    self.Market.numberOfLines = 2;
+    [self.Market setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:15]];
+//    self.Market.frame = CGRectMake(20, 270, 257,40);
+//    self.Market.textColor = color_gray;
 //
-//    UIImageView *iconCal = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"icon-calendar"]];
-//    [self addSubview:iconCal];
-//    iconCal.contentMode = UIViewContentModeScaleAspectFit;
-//    iconCal.frame = CGRectMake(95, 390, 28,31);
 //    
-//    UIImageView *iconClock = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"icon-clock"]];
-//    [self addSubview:iconClock];
-//    iconClock.contentMode = UIViewContentModeScaleAspectFit;
-//    iconClock.frame = CGRectMake(160, 390, 30,30);
-//    
-//    UIImageView *iconDollar = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"icon-dollar"]];
-//    [self addSubview:iconDollar];
-//    iconDollar.contentMode = UIViewContentModeScaleAspectFit;
-//    iconDollar.frame = CGRectMake(225, 390, 30,30);
+//    self.LabelRaisedAmount = [[UILabel alloc]init];
+//    [self addSubview:self.LabelRaisedAmount];
+    [self.LabelRaisedAmount setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:15]];
+//    self.LabelRaisedAmount.frame = CGRectMake(20, 328, 257,46);
+//    self.LabelRaisedAmount.textColor = color_gray;
 //    
 //    
-//    //lines
-//    UIImageView *line2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"line_grey"]];
-//    [self addSubview:line2];
-//    line2.contentMode = UIViewContentModeScaleAspectFit;
-//    line2.frame = CGRectMake(80, 240, 130,5);
 //    
-//    UIImageView *line1 = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"line_grey"]];
-//    [self addSubview:line1];
-//    line1.contentMode = UIViewContentModeScaleAspectFit;
-//    line1.frame = CGRectMake(80, 350, 130,30);
-    
-    //launch loading
+//    self.RaisingAmount = [[UILabel alloc]init];
+//    [self addSubview:self.RaisingAmount];
+    [self.RaisingAmount setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:15]];
+//    self.RaisingAmount.frame = CGRectMake(20, 374, 257,46);
+//    self.RaisingAmount.textColor = color_red;
+//    
+//
+//
+//    self.PreMoneyValuation = [[UILabel alloc]init];
+//    [self addSubview:self.PreMoneyValuation];
+    [self.PreMoneyValuation setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:15]];
+//    self.PreMoneyValuation.frame = CGRectMake(20, 414, 257,46);
+//    self.PreMoneyValuation.textColor = color_red;
+//
 //    self.activity = [[UIActivityIndicatorView alloc]init];
-//    [self.activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-//    [self.activity setCenter:CGPointMake( frame.size.width / 2 - self.activity.frame.size.width/2, 150)];
+//    self.activity.color = color_red;
+//    self.activity.center = CGPointMake(55, 50);
+//    self.activity.hidden = YES;
 //    [self addSubview:self.activity];
-//    self.activity.hidesWhenStopped = YES;
     
     return self;
+}
+
+-(void) StartActivity: (BOOL) isActivityLoading{
+    self.activity.hidden = !isActivityLoading;
+    if (isActivityLoading) {
+        [self.activity startAnimating];
+    }else {
+        [self.activity stopAnimating];
+    }
 }
 
 -(void) tapped: (UITapGestureRecognizer *) tapGestureRecognizer {
@@ -161,14 +169,17 @@
 
 - (void)loadImageAndStyle : (UIImage *) imageJob
 {
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:imageJob];
-    imageView.clipsToBounds = YES;
-    [self addSubview:imageView];
-    imageView.frame = CGRectMake(25, 25, 77, 77);
-    imageView.contentMode = UIViewContentModeScaleAspectFit;
+//    UIImageView *imageView = [[UIImageView alloc] initWithImage:imageJob];
+    imageJobLocal = imageJob;
+    self.ImageViewStartup.image = imageJob;
+//    imageView.clipsToBounds = YES;
+//    [self addSubview:imageView];
+//    imageView.frame = CGRectMake(20, 20, 77, 77);
     
-    imageView.clipsToBounds=YES;
-    imageView.layer.cornerRadius=3;
+    self.ImageViewStartup.clipsToBounds=YES;
+    self.ImageViewStartup.layer.cornerRadius=3;
+    
+    [self StartActivity:NO];
 }
 
 
@@ -219,6 +230,9 @@
                     [self deallocTheView];
                     
                 }else if (xDistance < -150){ //don't like
+                    
+                    [self DoNotFollowStartup];
+                    
                     [self deallocTheView];
                 }
                 else{//pas assez loin
@@ -235,15 +249,94 @@
     }
 }
 
+#pragma mark - follow / unfollow
+
 -(void) FollowStartup{
-    [self POSTwithUrl:[NSString stringWithFormat:@"http://app208.herokuapp.com/user/%@/company/%@/follow", [[[NSUserDefaults standardUserDefaults] objectForKey:@"userDictionary"]objectForKey:@"user_id"] , self.StartupId] andData:nil andParameters:nil];
+    
+   
+    
+    [self POSTwithUrl:[NSString stringWithFormat:@"http://app208.herokuapp.com/user/%@/company/%@/follow", [[[NSUserDefaults standardUserDefaults] objectForKey:@"userDictionary"]objectForKey:@"user_id"] , self.StartupId] andData:nil andParameters:[NSString stringWithFormat:@"&token=%@", [[[NSUserDefaults standardUserDefaults]objectForKey:@"userDictionary" ] objectForKey:@"token"] ]];
+    
+    
+    //save the startup info in plist
+    
+//     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    
+        NSMutableDictionary * dicStartupToSave = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                                  self.LabelStartupDescription.text, @"description",
+                                                  self.LabelLocation.text , @"location",
+                                                  self.startupWebsite , @"website",
+                                                  self.HighConcept.text, @"highConcept",
+                                                  self.LabelRaisedAmount.text, @"raisedAmount",
+                                                  self.LabelStartupName.text, @"name",
+                                                  self.StartupId, @"id",
+                                                  self.PreMoneyValuation.text, @"preMoneyValuation",
+                                                  self.RaisingAmount.text, @"raisingAmount",
+                                                  self.Market.text, @"market", nil];
+        
+        NSLog(@"dic to save : %@", [dicStartupToSave description]);
+        
+        NSLog(@"image : %@", [imageJobLocal description]);
+
+    NSData *imageData = UIImagePNGRepresentation(imageJobLocal);
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    
+    NSString *imagePath =[documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png",self.StartupId]];
+    [dicStartupToSave setObject:imagePath forKey:@"imagePath"];
+    
+    if (![imageData writeToFile:imagePath atomically:NO])
+    {
+        NSLog(@"Failed to cache image data to disk");
+    }
+    else
+    {
+        NSLog(@"the cachedImagedPath is %@",imagePath);
+    }
+    
+//        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+//        NSString *docs = [paths objectAtIndex:0];
+//        NSString* path =  [docs stringByAppendingFormat:[NSString stringWithFormat:@"/%@.jpg",self.StartupId]];
+//        [dicStartupToSave setObject:path forKey:@"imagePath"];
+//        NSData* imageData = [NSData dataWithData:UIImageJPEGRepresentation(imageJobLocal, .8)];
+//        NSError *writeError = nil;
+//        
+//        if(![imageData writeToFile:path options:NSDataWritingAtomic error:&writeError]) {
+//            NSLog(@"%@: Error saving image: %@", [self class], [writeError localizedDescription]);
+//        }
+//        
+//        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+//                                                             NSUserDomainMask, YES);
+//        [dicStartupToSave setObject:paths forKey:@"imagePath"];
+//        
+//        NSString *documentsDirectory = [paths objectAtIndex:0];
+//        NSString* path = [documentsDirectory stringByAppendingPathComponent: [NSString stringWithFormat:@"%@.png",self.StartupId] ];
+//        NSData* data = UIImagePNGRepresentation(imageJobLocal);
+//        [data writeToFile:path atomically:YES];
     
 
-//    http://app208.herokuapp.com
+        
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"DicLikedStartups"] == nil) {
+
+            [[NSUserDefaults standardUserDefaults] setObject:[NSDictionary dictionaryWithObject:dicStartupToSave forKey:[dicStartupToSave objectForKey:@"id"]] forKey:@"DicLikedStartups"];
+        }else{
+            NSMutableDictionary *ArrayLikedStartups = [[[NSUserDefaults standardUserDefaults] objectForKey:@"DicLikedStartups"] mutableCopy];
+            [ArrayLikedStartups setObject:dicStartupToSave forKey:[dicStartupToSave objectForKey:@"id"]];
+            [[NSUserDefaults standardUserDefaults] setObject:ArrayLikedStartups forKey:@"DicLikedStartups"];
+        }
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        NSLog(@"nsuser def startups : %@", [[NSUserDefaults standardUserDefaults]objectForKey:@"DicLikedStartups"]);
+        
+//    });
 }
 
 -(void) DoNotFollowStartup{
-    [self POSTwithUrl:[NSString stringWithFormat:@"http://app208.herokuapp.com/user/%@/company/%@/notfollow", [[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"], self.StartupId] andData:nil andParameters:nil];
+    
+    NSLog(@"files : %@ and %@",[[[NSUserDefaults standardUserDefaults]objectForKey:@"userDictionary" ] objectForKey:@"user_id"], self.StartupId );
+    
+    [self POSTwithUrl:[NSString stringWithFormat:@"http://app208.herokuapp.com/user/%@/company/%@/notfollow", [[[NSUserDefaults standardUserDefaults]objectForKey:@"userDictionary" ] objectForKey:@"user_id"], self.StartupId] andData:nil andParameters:[NSString stringWithFormat:@"&token=%@", [[[NSUserDefaults standardUserDefaults]objectForKey:@"userDictionary" ] objectForKey:@"token"] ]];
 }
 
 - (void)updateOverlay:(CGFloat)distance
@@ -280,11 +373,6 @@
 }
 
 
-
-#pragma mark - follow / unfollow
-
-
-
 #pragma mark connection
 
 -(void) POSTwithUrl:(NSString*)url andData:(NSData*)data andParameters:(NSString*)post{
@@ -313,12 +401,13 @@
             }
             
             NSLog(@"data response : %@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+
             
-            NSData * XMLData = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] dataUsingEncoding:NSUnicodeStringEncoding];
-            NSXMLParser * parser = [[NSXMLParser alloc] initWithData:XMLData];
-            [parser setDelegate:self];
-            [parser setShouldProcessNamespaces:YES]; // if you need to
-            [parser parse]; // start parsing
+//            NSData * XMLData = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] dataUsingEncoding:NSUnicodeStringEncoding];
+//            NSXMLParser * parser = [[NSXMLParser alloc] initWithData:XMLData];
+//            [parser setDelegate:self];
+//            [parser setShouldProcessNamespaces:YES]; // if you need to
+//            [parser parse]; // start parsing
             
         }
         else if (error)

@@ -10,40 +10,36 @@
 
 @interface GGDraggableView : UIView
 
+//XIB view
+@property (strong, nonatomic) IBOutlet UIView *ViewXib;
+
 @property (nonatomic) BOOL ViewDeleted;
 @property (nonatomic) BOOL LoadDetailView;
 @property (nonatomic) int position;
-
-
-
-
 @property (nonatomic) int numeroView;
 
-@property (strong, nonatomic) IBOutlet UIImageView *imageJob;
-
-@property (strong, nonatomic) IBOutlet UILabel *RaisingAmount;
-@property (strong, nonatomic) IBOutlet UILabel *PreMoneyValuation;
-@property (strong, nonatomic) IBOutlet UIView *ViewSingleJob;
-@property (strong, nonatomic) IBOutlet UILabel *Market;
-
-@property(nonatomic) NSString *JobID;
-
-- (void)loadImageAndStyle : (UIImage *) imageJob;
+@property(nonatomic) NSString *StartupId;
+@property(nonatomic) NSString *startupWebsite;
 
 @property (nonatomic, strong) UIActivityIndicatorView *activity;
 
+//IBOutlet ****
+//@property (strong, nonatomic) IBOutlet UIImageView *imageView;
+@property (strong, nonatomic) IBOutlet UIImageView *ImageViewStartup;
 
-@property (strong, nonatomic) IBOutlet UILabel *LabelName;
-@property (strong, nonatomic) IBOutlet UITextView *textViewDescription;
-@property (strong, nonatomic) IBOutlet UIImageView *imageView;
-
-@property (strong, nonatomic) IBOutlet UIView *view;
-
-
-
-@property (strong, nonatomic) IBOutlet UITextView *LabelStartupDescription;
 @property (strong, nonatomic) IBOutlet UILabel *LabelStartupName;
+@property (strong, nonatomic) IBOutlet UILabel *HighConcept;
+@property (strong, nonatomic) IBOutlet UILabel *LabelLocation;
+@property (strong, nonatomic) IBOutlet UITextView *LabelStartupDescription;
+@property (strong, nonatomic) IBOutlet UILabel *Market;
+@property (strong, nonatomic) IBOutlet UILabel *LabelRaisedAmount;
 
-@property(nonatomic) NSString *StartupId;
+@property (strong, nonatomic) IBOutlet UILabel *RaisingAmount;
+@property (strong, nonatomic) IBOutlet UILabel *PreMoneyValuation;
+
+//**************
+
+-(void) StartActivity: (BOOL) isActivityLoading;
+- (void)loadImageAndStyle : (UIImage *) imageJob;
 
 @end

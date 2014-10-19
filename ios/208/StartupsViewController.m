@@ -10,23 +10,22 @@
 #import "SWRevealViewController.h"
 #import "GGDraggableView.h"
 #import "XMLReader.h"
-
 #import <QuartzCore/QuartzCore.h>
+#import "ScrollViewController.h"
+
 
 @interface StartupsViewController ()
-@property (nonatomic) IBOutlet UIBarButtonItem* revealButtonItem;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *aaa;
+
+@property (nonatomic, strong) ScrollViewController *stlmMainViewController;
 
 @property (nonatomic, strong) UIPanGestureRecognizer *panGestureRecognizer;
 
-@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (strong, nonatomic) IBOutlet UILabel *textUI;
 
 
 @property (strong, nonatomic) IBOutlet UIButton *buttonReloadJobs;
 
-@property(strong, nonatomic) IBOutlet UIImageView *ImageViewAccept;
-@property(strong, nonatomic) IBOutlet UIImageView *ImageViewDeny;
+
 @property (strong, nonatomic) IBOutlet UILabel *labelNoJobs;
 
 @end
@@ -67,11 +66,52 @@
 }
 
 
+
+-(void) viewWillDisappear:(BOOL)animated{
+    
+    [self removeAllObserversForDragViews];
+}
+
+-(void) removeAllObserversForDragViews{
+    for (GGDraggableView *dragView in ViewsArray) {
+        
+        @try {
+            [dragView removeObserver:self forKeyPath:@"ViewDeleted"];
+        }
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
+        }
+        
+        @try {
+            [dragView removeObserver:self forKeyPath:@"LoadDetailView"];
+        }
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
+        }
+        
+        @try {
+            [dragView removeObserver:self forKeyPath:@"position"];
+        }
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
+        }
+        
+        //        [dragView removeFromSuperview];
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    [self customSetup];
     
     self.ImageViewAccept.hidden=YES;
     self.ImageViewDeny.hidden=YES;
@@ -79,133 +119,93 @@
     self.labelNoJobs.hidden=YES;
     self.buttonReloadJobs.hidden = YES;
     
-    self.activityIndicator.hidden=YES;
-    [self.activityIndicator startAnimating];
-    self.activityIndicator.color = UIColorFromRGB(0x225378);
     
-    [self customSetup];
+    [self StartLoading];
     
-    NSString *user_id = [[[NSUserDefaults standardUserDefaults] objectForKey:@"userDictionary"] objectForKey:@"user_id"];
-    [self POSTwithUrl:[@"http://app208.herokuapp.com/user/" stringByAppendingString:user_id] andData:nil andParameters:nil];
-    
-
+    [self reloadStartups:nil];
 }
 
-
-- (void)customSetup
+- (void)rotate360WithDuration:(CGFloat)duration repeatCount:(float)repeatCount
 {
-    SWRevealViewController *revealViewController = self.revealViewController;
-    if ( revealViewController )
-    {
-        [self.revealButtonItem setTarget: revealViewController];
-        [self.revealButtonItem setAction: @selector( revealToggle: )];
-        [self.navigationController.navigationBar addGestureRecognizer:revealViewController.panGestureRecognizer];
+    
+    CABasicAnimation *fullRotation;
+    fullRotation = [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
+    fullRotation.fromValue = [NSNumber numberWithFloat:0];
+    fullRotation.toValue = [NSNumber numberWithFloat:((360 * M_PI) / 180)];
+    fullRotation.duration = duration;
+    if (repeatCount == 0)
+        fullRotation.repeatCount = MAXFLOAT;
+    else
+        fullRotation.repeatCount = repeatCount;
+    
+    [self.ImageViewLoadingDart.layer addAnimation:fullRotation forKey:@"360"];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    //OBSERVE WHEN THE VIEW IS DELETED : CALLBACK BELLOW
+    
+    NSLog(@"DESC ARRAY : %@", [ViewsArray description]);
+    
+    for (GGDraggableView *dragView in ViewsArray) {
+        [dragView addObserver:self forKeyPath:@"ViewDeleted" options:NSKeyValueObservingOptionNew context:nil];
+        [dragView addObserver:self forKeyPath:@"LoadDetailView" options:NSKeyValueObservingOptionNew context:nil];
+        [dragView addObserver:self forKeyPath:@"position" options:NSKeyValueObservingOptionNew context:nil];
+    }
+    
+    if ([ViewsArray count] == 0 ) {
+        [self StartLoading];
     }
 }
 
+-(void) StartLoading{
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
-#pragma mark XML parsing
-
-- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName
-  namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName
-    attributes:(NSDictionary *)attributeDict{
+    self.textUI.hidden = NO;
+    self.buttonReloadJobs.hidden = YES;
     
-    /* handle namespaces here if you want */
-    NSLog(@"name = %@", elementName);
-    
-    if([elementName isEqualToString:@"status"]){
-        currentElement = @"status";
-    }else if ([elementName isEqualToString:@"email"]){
-        currentElement=@"email";
-    }else if ([elementName isEqualToString:@"user-id"]){
-        currentElement=@"user-id";
-    }
-    
-    else if ([elementName isEqualToString:@"startup"]){
-        dicStartup = [[NSMutableDictionary alloc] init];
-    }
-    
-    else if ([elementName isEqualToString:@"tag0"]){
-        currentElement=@"tag0";
-    }else if ([elementName isEqualToString:@"tag1"]){
-        currentElement=@"tag1";
-    }else if ([elementName isEqualToString:@"tag2"]){
-        currentElement=@"tag2";
-    }
-    
-    
-    else if ([elementName isEqualToString:@"error"]){
-        currentElement=@"error";
+    if ([self.ImageViewLoadingDart.layer animationForKey:@"SpinAnimation"] == nil) {
+        CABasicAnimation* animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+        animation.fromValue = [NSNumber numberWithFloat:0.0f];
+        animation.toValue = [NSNumber numberWithFloat: 2*M_PI];
+        animation.duration = 10.0f;
+        animation.repeatCount = INFINITY;
+        [self.ImageViewLoadingDart.layer addAnimation:animation forKey:@"SpinAnimation"];
     }
 }
 
-- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName
-  namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName{
+-(void) StopLoading{
     
-    if([elementName isEqualToString:@"status"]){ //end of status
-        status = currentContentforElement;
-    }else if ([elementName isEqualToString:@"email"]){
-        email = currentContentforElement;
-    }else if ([elementName isEqualToString:@"user-id"]){
+    [self.ImageViewLoadingDart.layer removeAnimationForKey:@"SpinAnimation"];
 
-    }
+    self.textUI.hidden = YES;
     
-    
-    else if ([elementName isEqualToString:@"tag0"]){
-        [dicStartup setObject:tag0 forKey:@"tag0"];
-    }
-    else if ([elementName isEqualToString:@"startup"]){
-        [ArrayStartups addObject:[dicStartup copy]];
-    }
-    
-    else if ([elementName isEqualToString:@"message-to-customer"]){
-
-    }else if ([elementName isEqualToString:@"error"]){
-        error_message = currentContentforElement;
-    }else if ([elementName isEqualToString:@"user-partial-token"]){
-        
-
-    }else if ([elementName isEqualToString:@"hash"]){
-        
-//        [self enableFields:YES];
-        
-        if ([status isEqualToString:@"success"]) {
-            
-            
-            //display all the startups
-            [self createViewsForJobs];
-            
-            
-        }else if ( [status isEqualToString:@"failure"]){
-            
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                
-//                [self enableFields:YES];
-                
-
-            });
-        }
-    }
 }
 
-- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string{
-    currentContentforElement = string;
+
+
+- (void) runSpinAnimationOnView:(UIView*)view duration:(CGFloat)duration rotations:(CGFloat)rotations repeat:(float)repeat;
+{
+    CABasicAnimation* rotationAnimation;
+    rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+    rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 /* full rotation*/ * rotations * duration ];
+    rotationAnimation.duration = duration;
+    rotationAnimation.cumulative = YES;
+    rotationAnimation.repeatCount = repeat;
+    
+    [view.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
 }
+
+- (IBAction)goLeft:(UIButton *)sender {
+    //access the parent view controller
+    self.stlmMainViewController= (ScrollViewController *) self.parentViewController;
+    [self.stlmMainViewController pageLeft];
+}
+- (IBAction)goRight:(UIButton*)sender {
+    //access the parent view controller
+    self.stlmMainViewController= (ScrollViewController *) self.parentViewController;
+    [self.stlmMainViewController pageRight];
+}
+
+
 
 #pragma mark connection
 
@@ -222,37 +222,43 @@
     //    NSURLConnection *conn = [[NSURLConnection alloc]initWithRequest:request delegate:self];
     
 //    [self enableFields:NO];
+    [self StartLoading];
     
-    request.timeoutInterval = 15;
+//    request.timeoutInterval = 15;
     [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
         if (!error){
             //do something with data
             if (!data) {
-                NSLog(@"no data rendered from server");
-//                [self enableFields:YES];
-//                [self.activityIndicator stopAnimating];
-//                self.activityIndicator.hidden=YES;
+                [self StopLoading];
             }
             
             dispatch_sync(dispatch_get_main_queue(), ^{
-            NSError *error = nil;
-            NSDictionary *dict = [XMLReader dictionaryForXMLData:data
-                                                         options:XMLReaderOptionsProcessNamespaces
-                                                           error:&error];
-            NSLog(@"dic from server : %@", dict);
-            ArrayStartups = [[[dict objectForKey:@"hash"] objectForKey:@"companies"] objectForKey:@"company"];
-            
-            NSLog(@"this is the array for companies : %@", ArrayStartups);
-            [self createViewsForJobs];
+                NSError *error = nil;
+                NSDictionary *dict = [XMLReader dictionaryForXMLData:data
+                                                             options:XMLReaderOptionsProcessNamespaces
+                                                               error:&error];
+                NSLog(@"dic from server : %@", dict);
+                
+                if ([dict objectForKey:@"html"]) {
+                    return;
+                }
+                else if ([[[dict objectForKey:@"hash"] objectForKey:@"companies"] objectForKey:@"company"] == nil) {
+                    [self reloadStartups:nil];
+                    NSLog(@"BUG");
+                    return ;
+                }
+                
+                ArrayStartups = [[[dict objectForKey:@"hash"] objectForKey:@"companies"] objectForKey:@"company"];
+                if (![ArrayStartups isKindOfClass:[NSArray class]])
+                {
+                    // if 'list' isn't an array, we create a new array containing our object
+                    ArrayStartups = [NSMutableArray arrayWithObject:ArrayStartups];
+                }
+                NSLog(@"this is the array for companies : %@", ArrayStartups);
+                
+                [self createViewsForJobs];
+                [self StopLoading];
             });
-        
-            NSLog(@"data response : %@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-            
-            NSData * XMLData = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] dataUsingEncoding:NSUnicodeStringEncoding];
-            NSXMLParser * parser = [[NSXMLParser alloc] initWithData:XMLData];
-            [parser setDelegate:self];
-            [parser setShouldProcessNamespaces:YES]; // if you need to
-            [parser parse]; // start parsing
             
         }
         else if (error)
@@ -261,6 +267,7 @@
 //                [self enableFields:YES];
 //                [self.activityIndicator stopAnimating];
 //                self.activityIndicator.hidden=YES;
+                [self StopLoading];
                 
                 if ([[[error userInfo]objectForKey:@"NSLocalizedDescription"] isEqualToString:@"The Internet connection appears to be offline."]) {
                     
@@ -280,122 +287,126 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error{
     NSLog(@"error : %@", [error description]);
+    [self StopLoading];
+}
+
+- (IBAction)reloadStartups:(UIButton *)sender {
+    NSString *user_id = [[[NSUserDefaults standardUserDefaults] objectForKey:@"userDictionary"] objectForKey:@"user_id"];
+    NSLog(@"TOKEN PASSED : %@", [NSString stringWithFormat:@"&token=%@", [[[NSUserDefaults standardUserDefaults]objectForKey:@"userDictionary" ] objectForKey:@"token"]]);
+    if ([[[NSUserDefaults standardUserDefaults]objectForKey:@"userDictionary" ] objectForKey:@"token"] != nil) {
+        
+    
+        [self POSTwithUrl:[@"http://app208.herokuapp.com/user/" stringByAppendingString:user_id] andData:nil andParameters:[NSString stringWithFormat:@"&token=%@", [[[NSUserDefaults standardUserDefaults]objectForKey:@"userDictionary" ] objectForKey:@"token"]]];
+    }
+    else{ //no token !
+        
+    }
+    NSLog(@"user dictionary : %@", [[NSUserDefaults standardUserDefaults]objectForKey:@"userDictionary" ]);
 }
 
 #pragma mark - manage the frames
-
 -(void)createViewsForJobs{
-
-        
+    
+    
     numberOfTheCurrentView = 0;
     countAllJobs=0;
     IndexOfCurrentJob = 0;
     JobsPicturesArray = [[NSMutableArray alloc]init];
+    
+    [self removeAllObserversForDragViews];
     ViewsArray = [[NSMutableArray alloc]init];
     
     self.buttonReloadJobs.hidden = YES;
-    self.activityIndicator.hidden = NO;
     
     
     //handle all the views for the jobs
     
     int numberOfTheJob = 0 ;
-
+    
     
     for (int i = 0; i < [ArrayStartups count]  ; i++) {
         
         //fill the view information
         NSMutableDictionary *JobOnTop = [ArrayStartups objectAtIndex:i];
+        
+        //we add a view for each job
+        GGDraggableView *dragView= [[GGDraggableView alloc] init];
+        dragView.frame =CGRectMake((320-280)/2, 45, 280, 476);
+        
+        dragView.LabelStartupName.text =[[JobOnTop objectForKey:@"name"] objectForKey:@"text"];
+        dragView.LabelStartupDescription.text =[[JobOnTop objectForKey:@"product-desc"] objectForKey:@"text"];
+        dragView.StartupId = [[JobOnTop objectForKey:@"id"] objectForKey:@"text"];
+        dragView.startupWebsite = [[JobOnTop objectForKey:@"website-url"] objectForKey:@"text"];
+        
 
-        NSLog(@"job on top : %@", [JobOnTop description]);
-            
-//      Description = [JobOnTop objectForKey:@"description"];
+        dragView.Market.text =[NSString stringWithFormat:@"%@",   [[JobOnTop objectForKey:@"markets"] objectForKey:@"text"]];
+        dragView.HighConcept.text =[NSString stringWithFormat:@"%@",   [[JobOnTop objectForKey:@"high-concept"] objectForKey:@"text"]];
+        dragView.LabelLocation.text =[NSString stringWithFormat:@"%@",   [[JobOnTop objectForKey:@"location"] objectForKey:@"text"]];
+        
+        if ([[[JobOnTop objectForKey:@"pre-money-valuation"] objectForKey:@"text"] integerValue] == 0)
+            dragView.PreMoneyValuation.text =@"N/A";
+        else
+            dragView.PreMoneyValuation.text =[NSString stringWithFormat:@"$ %@", [self thousandsSeparator:[[JobOnTop objectForKey:@"pre-money-valuation"] objectForKey:@"text"]]];
+        
+        if ([[[JobOnTop objectForKey:@"raising-amount"] objectForKey:@"text"] integerValue] == 0) {
+            dragView.RaisingAmount.text = @"N/A";
+        }else
+            dragView.RaisingAmount.text =[NSString stringWithFormat:@"$ %@",[self thousandsSeparator:[[JobOnTop objectForKey:@"raising-amount"] objectForKey:@"text"]] ];
+        
+        if ([[[JobOnTop objectForKey:@"raised-amount"] objectForKey:@"text"] integerValue] == 0) {
+            dragView.LabelRaisedAmount.text = @"N/A";
+        }else
+            dragView.LabelRaisedAmount.text =[NSString stringWithFormat:@"$ %@",  [self thousandsSeparator:[[JobOnTop objectForKey:@"raised-amount"] objectForKey:@"text"]] ];
         
         
-            //we add a view for each job
-            GGDraggableView *dragView= [[GGDraggableView alloc] initWithFrame:CGRectMake((320-280)/2, 90, 280, 463)];
-            dragView.LabelStartupName.text =[[JobOnTop objectForKey:@"name"] objectForKey:@"text"];
-            dragView.LabelStartupDescription.text =[[JobOnTop objectForKey:@"product-desc"] objectForKey:@"text"];
-            dragView.StartupId = [[JobOnTop objectForKey:@"id"] objectForKey:@"text"];
+        dragView.numeroView = numberOfTheJob;
         
-        dragView.PreMoneyValuation.text =[NSString stringWithFormat:@"PreMoney Valuation : $ %@", [[JobOnTop objectForKey:@"pre-money-valuation"] objectForKey:@"text"]];
-        dragView.RaisingAmount.text =[NSString stringWithFormat:@"Raising Amount : $ %@",  [[JobOnTop objectForKey:@"raising-amount"] objectForKey:@"text"]];
-        dragView.Market.text =[NSString stringWithFormat:@"Markets : %@",   [[JobOnTop objectForKey:@"markets"] objectForKey:@"text"]];
+        [dragView setUserInteractionEnabled:NO];
         
-        //load all informations
-
+        if (numberOfTheJob == 0){
+            dragView.frame = CGRectMake((320-290)/2, 35, 290, 476);
+            [dragView setUserInteractionEnabled:YES];
+        }
         
-            if (numberOfTheJob == 0) {
-                dragView.frame = CGRectMake((320-280)/2, 80, 280, 463);
-            }
-            
-            if( numberOfTheJob < 2 ) {
-                
-                [self.view addSubview:dragView]; //print only 2 jobs
-                
-            }
-               
-            [ViewsArray addObject:dragView];
-            
-            dragView.numeroView = numberOfTheJob;
-             
+        if( numberOfTheJob < 2 )
+            [self.view addSubview:dragView]; //print only 2 jobs
+        
+        [ViewsArray addObject:dragView];
         
         if ([[JobOnTop objectForKey:@"logo-url"] objectForKey:@"text"]) {
-            
+            [dragView StartActivity:YES];
             dispatch_async(dispatch_get_global_queue(0,0), ^{
                 
                 NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: [[JobOnTop objectForKey:@"logo-url"] objectForKey:@"text"]]];
-
-                if ( data == nil )
+                
+                if ( data == nil ){
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [dragView StartActivity:NO];
+                    });
+                    
                     return;
+                }
                 dispatch_async(dispatch_get_main_queue(), ^{
-
+                    
                     [dragView loadImageAndStyle:[UIImage imageWithData:data]];
+                    
                 });
             });
         }
         
-//            //handle startups images
-//            if (JobOnTop[@"Picture"]) {
-//                
-//                [dragView.activity startAnimating];
-//                
-//                PFFile *userImageFile = JobOnTop[@"Picture"];
-//                
-//                [userImageFile getDataInBackgroundWithBlock:^(NSData *imageData, NSError *error) {
-//                    if (!error) {
-//                        UIImage *image = [UIImage imageWithData:imageData];
-//                        [dragView.activity stopAnimating];
-//                        if (image) {
-//                            
-//                            [JobsPicturesArray addObject:image];
-//                            //placer les photos dans les vues
-//                            [dragView loadImageAndStyle:[UIImage imageWithData:imageData]];
-//                        }
-//                        else{
-//                            //error : load rand image
-//                            [dragView loadImageAndStyle:[UIImage imageNamed:[@"rand_picture_" stringByAppendingString:[NSString stringWithFormat:@"%d", arc4random()%5]]]];
-//                        }
-//                    }
-//                }];
-//            }else{
-//                //no image : load rand image
-//                [dragView loadImageAndStyle:[UIImage imageNamed:[@"rand_picture_" stringByAppendingString:[NSString stringWithFormat:@"%d", arc4random()%5]]]];
-//            }
-            
-            
-            
-            //OBSERVE WHEN THE VIEW IS DELETED : CALLBACK BELLOW
-            [dragView addObserver:self forKeyPath:@"ViewDeleted" options:NSKeyValueObservingOptionNew context:nil];
-            [dragView addObserver:self forKeyPath:@"LoadDetailView" options:NSKeyValueObservingOptionNew context:nil];
-            [dragView addObserver:self forKeyPath:@"position" options:NSKeyValueObservingOptionNew context:nil];
-            
-
-            
-            numberOfTheJob++;
-            countAllJobs++;
+        //OBSERVE WHEN THE VIEW IS DELETED : CALLBACK BELLOW
+        [dragView addObserver:self forKeyPath:@"ViewDeleted" options:NSKeyValueObservingOptionNew context:nil];
+        [dragView addObserver:self forKeyPath:@"LoadDetailView" options:NSKeyValueObservingOptionNew context:nil];
+        [dragView addObserver:self forKeyPath:@"position" options:NSKeyValueObservingOptionNew context:nil];
+        
+        numberOfTheJob++;
+        countAllJobs++;
     }
-
+    
+    NSLog(@"array startups : %@", ArrayStartups);
+    NSLog(@"array views : %@", ViewsArray);
+    
     if ([ViewsArray count]) { // there are jobs
         GGDraggableView *dragCurrentView2 = [ViewsArray objectAtIndex: 0];
         [self.view bringSubviewToFront:dragCurrentView2];
@@ -404,13 +415,115 @@
         self.labelNoJobs.hidden=NO;
     }
     
-    [self.activityIndicator stopAnimating];
-    self.activityIndicator.hidden=YES;
     self.textUI.hidden=YES;
-
-    
 }
 
+-(void)createViewsForJobs_save{
+    
+
+    numberOfTheCurrentView = 0;
+    countAllJobs=0;
+    IndexOfCurrentJob = 0;
+    JobsPicturesArray = [[NSMutableArray alloc]init];
+    
+    [self removeAllObserversForDragViews];
+    ViewsArray = [[NSMutableArray alloc]init];
+    
+    self.buttonReloadJobs.hidden = YES;
+    
+    
+    //handle all the views for the jobs
+    
+    int numberOfTheJob = 0 ;
+    
+    
+    for (int i = 0; i < [ArrayStartups count]  ; i++) {
+        
+        //fill the view information
+        NSMutableDictionary *JobOnTop = [ArrayStartups objectAtIndex:i];
+        
+        //we add a view for each job
+        GGDraggableView *dragView= [[GGDraggableView alloc] initWithFrame:CGRectMake((320-260)/2, 40, 260, 466)];
+        dragView.LabelStartupName.text =[[JobOnTop objectForKey:@"name"] objectForKey:@"text"];
+        dragView.LabelStartupDescription.text =[[JobOnTop objectForKey:@"product-desc"] objectForKey:@"text"];
+        dragView.StartupId = [[JobOnTop objectForKey:@"id"] objectForKey:@"text"];
+        dragView.startupWebsite = [[JobOnTop objectForKey:@"website-url"] objectForKey:@"text"];
+        
+        dragView.PreMoneyValuation.text =[NSString stringWithFormat:@"PreMoney Valuation : $ %@", [self thousandsSeparator:[[JobOnTop objectForKey:@"pre-money-valuation"] objectForKey:@"text"]]];
+        dragView.RaisingAmount.text =[NSString stringWithFormat:@"Raising Amount : $ %@",[self thousandsSeparator:[[JobOnTop objectForKey:@"raising-amount"] objectForKey:@"text"]] ];
+        dragView.Market.text =[NSString stringWithFormat:@"Markets : %@",   [[JobOnTop objectForKey:@"markets"] objectForKey:@"text"]];
+        dragView.HighConcept.text =[NSString stringWithFormat:@"%@",   [[JobOnTop objectForKey:@"high-concept"] objectForKey:@"text"]];
+        dragView.LabelLocation.text =[NSString stringWithFormat:@"%@",   [[JobOnTop objectForKey:@"location"] objectForKey:@"text"]];
+        dragView.LabelRaisedAmount.text =[NSString stringWithFormat:@"Raised amount : %@",  [self thousandsSeparator:[[JobOnTop objectForKey:@"raised-amount"] objectForKey:@"text"]] ];
+        dragView.numeroView = numberOfTheJob;
+        
+        [dragView setUserInteractionEnabled:NO];
+        
+        if (numberOfTheJob == 0){
+            dragView.frame = CGRectMake((320-280)/2, 30, 280, 466);
+            [dragView setUserInteractionEnabled:YES];
+        }
+        
+        if( numberOfTheJob < 2 )
+            [self.view addSubview:dragView]; //print only 2 jobs
+        
+        [ViewsArray addObject:dragView];
+        
+        if ([[JobOnTop objectForKey:@"logo-url"] objectForKey:@"text"]) {
+            [dragView StartActivity:YES];
+            dispatch_async(dispatch_get_global_queue(0,0), ^{
+
+                NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: [[JobOnTop objectForKey:@"logo-url"] objectForKey:@"text"]]];
+                
+                if ( data == nil ){
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                         [dragView StartActivity:NO];
+                     });
+                    
+                    return;
+                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    [dragView loadImageAndStyle:[UIImage imageWithData:data]];
+
+                });
+            });
+        }
+        
+        //OBSERVE WHEN THE VIEW IS DELETED : CALLBACK BELLOW
+        [dragView addObserver:self forKeyPath:@"ViewDeleted" options:NSKeyValueObservingOptionNew context:nil];
+        [dragView addObserver:self forKeyPath:@"LoadDetailView" options:NSKeyValueObservingOptionNew context:nil];
+        [dragView addObserver:self forKeyPath:@"position" options:NSKeyValueObservingOptionNew context:nil];
+        
+        numberOfTheJob++;
+        countAllJobs++;
+    }
+    
+    NSLog(@"array startups : %@", ArrayStartups);
+    NSLog(@"array views : %@", ViewsArray);
+    
+    if ([ViewsArray count]) { // there are jobs
+        GGDraggableView *dragCurrentView2 = [ViewsArray objectAtIndex: 0];
+        [self.view bringSubviewToFront:dragCurrentView2];
+    }else{ //no jobs
+        self.buttonReloadJobs.hidden=NO;
+        self.labelNoJobs.hidden=NO;
+    }
+    
+    self.textUI.hidden=YES;
+}
+
+-(NSString *) thousandsSeparator : (NSString*) stringValueForInt{
+    NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
+    //        [numberFormatter setFormatterBehavior: NSNumberFormatterBehavior10_4];
+    //        [numberFormatter setNumberStyle: NSNumberFormatterDecimalStyle];
+    numberFormatter.usesGroupingSeparator = YES;
+    numberFormatter.groupingSeparator = @"'";
+    numberFormatter.groupingSize = 3;
+    NSString *numberString = [numberFormatter stringFromNumber:[NSNumber numberWithInteger: [stringValueForInt integerValue]]];
+    return numberString;
+}
 #pragma mark KVO
 
 //observe when the view is deleted
@@ -424,13 +537,6 @@
     
     if ([keyPath isEqualToString:@"LoadDetailView"]) {
         
-//        NSMutableDictionary *job = JobsArray[numberOfTheCurrentView];
-//        PFUser *user = job[@"Author"];
-//        
-//        //load the detail view of the profile
-//        
-//        [self performSegueWithIdentifier:@"next" sender:user];
-        
     }
     else if ([keyPath isEqualToString:@"position"])
     {
@@ -440,48 +546,87 @@
         
         static int factor = 2;
         
-        //position < 0 : deny view
-        if (pos <= 0) {
+        #define VIEW_WIDTH self.view.frame.size.width
+        
+        
+        if (pos < 0) { //position < 0 : deny view
             
             self.ImageViewDeny.hidden=NO;
             [self.view bringSubviewToFront:self.ImageViewDeny];
             
-            if (pos <= -150/factor) {
-                self.ImageViewDeny.frame = CGRectMake(-15, _ImageViewDeny.frame.origin.y, _ImageViewDeny.frame.size.width, _ImageViewDeny.frame.size.height);
-            }else{
-                self.ImageViewDeny.frame = CGRectMake(-90 + factor*(-pos/150.0)*30, _ImageViewDeny.frame.origin.y, _ImageViewDeny.frame.size.width, _ImageViewDeny.frame.size.height);
+            CGRect frame_deny = self.ImageViewDeny.frame;
+            frame_deny.origin.x =  - frame_deny.size.width + 30*factor*(-pos/frame_deny.size.width);
+            if (frame_deny.origin.x > 0) {
+                frame_deny.origin.x = 0;
             }
+            self.ImageViewDeny.frame = frame_deny;
             
-            self.ImageViewAccept.frame = CGRectMake(320, _ImageViewAccept.frame.origin.y, _ImageViewAccept.frame.size.width, _ImageViewAccept.frame.size.height);
+            CGRect frame_accept = self.ImageViewAccept.frame;
+            frame_accept.origin.x = VIEW_WIDTH;
+            self.ImageViewAccept.frame = frame_accept;
         }
-        //position >0  : accept view
-        if (pos >= 0){
+        
+        if (pos > 0){ //position >0  : accept view
             
             self.ImageViewAccept.hidden=NO;
             [self.view bringSubviewToFront:self.ImageViewAccept];
             
-            if (pos >= 150/factor) {
-                self.ImageViewAccept.frame = CGRectMake(240, _ImageViewAccept.frame.origin.y, _ImageViewAccept.frame.size.width, _ImageViewAccept.frame.size.height);
-            }else{
-                NSLog(@"change");
-                self.ImageViewAccept.frame = CGRectMake(240 + 80 - factor*(pos/150.0)*80, _ImageViewAccept.frame.origin.y, _ImageViewAccept.frame.size.width, _ImageViewAccept.frame.size.height);
+            CGRect frame_accept = self.ImageViewAccept.frame;
+            frame_accept.origin.x = VIEW_WIDTH - 30*factor*(pos/frame_accept.size.width);
+            if (frame_accept.origin.x <= VIEW_WIDTH - frame_accept.size.width) {
+                frame_accept.origin.x = self.view.frame.size.width - frame_accept.size.width;
             }
+            self.ImageViewAccept.frame = frame_accept;
             
-            self.ImageViewDeny.frame = CGRectMake(-90, _ImageViewDeny.frame.origin.y, _ImageViewDeny.frame.size.width, _ImageViewDeny.frame.size.height);
+            CGRect frame_deny = self.ImageViewDeny.frame;
+            frame_deny.origin.x = - VIEW_WIDTH;
+            self.ImageViewDeny.frame = frame_deny;
+        }
+        else if (pos == 0){
+            self.ImageViewAccept.hidden=YES;
+            self.ImageViewDeny.hidden=YES;
         }
     }
     else{
+        
         GGDraggableView *dragCurrentView = [ViewsArray objectAtIndex: numberOfTheCurrentView ];
         NSLog(@"description of the array : %@", [ViewsArray description]);
-        [dragCurrentView removeObserver:self forKeyPath:@"ViewDeleted"];
-        [dragCurrentView removeObserver:self forKeyPath:@"LoadDetailView"];
-        [dragCurrentView removeObserver:self forKeyPath:@"position"];
+        @try {
+            [dragCurrentView removeObserver:self forKeyPath:@"ViewDeleted"];
+        }
+        @catch (NSException *exception) {
+            NSLog(@"NSException : %@", [exception description]);
+        }
+        @finally {
+            
+        }
+        
+        @try {
+            [dragCurrentView removeObserver:self forKeyPath:@"LoadDetailView"];
+        }
+        @catch (NSException *exception) {
+            NSLog(@"NSException : %@", [exception description]);
+        }
+        @finally {
+            
+        }
+        
+        @try {
+            [dragCurrentView removeObserver:self forKeyPath:@"position"];
+        }
+        @catch (NSException *exception) {
+            NSLog(@"NSException : %@", [exception description]);
+        }
+        @finally {
+            
+        }
         [dragCurrentView removeFromSuperview];
         dragCurrentView=nil;
         
         if (numberOfTheCurrentView + 1 == countAllJobs) {
-            self.buttonReloadJobs.hidden = NO;
-            self.buttonReloadJobs.hidden=NO;
+//            self.buttonReloadJobs.hidden = NO;
+            [self reloadStartups:nil];
+//            return;
         }
         
         numberOfTheCurrentView++;
@@ -491,21 +636,35 @@
             
             GGDraggableView *dragView = [ViewsArray objectAtIndex: (numberOfTheCurrentView + 1)];
             [self.view addSubview:dragView];
+            if (numberOfTheCurrentView + 2 == countAllJobs) {
+                [dragView setUserInteractionEnabled:YES];
+            }
             
             GGDraggableView *dragCurrentView2 = [ViewsArray objectAtIndex: numberOfTheCurrentView ];
             [self.view bringSubviewToFront:dragCurrentView2];
+            [dragCurrentView2 setUserInteractionEnabled:YES];
             
             [UIView animateWithDuration:0.1 animations:^{
-                dragCurrentView2.frame = CGRectMake((320-291)/2, 80, 291, 463);
+//                CGRect frameDragView2 = dragCurrentView2.frame;
+//                frameDragView2.origin.y = 30 ;
+//                dragCurrentView2.frame = frameDragView2;
+                
+                dragCurrentView2.frame =  CGRectMake((320-290)/2, 35, 290, 476);
             }];
         }
         
         //handle the view on the side : green/red
+        CGRect frame_accept = self.ImageViewAccept.frame;
+        frame_accept.origin.x = VIEW_WIDTH +  frame_accept.size.width;;
+        self.ImageViewAccept.frame = frame_accept;
         
-        self.ImageViewDeny.frame = CGRectMake(-90, _ImageViewDeny.frame.origin.y, _ImageViewDeny.frame.size.width, _ImageViewDeny.frame.size.height);
-        self.ImageViewAccept.frame = CGRectMake(320, _ImageViewAccept.frame.origin.y, _ImageViewAccept.frame.size.width, _ImageViewAccept.frame.size.height);
+        CGRect frame_deny = self.ImageViewDeny.frame;
+        frame_deny.origin.x =  - frame_deny.size.width;;
+        self.ImageViewDeny.frame = frame_deny;
+
     }
 }
+
 
 
 @end

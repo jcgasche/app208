@@ -7,12 +7,20 @@
 //
 
 #import "LogInAngelListViewController.h"
-
+#import "XMLReader.h"
 #import "StartupsViewController.h"
+#import "ScrollViewController.h"
+
+#import <Twitter/Twitter.h>
+#import <Accounts/Accounts.h>
+#import <Social/Social.h>
 
 @interface LogInAngelListViewController ()
 @property (strong, nonatomic) IBOutlet UIWebView *webView;
+
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activity;
+
+@property ACAccount* facebookAccount;
 @end
 
 @implementation LogInAngelListViewController{
@@ -20,6 +28,7 @@
     
     //data for card dictionary
     NSString *id_user;
+    NSString *token;
     BOOL investor;
     
     //dictionary for user default
@@ -38,22 +47,80 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    [self hideActivity:NO];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://angel.co/api/oauth/authorize?client_id=88382b671bafbc2f58f8d6cc75a2ddb2&scope=message%20email%20comment%20talent&response_type=code"] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:15];
+
     
-//    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://www.payonesnap.com/add_credit_card_spreedly_from_iphone/%@/%@",token,userId]] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:15];
-//    
+    self.activity.center = self.view.center;
+    [self.activity startAnimating];
+    self.activity.hidden = NO;
+    [self.webView bringSubviewToFront:self.activity];
+    
+    
 //    request.timeoutInterval = 15;
-//    
-//    
-//    //acces the url to add a card
-//    self.webView.delegate=self;
-//    [self.webView loadRequest:request];
+    
+    
+    //acces the url to add a card
+    self.webView.delegate=self;
+    [self.webView loadRequest:request];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+-(void) viewWillAppear:(BOOL)animated{
+
 }
+
+- (IBAction)postMessage:(id)sender { //post a message on facebook : ask for 2 permissions : review via FB !
+    
+    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+    
+    ACAccountType *accountTypeFacebook =
+    [accountStore accountTypeWithAccountTypeIdentifier:
+     ACAccountTypeIdentifierFacebook];
+    
+    NSDictionary *options = @{
+                              ACFacebookAppIdKey: @"1476845325882616",
+                              ACFacebookPermissionsKey: @[@"publish_stream",
+                                                          @"publish_actions"],
+                              ACFacebookAudienceKey: ACFacebookAudienceFriends
+                              };
+    
+    [accountStore requestAccessToAccountsWithType:accountTypeFacebook
+                                          options:options
+                                       completion:^(BOOL granted, NSError *error) {
+                                           
+                                           if(granted) {
+                                               
+                                               NSArray *accounts = [accountStore
+                                                                    accountsWithAccountType:accountTypeFacebook];
+                                               _facebookAccount = [accounts lastObject];
+                                               
+                                               NSDictionary *parameters =
+                                               @{@"access_token":_facebookAccount.credential.oauthToken,
+                                                 @"message": @"test message"};
+                                               
+                                               NSURL *feedURL = [NSURL
+                                                                 URLWithString:@"https://graph.facebook.com/me/feed"];
+                                               
+                                               SLRequest *feedRequest =
+                                               [SLRequest
+                                                requestForServiceType:SLServiceTypeFacebook
+                                                requestMethod:SLRequestMethodPOST
+                                                URL:feedURL
+                                                parameters:parameters];
+                                               
+                                               [feedRequest 
+                                                performRequestWithHandler:^(NSData *responseData,
+                                                                            NSHTTPURLResponse *urlResponse, NSError *error)
+                                                {
+                                                    NSLog(@"Request failed, %@", 
+                                                          [urlResponse description]);
+                                                }];
+                                           } else {
+                                               NSLog(@"Access Denied");
+                                               NSLog(@"[%@]",[error localizedDescription]);
+                                           }
+                                       }];
+}
+
 
 -(void) hideActivity:(BOOL)hideActivity{
     
@@ -90,12 +157,23 @@
 {
     
     NSLog(@"url : %@", [[request URL] absoluteString]);
-    if ( !( [[[request URL] absoluteString] hasPrefix:@"https://www.payonesnap.com/add_credit_card_spreedly_from_iphone"] || [[[request URL] absoluteString] hasPrefix:@"https://www.payonesnap.com/save_secure_for_iphone"] ) ){
-        [self hideActivity:NO];
-    }
+    
+//    if ( !( [[[request URL] absoluteString] hasPrefix:@"https://www.payonesnap.com/add_credit_card_spreedly_from_iphone"] || [[[request URL] absoluteString] hasPrefix:@"https://www.payonesnap.com/save_secure_for_iphone"] ) ){
+//        [self hideActivity:NO];
+//    }
     
     
-    if ([[[request URL] absoluteString] hasPrefix:@"https://www.payonesnap.com/save_secure_for_iphone"]) { //recognize the change of url
+    
+    if ([[[request URL] absoluteString] hasPrefix:@"https://app208.herokuapp.com/angel_callback"]) { //recognize the change of url
+        
+//        NSLog(@"redirect to our servers ");
+//        NSError *error;
+//        NSString *googlePage = [NSString stringWithContentsOfURL:[NSURL URLWithString:[[request URL] absoluteString]]
+//                                                        encoding:NSASCIIStringEncoding
+//                                                           error:&error];
+//        NSLog(@"pages : %@", googlePage);
+        
+        NSLog(@"should do the request ");
         
         [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
             if (!error){
@@ -112,12 +190,35 @@
                 
                 NSLog(@"data response : %@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
                 
+                NSError *error = nil;
+                NSDictionary *dict = [XMLReader dictionaryForXMLData:data
+                                                             options:XMLReaderOptionsProcessNamespaces
+                                                               error:&error];
+                NSLog(@"dic is : %@", dict);
                 
-                NSData * XMLData = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] dataUsingEncoding:NSUnicodeStringEncoding];
-                NSXMLParser * parser = [[NSXMLParser alloc] initWithData:XMLData];
-                [parser setDelegate:self];
-                [parser setShouldProcessNamespaces:YES]; // if you need to
-                [parser parse]; // start parsing
+                if ([[[[dict objectForKey:@"hash"]objectForKey:@"status"] objectForKey:@"text"] isEqualToString:@"success"]) {
+                    
+                    NSDictionary *dicForNewUser = [NSDictionary dictionaryWithObjectsAndKeys:
+                                                   [[[dict objectForKey:@"hash"]objectForKey:@"id"] objectForKey:@"text"] , @"user_id",
+                                                   [[[dict objectForKey:@"hash"]objectForKey:@"investor"] objectForKey:@"text"] , @"investor",
+                                                   [[[dict objectForKey:@"hash"]objectForKey:@"token"] objectForKey:@"text"], @"token",
+                                                   nil];
+                    [[NSUserDefaults standardUserDefaults] setObject:dicForNewUser forKey:@"userDictionary"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                        UIStoryboard*  sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                        ScrollViewController *vc1 = [sb instantiateViewControllerWithIdentifier:@"ScrollViewController"];
+                        [self presentViewController:vc1 animated:NO completion:nil];
+                    });
+                }
+                
+//                NSData * XMLData = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] dataUsingEncoding:NSUnicodeStringEncoding];
+//                NSXMLParser * parser = [[NSXMLParser alloc] initWithData:XMLData];
+//                [parser setDelegate:self];
+//                [parser setShouldProcessNamespaces:YES]; // if you need to
+//                [parser parse]; // start parsing
             }
             else if (error)
                 dispatch_sync(dispatch_get_main_queue(), ^{
@@ -148,115 +249,5 @@
 }
 
 
-#pragma mark XML parse
-
-- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName
-  namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName
-    attributes:(NSDictionary *)attributeDict{
-    
-    /* handle namespaces here if you want */
-    NSLog(@"name = %@", elementName);
-    
-    if ([elementName isEqualToString:@"id"]){
-        currentElement=@"id";
-    }else if([elementName isEqualToString:@"investor"]){
-        currentElement = @"investor";
-    }else if ([elementName isEqualToString:@"status"]){
-        currentElement=@"status";
-    }
-//    else if ([elementName isEqualToString:@"hash"]){
-//        currentElement=@"hash";
-//    }else if ([elementName isEqualToString:@"error"]){
-//        currentElement=@"error";
-//    }else if ([elementName isEqualToString:@"card-number"]){
-//        currentElement=@"card-number";
-//    }else if ([elementName isEqualToString:@"card-type"]){
-//        currentElement=@"card-type";
-//    }else if ([elementName isEqualToString:@"card-last-four-digits"]){
-//        currentElement=@"card-last-four-digits";
-//    }else if ([elementName isEqualToString:@"message-to-customer"]){
-//        currentElement=@"message-to-customer";
-//    }
-}
-
-- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName
-  namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName{
-    
-    if([elementName isEqualToString:@"status"]){ //end of status
-        status = currentContentforElement;
-    }else if ([elementName isEqualToString:@"id"]){
-        id_user = currentContentforElement;
-    }else if ([elementName isEqualToString:@"investor"]){
-        investor = [currentContentforElement boolValue];
-    }
-//    else if ([elementName isEqualToString:@"card-description"]){
-//        
-//    }else if ([elementName isEqualToString:@"card-number"]){
-//        
-//    }else if ([elementName isEqualToString:@"message-to-customer"]){
-//        message_to_customer = currentContentforElement;
-//        
-//    }else if ([elementName isEqualToString:@"card-type"]){
-//        card_description = currentContentforElement;
-//    }else if ([elementName isEqualToString:@"card-last-four-digits"]){
-//        card_number = currentContentforElement;
-//    }
-    else if ([elementName isEqualToString:@"error"]){
-        error_message = currentContentforElement;
-    }
-    else if ([elementName isEqualToString:@"hash"]){
-        //end of document
-        
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            
-            if ([status isEqualToString:@"success"]) {
-                
-                //go to the next viewcontroller
-                NSDictionary *dicForNewUser = [NSDictionary dictionaryWithObjectsAndKeys:id_user,@"id",
-                                                                                        investor, @"investor"
-                                                                                        , nil];
-                [[NSUserDefaults standardUserDefaults] setObject:dictionaryForNewUser forKey:@"userDictionary"];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-                
-               
-                UIStoryboard*  sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                StartupsViewController *vc1 = [sb instantiateViewControllerWithIdentifier:@"StartupsViewController"];
-                [self presentViewController:vc1 animated:NO completion:nil];
-                
-                [self hideActivity:YES];
-                
-            }else if ([status isEqualToString:@"failure"]){
-                
-                [self hideActivity:YES];
-                
-                 //show there is a problem with the login
-            }
-            
-        });
-    }
-}
-
-- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string{
-    
-    currentContentforElement = string;
-}
-
--(void)handleErrorMessage:(NSString*) error{
-    if ([error isEqualToString:@"invalidCredentials"]) {
-        [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Account blocked, please re-login" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
-    }
-    
-}
-
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
