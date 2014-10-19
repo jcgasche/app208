@@ -102,7 +102,12 @@ class UsersController < ApplicationController
 			user = User.find_by_email(params[:email])
 
 			if user
-				#user already exists, update angel_token and return its logins (id)
+				#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				user.investor = true
+				user.name = "Blanco Bernasconi"
+				user.save
+
+
 				@response[:id] = user.id
 				@response[:token] = user.token
 				@response[:investor] = user.investor?.to_s
@@ -114,6 +119,7 @@ class UsersController < ApplicationController
 
 				#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				user.investor = true
+				user.name = "Blanco Bernasconi"
 
 				if user.save
 					@response[:id] = user.id
@@ -214,7 +220,10 @@ class UsersController < ApplicationController
 
 		if user.investor? && user.following?(company)
 			company.investor_followers.each do |investor|
-				@response[:investor_followers].push( investor.name )
+				@response[:investor_followers].push( investor.name ) unless investor.name.blank?
+
+				#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				@response[:investor_followers].push( "Blanco Bernasconi" ) if investor.name.blank?
 			end
 		end
 
