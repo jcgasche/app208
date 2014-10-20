@@ -8,7 +8,6 @@
 
 #import "StartupsViewController.h"
 #import "SWRevealViewController.h"
-#import "GGDraggableView.h"
 #import "XMLReader.h"
 #import <QuartzCore/QuartzCore.h>
 #import "ScrollViewController.h"
@@ -24,8 +23,6 @@
 
 
 @property (strong, nonatomic) IBOutlet UIButton *buttonReloadJobs;
-
-
 @property (strong, nonatomic) IBOutlet UILabel *labelNoJobs;
 
 @end
@@ -69,44 +66,7 @@
 
 -(void) viewWillDisappear:(BOOL)animated{
     
-    [self removeAllObserversForDragViews];
-}
-
--(void) removeAllObserversForDragViews{
-    for (GGDraggableView *dragView in ViewsArray) {
-        
-        @try {
-            [dragView removeObserver:self forKeyPath:@"ViewDeleted"];
-        }
-        @catch (NSException *exception) {
-            
-        }
-        @finally {
-            
-        }
-        
-        @try {
-            [dragView removeObserver:self forKeyPath:@"LoadDetailView"];
-        }
-        @catch (NSException *exception) {
-            
-        }
-        @finally {
-            
-        }
-        
-        @try {
-            [dragView removeObserver:self forKeyPath:@"position"];
-        }
-        @catch (NSException *exception) {
-            
-        }
-        @finally {
-            
-        }
-        
-        //        [dragView removeFromSuperview];
-    }
+//    [self removeAllObserversForDragViews];
 }
 
 - (void)viewDidLoad {
@@ -118,6 +78,8 @@
     
     self.labelNoJobs.hidden=YES;
     self.buttonReloadJobs.hidden = YES;
+    
+   
     
     
     [self StartLoading];
@@ -144,13 +106,9 @@
 -(void)viewWillAppear:(BOOL)animated{
     //OBSERVE WHEN THE VIEW IS DELETED : CALLBACK BELLOW
     
-    NSLog(@"DESC ARRAY : %@", [ViewsArray description]);
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
-    for (GGDraggableView *dragView in ViewsArray) {
-        [dragView addObserver:self forKeyPath:@"ViewDeleted" options:NSKeyValueObservingOptionNew context:nil];
-        [dragView addObserver:self forKeyPath:@"LoadDetailView" options:NSKeyValueObservingOptionNew context:nil];
-        [dragView addObserver:self forKeyPath:@"position" options:NSKeyValueObservingOptionNew context:nil];
-    }
+    NSLog(@"DESC ARRAY : %@", [ViewsArray description]);
     
     if ([ViewsArray count] == 0 ) {
         [self StartLoading];
@@ -158,9 +116,11 @@
 }
 
 -(void) StartLoading{
-
+    
+    self.ImageViewLoadingDart.hidden = NO;
     self.textUI.hidden = NO;
     self.buttonReloadJobs.hidden = YES;
+    self.labelNoJobs.hidden=YES;
     
     if ([self.ImageViewLoadingDart.layer animationForKey:@"SpinAnimation"] == nil) {
         CABasicAnimation* animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
@@ -206,6 +166,22 @@
 }
 
 
+- (IBAction)reloadStartups:(UIButton *)sender {
+    
+    NSLog(@"reload !");
+    
+    NSString *user_id = [[[NSUserDefaults standardUserDefaults] objectForKey:@"userDictionary"] objectForKey:@"user_id"];
+    NSLog(@"TOKEN PASSED : %@", [NSString stringWithFormat:@"&token=%@", [[[NSUserDefaults standardUserDefaults]objectForKey:@"userDictionary" ] objectForKey:@"token"]]);
+    if ([[[NSUserDefaults standardUserDefaults]objectForKey:@"userDictionary" ] objectForKey:@"token"] != nil) {
+        
+        
+        [self POSTwithUrl:[@"http://app208.herokuapp.com/user/" stringByAppendingString:user_id] andData:nil andParameters:[NSString stringWithFormat:@"&token=%@", [[[NSUserDefaults standardUserDefaults]objectForKey:@"userDictionary" ] objectForKey:@"token"]]];
+    }
+    else{ //no token !
+        
+    }
+    NSLog(@"user dictionary : %@", [[NSUserDefaults standardUserDefaults]objectForKey:@"userDictionary" ]);
+}
 
 #pragma mark connection
 
@@ -239,11 +215,14 @@
                                                                error:&error];
                 NSLog(@"dic from server : %@", dict);
                 
-                if ([dict objectForKey:@"html"]) {
-                    return;
-                }
-                else if ([[[dict objectForKey:@"hash"] objectForKey:@"companies"] objectForKey:@"company"] == nil) {
-                    [self reloadStartups:nil];
+
+                if ([[[dict objectForKey:@"hash"] objectForKey:@"companies"] objectForKey:@"company"] == nil ||
+                         [dict objectForKey:@"html"] != nil ) {
+//                    [self reloadStartups:nil];
+                    self.labelNoJobs.hidden = NO;
+                    self.buttonReloadJobs.hidden = NO;
+                    self.ImageViewLoadingDart.hidden = YES;
+                    [self StopLoading];
                     NSLog(@"BUG");
                     return ;
                 }
@@ -280,7 +259,7 @@
                     return;
                 }
                 
-                [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"An error occured, please try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+//                [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"An error occured, please try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
             });
     }];
 }
@@ -290,21 +269,9 @@
     [self StopLoading];
 }
 
-- (IBAction)reloadStartups:(UIButton *)sender {
-    NSString *user_id = [[[NSUserDefaults standardUserDefaults] objectForKey:@"userDictionary"] objectForKey:@"user_id"];
-    NSLog(@"TOKEN PASSED : %@", [NSString stringWithFormat:@"&token=%@", [[[NSUserDefaults standardUserDefaults]objectForKey:@"userDictionary" ] objectForKey:@"token"]]);
-    if ([[[NSUserDefaults standardUserDefaults]objectForKey:@"userDictionary" ] objectForKey:@"token"] != nil) {
-        
-    
-        [self POSTwithUrl:[@"http://app208.herokuapp.com/user/" stringByAppendingString:user_id] andData:nil andParameters:[NSString stringWithFormat:@"&token=%@", [[[NSUserDefaults standardUserDefaults]objectForKey:@"userDictionary" ] objectForKey:@"token"]]];
-    }
-    else{ //no token !
-        
-    }
-    NSLog(@"user dictionary : %@", [[NSUserDefaults standardUserDefaults]objectForKey:@"userDictionary" ]);
-}
 
 #pragma mark - manage the frames
+
 -(void)createViewsForJobs{
     
     
@@ -313,11 +280,11 @@
     IndexOfCurrentJob = 0;
     JobsPicturesArray = [[NSMutableArray alloc]init];
     
-    [self removeAllObserversForDragViews];
+//    [self removeAllObserversForDragViews];
     ViewsArray = [[NSMutableArray alloc]init];
     
     self.buttonReloadJobs.hidden = YES;
-    
+    self.labelNoJobs.hidden=YES;
     
     //handle all the views for the jobs
     
@@ -331,7 +298,9 @@
         
         //we add a view for each job
         GGDraggableView *dragView= [[GGDraggableView alloc] init];
-        dragView.frame =CGRectMake((320-280)/2, 45, 280, 476);
+        dragView.delegate = self;
+        
+        dragView.frame =CGRectMake((320-290)/2, 25, 290, 496);
         
         dragView.LabelStartupName.text =[[JobOnTop objectForKey:@"name"] objectForKey:@"text"];
         dragView.LabelStartupDescription.text =[[JobOnTop objectForKey:@"product-desc"] objectForKey:@"text"];
@@ -339,7 +308,12 @@
         dragView.startupWebsite = [[JobOnTop objectForKey:@"website-url"] objectForKey:@"text"];
         
 
-        dragView.Market.text =[NSString stringWithFormat:@"%@",   [[JobOnTop objectForKey:@"markets"] objectForKey:@"text"]];
+        if ( [[JobOnTop objectForKey:@"markets"] objectForKey:@"text"] == nil ||
+             [[[JobOnTop objectForKey:@"markets"] objectForKey:@"text"] isEqualToString:@""]) {
+            dragView.Market.text =@"Markets : N/A";
+        }else
+            dragView.Market.text =[NSString stringWithFormat:@"Markets : %@",   [[JobOnTop objectForKey:@"markets"] objectForKey:@"text"]];
+        
         dragView.HighConcept.text =[NSString stringWithFormat:@"%@",   [[JobOnTop objectForKey:@"high-concept"] objectForKey:@"text"]];
         dragView.LabelLocation.text =[NSString stringWithFormat:@"%@",   [[JobOnTop objectForKey:@"location"] objectForKey:@"text"]];
         
@@ -364,7 +338,7 @@
         [dragView setUserInteractionEnabled:NO];
         
         if (numberOfTheJob == 0){
-            dragView.frame = CGRectMake((320-290)/2, 35, 290, 476);
+            dragView.frame = CGRectMake((320-300)/2, 15, 300, 496);
             [dragView setUserInteractionEnabled:YES];
         }
         
@@ -396,9 +370,9 @@
         }
         
         //OBSERVE WHEN THE VIEW IS DELETED : CALLBACK BELLOW
-        [dragView addObserver:self forKeyPath:@"ViewDeleted" options:NSKeyValueObservingOptionNew context:nil];
-        [dragView addObserver:self forKeyPath:@"LoadDetailView" options:NSKeyValueObservingOptionNew context:nil];
-        [dragView addObserver:self forKeyPath:@"position" options:NSKeyValueObservingOptionNew context:nil];
+//        [dragView addObserver:self forKeyPath:@"ViewDeleted" options:NSKeyValueObservingOptionNew context:nil];
+//        [dragView addObserver:self forKeyPath:@"LoadDetailView" options:NSKeyValueObservingOptionNew context:nil];
+//        [dragView addObserver:self forKeyPath:@"position" options:NSKeyValueObservingOptionNew context:nil];
         
         numberOfTheJob++;
         countAllJobs++;
@@ -418,101 +392,103 @@
     self.textUI.hidden=YES;
 }
 
--(void)createViewsForJobs_save{
-    
+#pragma mark ggdraggable delegate
 
-    numberOfTheCurrentView = 0;
-    countAllJobs=0;
-    IndexOfCurrentJob = 0;
-    JobsPicturesArray = [[NSMutableArray alloc]init];
+-(void) PositionGGdraggableViewChanged : (int) position{
+    NSLog(@"position delegate  : %d", position);
     
-    [self removeAllObserversForDragViews];
-    ViewsArray = [[NSMutableArray alloc]init];
+    int pos = position;
     
-    self.buttonReloadJobs.hidden = YES;
+    static int factor = 2;
     
-    
-    //handle all the views for the jobs
-    
-    int numberOfTheJob = 0 ;
+#define VIEW_WIDTH self.view.frame.size.width
     
     
-    for (int i = 0; i < [ArrayStartups count]  ; i++) {
+    if (pos < 0) { //position < 0 : deny view
         
-        //fill the view information
-        NSMutableDictionary *JobOnTop = [ArrayStartups objectAtIndex:i];
+        self.ImageViewDeny.hidden=NO;
+        [self.view bringSubviewToFront:self.ImageViewDeny];
         
-        //we add a view for each job
-        GGDraggableView *dragView= [[GGDraggableView alloc] initWithFrame:CGRectMake((320-260)/2, 40, 260, 466)];
-        dragView.LabelStartupName.text =[[JobOnTop objectForKey:@"name"] objectForKey:@"text"];
-        dragView.LabelStartupDescription.text =[[JobOnTop objectForKey:@"product-desc"] objectForKey:@"text"];
-        dragView.StartupId = [[JobOnTop objectForKey:@"id"] objectForKey:@"text"];
-        dragView.startupWebsite = [[JobOnTop objectForKey:@"website-url"] objectForKey:@"text"];
+        CGRect frame_deny = self.ImageViewDeny.frame;
+        frame_deny.origin.x =  - frame_deny.size.width + 30*factor*(-pos/frame_deny.size.width);
+        if (frame_deny.origin.x > 0) {
+            frame_deny.origin.x = 0;
+        }
+        self.ImageViewDeny.frame = frame_deny;
         
-        dragView.PreMoneyValuation.text =[NSString stringWithFormat:@"PreMoney Valuation : $ %@", [self thousandsSeparator:[[JobOnTop objectForKey:@"pre-money-valuation"] objectForKey:@"text"]]];
-        dragView.RaisingAmount.text =[NSString stringWithFormat:@"Raising Amount : $ %@",[self thousandsSeparator:[[JobOnTop objectForKey:@"raising-amount"] objectForKey:@"text"]] ];
-        dragView.Market.text =[NSString stringWithFormat:@"Markets : %@",   [[JobOnTop objectForKey:@"markets"] objectForKey:@"text"]];
-        dragView.HighConcept.text =[NSString stringWithFormat:@"%@",   [[JobOnTop objectForKey:@"high-concept"] objectForKey:@"text"]];
-        dragView.LabelLocation.text =[NSString stringWithFormat:@"%@",   [[JobOnTop objectForKey:@"location"] objectForKey:@"text"]];
-        dragView.LabelRaisedAmount.text =[NSString stringWithFormat:@"Raised amount : %@",  [self thousandsSeparator:[[JobOnTop objectForKey:@"raised-amount"] objectForKey:@"text"]] ];
-        dragView.numeroView = numberOfTheJob;
+        CGRect frame_accept = self.ImageViewAccept.frame;
+        frame_accept.origin.x = VIEW_WIDTH;
+        self.ImageViewAccept.frame = frame_accept;
+    }
+    
+    if (pos > 0){ //position >0  : accept view
         
-        [dragView setUserInteractionEnabled:NO];
+        self.ImageViewAccept.hidden=NO;
+        [self.view bringSubviewToFront:self.ImageViewAccept];
         
-        if (numberOfTheJob == 0){
-            dragView.frame = CGRectMake((320-280)/2, 30, 280, 466);
+        CGRect frame_accept = self.ImageViewAccept.frame;
+        frame_accept.origin.x = VIEW_WIDTH - 30*factor*(pos/frame_accept.size.width);
+        if (frame_accept.origin.x <= VIEW_WIDTH - frame_accept.size.width) {
+            frame_accept.origin.x = self.view.frame.size.width - frame_accept.size.width;
+        }
+        self.ImageViewAccept.frame = frame_accept;
+        
+        CGRect frame_deny = self.ImageViewDeny.frame;
+        frame_deny.origin.x = - VIEW_WIDTH;
+        self.ImageViewDeny.frame = frame_deny;
+    }
+    else if (pos == 0){
+        self.ImageViewAccept.hidden=YES;
+        self.ImageViewDeny.hidden=YES;
+    }
+    
+}
+
+-(void) GGdraggableViewWasSwiped : (GGDraggableView*)view{
+    NSLog(@"view right delegate : %@", [view description]);
+    
+    GGDraggableView *dragCurrentView = [ViewsArray objectAtIndex: numberOfTheCurrentView ];
+
+    [dragCurrentView removeFromSuperview];
+    dragCurrentView=nil;
+    
+    if (numberOfTheCurrentView + 1 == countAllJobs) {
+        [self StartLoading];
+        [self reloadStartups:nil];
+    }
+    
+    numberOfTheCurrentView++;
+    
+    if (numberOfTheCurrentView + 1 < countAllJobs ) { //countalljobs - 1 : array begins at 0 !
+        NSLog(@"nb all jobs : %d", countAllJobs);
+        
+        GGDraggableView *dragView = [ViewsArray objectAtIndex: (numberOfTheCurrentView + 1)];
+        [self.view addSubview:dragView];
+        if (numberOfTheCurrentView + 2 == countAllJobs) {
             [dragView setUserInteractionEnabled:YES];
         }
         
-        if( numberOfTheJob < 2 )
-            [self.view addSubview:dragView]; //print only 2 jobs
-        
-        [ViewsArray addObject:dragView];
-        
-        if ([[JobOnTop objectForKey:@"logo-url"] objectForKey:@"text"]) {
-            [dragView StartActivity:YES];
-            dispatch_async(dispatch_get_global_queue(0,0), ^{
-
-                NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: [[JobOnTop objectForKey:@"logo-url"] objectForKey:@"text"]]];
-                
-                if ( data == nil ){
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                         [dragView StartActivity:NO];
-                     });
-                    
-                    return;
-                }
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    
-                    [dragView loadImageAndStyle:[UIImage imageWithData:data]];
-
-                });
-            });
-        }
-        
-        //OBSERVE WHEN THE VIEW IS DELETED : CALLBACK BELLOW
-        [dragView addObserver:self forKeyPath:@"ViewDeleted" options:NSKeyValueObservingOptionNew context:nil];
-        [dragView addObserver:self forKeyPath:@"LoadDetailView" options:NSKeyValueObservingOptionNew context:nil];
-        [dragView addObserver:self forKeyPath:@"position" options:NSKeyValueObservingOptionNew context:nil];
-        
-        numberOfTheJob++;
-        countAllJobs++;
-    }
-    
-    NSLog(@"array startups : %@", ArrayStartups);
-    NSLog(@"array views : %@", ViewsArray);
-    
-    if ([ViewsArray count]) { // there are jobs
-        GGDraggableView *dragCurrentView2 = [ViewsArray objectAtIndex: 0];
+        GGDraggableView *dragCurrentView2 = [ViewsArray objectAtIndex: numberOfTheCurrentView ];
         [self.view bringSubviewToFront:dragCurrentView2];
-    }else{ //no jobs
-        self.buttonReloadJobs.hidden=NO;
-        self.labelNoJobs.hidden=NO;
+        [dragCurrentView2 setUserInteractionEnabled:YES];
+        
+        [UIView animateWithDuration:0.1 animations:^{
+            dragCurrentView2.frame =  CGRectMake((320-300)/2, 15, 300, 496);
+        }];
     }
     
-    self.textUI.hidden=YES;
+    //handle the view on the side : green/red
+    CGRect frame_accept = self.ImageViewAccept.frame;
+    frame_accept.origin.x = VIEW_WIDTH +  frame_accept.size.width;;
+    self.ImageViewAccept.frame = frame_accept;
+    
+    CGRect frame_deny = self.ImageViewDeny.frame;
+    frame_deny.origin.x =  - frame_deny.size.width;;
+    self.ImageViewDeny.frame = frame_deny;
+
 }
+
+#pragma mark other
 
 -(NSString *) thousandsSeparator : (NSString*) stringValueForInt{
     NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
@@ -524,146 +500,7 @@
     NSString *numberString = [numberFormatter stringFromNumber:[NSNumber numberWithInteger: [stringValueForInt integerValue]]];
     return numberString;
 }
-#pragma mark KVO
 
-//observe when the view is deleted
-- (void)observeValueForKeyPath:(NSString *)keyPath
-                      ofObject:(id)object
-                        change:(NSDictionary *)change
-                       context:(void *)context
-{
-    NSLog(@"value changed");
-    
-    
-    if ([keyPath isEqualToString:@"LoadDetailView"]) {
-        
-    }
-    else if ([keyPath isEqualToString:@"position"])
-    {
-        
-        GGDraggableView *o = object;
-        int pos = o.position;
-        
-        static int factor = 2;
-        
-        #define VIEW_WIDTH self.view.frame.size.width
-        
-        
-        if (pos < 0) { //position < 0 : deny view
-            
-            self.ImageViewDeny.hidden=NO;
-            [self.view bringSubviewToFront:self.ImageViewDeny];
-            
-            CGRect frame_deny = self.ImageViewDeny.frame;
-            frame_deny.origin.x =  - frame_deny.size.width + 30*factor*(-pos/frame_deny.size.width);
-            if (frame_deny.origin.x > 0) {
-                frame_deny.origin.x = 0;
-            }
-            self.ImageViewDeny.frame = frame_deny;
-            
-            CGRect frame_accept = self.ImageViewAccept.frame;
-            frame_accept.origin.x = VIEW_WIDTH;
-            self.ImageViewAccept.frame = frame_accept;
-        }
-        
-        if (pos > 0){ //position >0  : accept view
-            
-            self.ImageViewAccept.hidden=NO;
-            [self.view bringSubviewToFront:self.ImageViewAccept];
-            
-            CGRect frame_accept = self.ImageViewAccept.frame;
-            frame_accept.origin.x = VIEW_WIDTH - 30*factor*(pos/frame_accept.size.width);
-            if (frame_accept.origin.x <= VIEW_WIDTH - frame_accept.size.width) {
-                frame_accept.origin.x = self.view.frame.size.width - frame_accept.size.width;
-            }
-            self.ImageViewAccept.frame = frame_accept;
-            
-            CGRect frame_deny = self.ImageViewDeny.frame;
-            frame_deny.origin.x = - VIEW_WIDTH;
-            self.ImageViewDeny.frame = frame_deny;
-        }
-        else if (pos == 0){
-            self.ImageViewAccept.hidden=YES;
-            self.ImageViewDeny.hidden=YES;
-        }
-    }
-    else{
-        
-        GGDraggableView *dragCurrentView = [ViewsArray objectAtIndex: numberOfTheCurrentView ];
-        NSLog(@"description of the array : %@", [ViewsArray description]);
-        @try {
-            [dragCurrentView removeObserver:self forKeyPath:@"ViewDeleted"];
-        }
-        @catch (NSException *exception) {
-            NSLog(@"NSException : %@", [exception description]);
-        }
-        @finally {
-            
-        }
-        
-        @try {
-            [dragCurrentView removeObserver:self forKeyPath:@"LoadDetailView"];
-        }
-        @catch (NSException *exception) {
-            NSLog(@"NSException : %@", [exception description]);
-        }
-        @finally {
-            
-        }
-        
-        @try {
-            [dragCurrentView removeObserver:self forKeyPath:@"position"];
-        }
-        @catch (NSException *exception) {
-            NSLog(@"NSException : %@", [exception description]);
-        }
-        @finally {
-            
-        }
-        [dragCurrentView removeFromSuperview];
-        dragCurrentView=nil;
-        
-        if (numberOfTheCurrentView + 1 == countAllJobs) {
-//            self.buttonReloadJobs.hidden = NO;
-            [self reloadStartups:nil];
-//            return;
-        }
-        
-        numberOfTheCurrentView++;
-        
-        if (numberOfTheCurrentView + 1 < countAllJobs ) { //countalljobs - 1 : array begins at 0 !
-            NSLog(@"nb all jobs : %d", countAllJobs);
-            
-            GGDraggableView *dragView = [ViewsArray objectAtIndex: (numberOfTheCurrentView + 1)];
-            [self.view addSubview:dragView];
-            if (numberOfTheCurrentView + 2 == countAllJobs) {
-                [dragView setUserInteractionEnabled:YES];
-            }
-            
-            GGDraggableView *dragCurrentView2 = [ViewsArray objectAtIndex: numberOfTheCurrentView ];
-            [self.view bringSubviewToFront:dragCurrentView2];
-            [dragCurrentView2 setUserInteractionEnabled:YES];
-            
-            [UIView animateWithDuration:0.1 animations:^{
-//                CGRect frameDragView2 = dragCurrentView2.frame;
-//                frameDragView2.origin.y = 30 ;
-//                dragCurrentView2.frame = frameDragView2;
-                
-                dragCurrentView2.frame =  CGRectMake((320-290)/2, 35, 290, 476);
-            }];
-        }
-        
-        //handle the view on the side : green/red
-        CGRect frame_accept = self.ImageViewAccept.frame;
-        frame_accept.origin.x = VIEW_WIDTH +  frame_accept.size.width;;
-        self.ImageViewAccept.frame = frame_accept;
-        
-        CGRect frame_deny = self.ImageViewDeny.frame;
-        frame_deny.origin.x =  - frame_deny.size.width;;
-        self.ImageViewDeny.frame = frame_deny;
-
-    }
-}
 
 
 

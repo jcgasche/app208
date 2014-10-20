@@ -45,6 +45,7 @@
                                                   bundle:nil];
     
 
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
     //VIEW0
     self.vc0 = [sb instantiateViewControllerWithIdentifier:@"SettingsViewController"];

@@ -49,6 +49,7 @@
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://angel.co/api/oauth/authorize?client_id=88382b671bafbc2f58f8d6cc75a2ddb2&scope=message%20email%20comment%20talent&response_type=code"] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:15];
 
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
     self.activity.center = self.view.center;
     [self.activity startAnimating];
@@ -237,7 +238,7 @@
                         return;
                     }
                     
-                    [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"An error occured, please try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+//                    [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"An error occured, please try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
                 });
         }];
         

@@ -7,16 +7,16 @@
 //
 
 #import "GGdraggableDetails.h"
-#import "GGOverlayView.h"
+
 
 @interface GGdraggableDetails ()
 @property (nonatomic, strong) UIPanGestureRecognizer *panGestureRecognizer;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 
-@property(nonatomic, strong) GGOverlayView *overlayView;
 @property(nonatomic) CGPoint originalPoint;
 
 @property(nonatomic) CGFloat xOriginal;
+
 @end
 
 
@@ -26,7 +26,11 @@
     
 #define color_red UIColorFromRGB(0xCA1C35)
 #define color_gray UIColorFromRGB(0x929292)
-    #define color_blue UIColorFromRGB(0x338390)
+#define color_blue UIColorFromRGB(0x338390)
+#define color_gray_dark UIColorFromRGB(0x6C6c6c)
+#define color_blue UIColorFromRGB(0x338390)
+    
+    #define font_size 17
 }
 
 
@@ -82,19 +86,19 @@
 //    self.HighConcept.adjustsFontSizeToFitWidth = YES;
 //    self.HighConcept.minimumFontSize = 0;
 //    self.HighConcept.numberOfLines = 2;
-    [self.HighConcept setFont:[UIFont fontWithName:@"ProximaNova-Semibold" size:14]];
+    [self.HighConcept setFont:[UIFont fontWithName:@"ProximaNova-Semibold" size:font_size]];
 //    self.HighConcept.textColor = color_gray ;
 //    self.HighConcept.frame = CGRectMake(120, 45, 160, 40);
 //    
 //    self.LabelLocation = [[UILabel alloc]init];
 //    [self addSubview:self.LabelLocation];
-    [self.LabelLocation setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:15]];
+    [self.LabelLocation setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:font_size]];
 //    self.LabelLocation.textColor = color_gray ;
 //    self.LabelLocation.frame = CGRectMake(120, 85, 160, 20);
 //    
 //    self.LabelRating = [[UILabel alloc]init];
 //    [self addSubview:self.LabelRating];
-    [self.LabelRating setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:14]];
+    [self.LabelRating setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:font_size]];
 //    self.LabelRating.textColor = color_gray ;
 //    self.LabelRating.frame = CGRectMake(120, 115, 160, 20);
 //    
@@ -107,8 +111,8 @@
 //    self.TextViewInvestorsLiked = [[UITextView alloc]init];
 //    [self addSubview:self.TextViewInvestorsLiked];
     self.TextViewInvestorsLiked.editable=YES;
-    [self.TextViewInvestorsLiked setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:14]];
-    self.TextViewInvestorsLiked.textColor = color_gray;
+    [self.TextViewInvestorsLiked setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:font_size]];
+    self.TextViewInvestorsLiked.textColor = color_blue;
     self.TextViewInvestorsLiked.editable=NO;
 //    self.TextViewInvestorsLiked.frame = CGRectMake(17, 145, 257,20);
 //    
@@ -116,8 +120,9 @@
 //    self.LabelStartupDescription = [[UITextView alloc]init];
 //    [self addSubview:self.LabelStartupDescription];
     self.LabelStartupDescription.editable=YES;
-    [self.LabelStartupDescription setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:14]];
-    self.LabelStartupDescription.textColor = color_gray;
+    [self.LabelStartupDescription setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:font_size]];
+    self.LabelStartupDescription.textColor = color_gray_dark;
+    self.LabelStartupDescription.selectable = NO;
     self.LabelStartupDescription.editable=NO;
 //    self.LabelStartupDescription.frame = CGRectMake(17, 165, 257,115);
 //    
@@ -125,14 +130,14 @@
 //    self.Market = [[UILabel alloc]init];
 //    [self addSubview:self.Market];
 //    self.Market.numberOfLines = 2;
-    [self.Market setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:15]];
+    [self.Market setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:font_size]];
 //    self.Market.frame = CGRectMake(20, 290, 257,40);
 //    self.Market.textColor = color_gray;
 //    
 //    
 //    self.LabelRaisedAmount = [[UILabel alloc]init];
 //    [self addSubview:self.LabelRaisedAmount];
-    [self.LabelRaisedAmount setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:15]];
+    [self.LabelRaisedAmount setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:font_size]];
 //    self.LabelRaisedAmount.frame = CGRectMake(20, 328, 257,46);
 //    self.LabelRaisedAmount.textColor = color_gray;
 //    
@@ -140,7 +145,7 @@
 //    
 //    self.RaisingAmount = [[UILabel alloc]init];
 //    [self addSubview:self.RaisingAmount];
-    [self.RaisingAmount setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:15]];
+    [self.RaisingAmount setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:font_size]];
 //    self.RaisingAmount.frame = CGRectMake(20, 374, 257,46);
 //    self.RaisingAmount.textColor = color_red;
 //    
@@ -148,7 +153,7 @@
 //    
 //    self.PreMoneyValuation = [[UILabel alloc]init];
 //    [self addSubview:self.PreMoneyValuation];
-    [self.PreMoneyValuation setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:15]];
+    [self.PreMoneyValuation setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:font_size]];
 //    self.PreMoneyValuation.frame = CGRectMake(20, 414, 257,46);
 //    self.PreMoneyValuation.textColor = color_red;
 //    
@@ -157,6 +162,42 @@
 //    self.activity.center = CGPointMake(55, 50);
 //    self.activity.hidden = YES;
 //    [self addSubview:self.activity];
+    
+    
+    
+    
+    
+    
+    //add a scroll view *******************
+    
+    
+    self.scrollView.frame =  CGRectMake(0, 120, self.frame.size.width, self.frame.size.height - 120);
+//    self.scrollView.contentSize = CGSizeMake(300, 500);
+    
+    [self.scrollView addSubview:self.TextViewInvestorsLiked];
+    [self.scrollView addSubview:self.labelTargeted];
+    [self.scrollView addSubview:self.LabelStartupDescription];
+    [self.scrollView addSubview:self.Market];
+    [self.scrollView addSubview:self.LabelLocation];
+    [self.scrollView addSubview:self.LabelRaisedAmount];
+    [self.scrollView addSubview:self.RaisingAmount];
+    [self.scrollView addSubview:self.PreMoneyValuation];
+    
+    [self.scrollView addSubview:self.labelTitleLocation];
+    [self.scrollView addSubview:self.labelTitleRaisedAmount];
+    [self.scrollView addSubview:self.labelTitleRaisingAmount];
+    [self.scrollView addSubview:self.labelTitleValuation];
+    [self.scrollView addSubview:self.activityInvestors];
+    [self.TextViewInvestorsLiked bringSubviewToFront:self.activityInvestors];
+    [self.scrollView addSubview:self.imageViewLocker];
+    
+    for (UIView *subview in self.scrollView.subviews) {
+        CGRect frame = subview.frame;
+        frame.origin.y -= 110;
+        subview.frame = frame;
+    }
+    
+    [self.viewXib addSubview:self.scrollView];
     
     return self;
 }
@@ -254,16 +295,7 @@
 }
 
 
-- (void)updateOverlay:(CGFloat)distance
-{
-    if (distance > 0) {
-        self.overlayView.mode = GGOverlayViewModeRight;
-    } else if (distance <= 0) {
-        self.overlayView.mode = GGOverlayViewModeLeft;
-    }
-    CGFloat overlayStrength = MIN(fabsf(distance) / 100, 0.4);
-    self.overlayView.alpha = overlayStrength;
-}
+
 
 - (void)resetViewPositionAndTransformations
 {
@@ -271,7 +303,6 @@
                      animations:^{
                          self.center = self.originalPoint;
                          self.transform = CGAffineTransformMakeRotation(0);
-                         self.overlayView.alpha = 0;
                      }];
 }
 
@@ -347,7 +378,7 @@
                     return;
                 }
                 
-                [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"An error occured, please try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+//                [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"An error occured, please try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
             });
     }];
 }
@@ -356,5 +387,16 @@
     NSLog(@"error : %@", [error description]);
 }
 
+
+#pragma mark activity
+-(void) shouldStartActivity : (BOOL) value{
+    self.activityInvestors.hidden = !value;
+    if (value == NO) {
+        [self.activityInvestors stopAnimating];
+    }else{
+        [self.activityInvestors startAnimating];
+    }
+    
+}
 
 @end

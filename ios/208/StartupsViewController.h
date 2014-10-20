@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface StartupsViewController : UIViewController<NSURLConnectionDelegate, NSXMLParserDelegate, UIScrollViewDelegate, UITextFieldDelegate, UIAlertViewDelegate,UITextFieldDelegate,UIGestureRecognizerDelegate>
+#import "GGDraggableView.h"
+@interface StartupsViewController : UIViewController<NSURLConnectionDelegate, NSXMLParserDelegate, UIScrollViewDelegate, UITextFieldDelegate, UIAlertViewDelegate,UITextFieldDelegate,UIGestureRecognizerDelegate, GGdragableProtocol>
 
 @property(strong, nonatomic) IBOutlet UIImageView *ImageViewAccept;
 @property(strong, nonatomic) IBOutlet UIImageView *ImageViewDeny;

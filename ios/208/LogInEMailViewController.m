@@ -122,7 +122,7 @@
     
     //    [self enableFields:NO];
     
-    request.timeoutInterval = 15;
+//    request.timeoutInterval = 15;
     [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
         if (!error){
             //do something with data
@@ -183,8 +183,10 @@
                     [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Your connection is too slow, try later..." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
                     return;
                 }
-                
-                [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"An error occured, please try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+                else{
+//                    [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"An error occured, please try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+                    return;
+                }
             });
     }];
 }

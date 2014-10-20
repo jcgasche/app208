@@ -50,9 +50,9 @@
     if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
     {
         SLComposeViewController *tweetSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-        [tweetSheet setInitialText:@"test"];
-        [tweetSheet addURL:[NSURL URLWithString:@""]];
-        [tweetSheet addImage:[UIImage imageNamed:@""]];
+        [tweetSheet setInitialText:@"Check out app 208 to discover the trendiest startups !"];
+//        [tweetSheet addURL:[NSURL URLWithString:@""]];
+//        [tweetSheet addImage:[UIImage imageNamed:@""]];
         [self presentViewController:tweetSheet animated:YES completion:nil];
     }else{
         UIAlertView *alertView = [[UIAlertView alloc]

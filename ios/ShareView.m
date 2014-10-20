@@ -46,9 +46,7 @@
     self.viewXib.alpha = 0.9;
 //    self.alpha = 0.9;
     
-    
 
-    
     return self;
 }
 
@@ -136,7 +134,7 @@
 #pragma mark copylink
 - (IBAction)share_copylink:(id)sender {
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-    pasteboard.string = @"paste me somewhere";
+    pasteboard.string = self.websiteStartup;
     
     [delegate dismissCustomView:self];
     

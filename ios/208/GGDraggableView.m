@@ -7,14 +7,12 @@
 //
 
 #import "GGDraggableView.h"
-#import "GGOverlayView.h"
 #import "QuartzCore/QuartzCore.h"
 
 @interface GGDraggableView ()
 @property (nonatomic, strong) UIPanGestureRecognizer *panGestureRecognizer;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 
-@property(nonatomic, strong) GGOverlayView *overlayView;
 @property(nonatomic) CGPoint originalPoint;
 
 @property(nonatomic) CGFloat xOriginal;
@@ -29,10 +27,13 @@
     #define color_gray_dark UIColorFromRGB(0x6C6c6c)
     #define color_blue UIColorFromRGB(0x338390)
     
+#define font_size 17
+    
     UIImage *imageJobLocal;
     
 }
 
+@synthesize delegate;
 //@synthesize LabelName= _LabelName;
 
 -(id) initWithCoder:(NSCoder *)aDecoder{
@@ -89,13 +90,13 @@
 //    self.HighConcept.adjustsFontSizeToFitWidth = YES;
 //    self.HighConcept.minimumFontSize = 0;
 //    self.HighConcept.numberOfLines = 2;
-    [self.HighConcept setFont:[UIFont fontWithName:@"ProximaNova-Semibold" size:14]];
+    [self.HighConcept setFont:[UIFont fontWithName:@"ProximaNova-Semibold" size:font_size]];
 //    self.HighConcept.textColor = color_gray ;
 //    self.HighConcept.frame = CGRectMake(120, 45, 160, 40);
 //    
 //    self.LabelLocation = [[UILabel alloc]init];
 //    [self addSubview:self.LabelLocation];
-    [self.LabelLocation setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:15]];
+    [self.LabelLocation setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:font_size]];
 //    self.LabelLocation.textColor = color_gray ;
 //    self.LabelLocation.frame = CGRectMake(120, 85, 160, 20);
 //
@@ -108,23 +109,25 @@
 //    self.LabelStartupDescription = [[UITextView alloc]init];
 //    [self addSubview:self.LabelStartupDescription];
     self.LabelStartupDescription.editable=YES;
-    [self.LabelStartupDescription setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:14]];
+    [self.LabelStartupDescription setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:font_size]];
     self.LabelStartupDescription.textColor = color_gray_dark;
      self.LabelStartupDescription.editable=NO;
+    self.LabelStartupDescription.selectable = NO;
+    self.LabelStartupDescription.delegate = self;
 //    self.LabelStartupDescription.frame = CGRectMake(17, 135, 257,115);
 //
 //    
 //    self.Market = [[UILabel alloc]init];
 //    [self addSubview:self.Market];
 //    self.Market.numberOfLines = 2;
-    [self.Market setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:15]];
+    [self.Market setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:font_size]];
 //    self.Market.frame = CGRectMake(20, 270, 257,40);
 //    self.Market.textColor = color_gray;
 //
 //    
 //    self.LabelRaisedAmount = [[UILabel alloc]init];
 //    [self addSubview:self.LabelRaisedAmount];
-    [self.LabelRaisedAmount setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:15]];
+    [self.LabelRaisedAmount setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:font_size]];
 //    self.LabelRaisedAmount.frame = CGRectMake(20, 328, 257,46);
 //    self.LabelRaisedAmount.textColor = color_gray;
 //    
@@ -132,7 +135,7 @@
 //    
 //    self.RaisingAmount = [[UILabel alloc]init];
 //    [self addSubview:self.RaisingAmount];
-    [self.RaisingAmount setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:15]];
+    [self.RaisingAmount setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:font_size]];
 //    self.RaisingAmount.frame = CGRectMake(20, 374, 257,46);
 //    self.RaisingAmount.textColor = color_red;
 //    
@@ -140,7 +143,7 @@
 //
 //    self.PreMoneyValuation = [[UILabel alloc]init];
 //    [self addSubview:self.PreMoneyValuation];
-    [self.PreMoneyValuation setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:15]];
+    [self.PreMoneyValuation setFont:[UIFont fontWithName:@"ProximaNova-Regular" size:font_size]];
 //    self.PreMoneyValuation.frame = CGRectMake(20, 414, 257,46);
 //    self.PreMoneyValuation.textColor = color_red;
 //
@@ -150,7 +153,57 @@
 //    self.activity.hidden = YES;
 //    [self addSubview:self.activity];
     
+    
+    
+
+    
     return self;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    NSLog(@"scrolled");
+    
+    
+    CALayer *viewLayer = [scrollView layer];
+    CALayer* maskLayer = [CALayer layer];
+    
+    maskLayer.bounds = viewLayer.bounds;
+    
+    [maskLayer setPosition:CGPointMake(CGRectGetWidth(viewLayer.frame)/2.0, CGRectGetHeight(viewLayer.frame)/2.0)];
+    
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGContextRef context = CGBitmapContextCreate (NULL, viewLayer.bounds.size.width, viewLayer.bounds.size.height, 8, 0, colorSpace, kCGImageAlphaPremultipliedLast);
+    
+    CGFloat colors[] = {
+        0.5, 0.5, 0.5, 0.0, //BLACK
+        0.0, 0.0, 0.0, 1.0, //BLACK
+    };
+    
+    CGGradientRef gradient = CGGradientCreateWithColorComponents(colorSpace, colors, NULL, sizeof(colors)/(sizeof(colors[0])*4));
+    CGColorSpaceRelease(colorSpace);
+    
+    NSUInteger gradientH = 20;
+    NSUInteger gradientHPos = 0;
+    
+    CGContextSetFillColorWithColor(context, [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0].CGColor);
+    CGContextFillRect(context, CGRectMake(0, gradientHPos + gradientH, CGRectGetWidth(maskLayer.frame), CGRectGetHeight(maskLayer.frame)));
+    
+    CGContextSetFillColorWithColor(context, [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.0].CGColor);
+    CGContextFillRect(context, CGRectMake(0, 0, 320, gradientHPos));
+    
+    CGContextDrawLinearGradient(context, gradient, CGPointMake(160, gradientHPos), CGPointMake(160, gradientHPos + gradientH), 0);
+    CGGradientRelease(gradient);
+    
+    CGImageRef contextImage = CGBitmapContextCreateImage(context);
+    CGContextRelease(context);
+    
+    [maskLayer setContents:(__bridge id)contextImage];
+    
+    CGImageRelease (contextImage);
+    
+    viewLayer.masksToBounds = YES;
+    viewLayer.mask = maskLayer;
 }
 
 -(void) StartActivity: (BOOL) isActivityLoading{
@@ -191,6 +244,7 @@
     
     NSLog(@"position drag : %f",xDistance);
     
+    
     switch (gestureRecognizer.state) {
         case UIGestureRecognizerStateBegan:{
             self.originalPoint = self.center;
@@ -200,10 +254,10 @@
         };
         case UIGestureRecognizerStateChanged:{
             
-//            if (self.xOriginal > 80) {
             
                 self.position = xDistance;
-                
+                [delegate PositionGGdraggableViewChanged:xDistance];
+            
                 CGFloat rotationStrength = MIN(xDistance / 320, 1);
                 CGFloat rotationAngel = (CGFloat) (2*M_PI/16 * rotationStrength);
                 CGFloat scaleStrength = 1 - fabsf(rotationStrength) / 4;
@@ -216,31 +270,34 @@
                 
                 NSLog(@"ori point : %f",self.xOriginal);
                 
-//        }
+
             
             
             break;
         };
         case UIGestureRecognizerStateEnded: {
-//            if (self.xOriginal > 80) {
                 if (xDistance > 150   ) { //like
                     
                     [self FollowStartup];
                     
                     [self deallocTheView];
                     
+                    [delegate GGdraggableViewWasSwiped:self];
+                    
                 }else if (xDistance < -150){ //don't like
                     
                     [self DoNotFollowStartup];
                     
                     [self deallocTheView];
+                    
+                    [delegate GGdraggableViewWasSwiped:self];
                 }
                 else{//pas assez loin
                     self.position=0;
                     [self resetViewPositionAndTransformations];
+                    [delegate PositionGGdraggableViewChanged:0];
                 }
                 NSLog(@"distance : %f and %f", xDistance , yDistance);
-//            }
             break;
         };
         case UIGestureRecognizerStatePossible:break;
@@ -260,7 +317,7 @@
     
     //save the startup info in plist
     
-//     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     
         NSMutableDictionary * dicStartupToSave = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                                   self.LabelStartupDescription.text, @"description",
@@ -295,27 +352,6 @@
         NSLog(@"the cachedImagedPath is %@",imagePath);
     }
     
-//        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
-//        NSString *docs = [paths objectAtIndex:0];
-//        NSString* path =  [docs stringByAppendingFormat:[NSString stringWithFormat:@"/%@.jpg",self.StartupId]];
-//        [dicStartupToSave setObject:path forKey:@"imagePath"];
-//        NSData* imageData = [NSData dataWithData:UIImageJPEGRepresentation(imageJobLocal, .8)];
-//        NSError *writeError = nil;
-//        
-//        if(![imageData writeToFile:path options:NSDataWritingAtomic error:&writeError]) {
-//            NSLog(@"%@: Error saving image: %@", [self class], [writeError localizedDescription]);
-//        }
-//        
-//        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-//                                                             NSUserDomainMask, YES);
-//        [dicStartupToSave setObject:paths forKey:@"imagePath"];
-//        
-//        NSString *documentsDirectory = [paths objectAtIndex:0];
-//        NSString* path = [documentsDirectory stringByAppendingPathComponent: [NSString stringWithFormat:@"%@.png",self.StartupId] ];
-//        NSData* data = UIImagePNGRepresentation(imageJobLocal);
-//        [data writeToFile:path atomically:YES];
-    
-
         
         if ([[NSUserDefaults standardUserDefaults] objectForKey:@"DicLikedStartups"] == nil) {
 
@@ -328,8 +364,8 @@
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         NSLog(@"nsuser def startups : %@", [[NSUserDefaults standardUserDefaults]objectForKey:@"DicLikedStartups"]);
-        
-//    });
+    
+     });
 }
 
 -(void) DoNotFollowStartup{
@@ -339,16 +375,6 @@
     [self POSTwithUrl:[NSString stringWithFormat:@"http://app208.herokuapp.com/user/%@/company/%@/notfollow", [[[NSUserDefaults standardUserDefaults]objectForKey:@"userDictionary" ] objectForKey:@"user_id"], self.StartupId] andData:nil andParameters:[NSString stringWithFormat:@"&token=%@", [[[NSUserDefaults standardUserDefaults]objectForKey:@"userDictionary" ] objectForKey:@"token"] ]];
 }
 
-- (void)updateOverlay:(CGFloat)distance
-{
-    if (distance > 0) {
-        self.overlayView.mode = GGOverlayViewModeRight;
-    } else if (distance <= 0) {
-        self.overlayView.mode = GGOverlayViewModeLeft;
-    }
-    CGFloat overlayStrength = MIN(fabsf(distance) / 100, 0.4);
-    self.overlayView.alpha = overlayStrength;
-}
 
 - (void)resetViewPositionAndTransformations
 {
@@ -356,7 +382,6 @@
                      animations:^{
                          self.center = self.originalPoint;
                          self.transform = CGAffineTransformMakeRotation(0);
-                         self.overlayView.alpha = 0;
                      }];
 }
 
@@ -428,7 +453,7 @@
                     return;
                 }
                 
-                [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"An error occured, please try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+//                [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"An error occured, please try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
             });
     }];
 }

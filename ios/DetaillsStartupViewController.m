@@ -29,9 +29,14 @@
 @synthesize shareView;
 
 -(void) viewWillAppear:(BOOL)animated{
-    CGRect frame = self.segmentControl.frame;
-    frame.origin.y = self.view.frame.size.height - frame.size.height - 10;
-    self.segmentControl.frame = frame;
+//    CGRect frame = self.segmentControl.frame;
+//    frame.origin.y = self.view.frame.size.height - frame.size.height - 10;
+//    self.segmentControl.frame = frame;
+    
+    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                [UIFont fontWithName:@"ProximaNova-Regular" size:14], UITextAttributeFont, nil];
+    [self.segmentControl setTitleTextAttributes:attributes forState:UIControlStateNormal];
+
 }
 
 - (void)viewDidLoad {
@@ -56,7 +61,7 @@
     NSLog(@"dic for startups : %@", [DicStartup description]);
     
     dragView= [[GGdraggableDetails alloc] init];
-    //dragView.frame = CGRectMake((320-280)/2, 31, 280, 463);
+//    dragView.center = CGPointMake(self.view.center.x, self.view.center.y);
     dragView.center = self.view.center;
     
     CGRect  frame = dragView.frame;
@@ -65,6 +70,8 @@
     
     dragView.LabelStartupName.text = [DicStartup objectForKey:@"name"] ;
     dragView.LabelStartupDescription.text = [DicStartup objectForKey:@"description"];
+//    NSLog(@"good size for uitextview %@", NSStringFromCGSize([[DicStartup objectForKey:@"description"] sizeWithFont:[UIFont fontWithName:@"ProximaNova-Regular" size:14] constrainedToSize:dragView.LabelStartupDescription.frame.size lineBreakMode:NSLineBreakByWordWrapping]   ));
+    
     dragView.StartupId = [DicStartup objectForKey:@"id"];
     dragView.startupWebsite = [DicStartup objectForKey:@"website"];
     dragView.HighConcept.text = [DicStartup objectForKey:@"highConcept"];
@@ -73,11 +80,21 @@
 //    dragView.RaisingAmount.text = [DicStartup objectForKey:@"raising-amount"];
     dragView.LabelLocation.text = [DicStartup objectForKey:@"location"];
     dragView.LabelRating.text =[NSString stringWithFormat:@"Upvotes : %@/%@", [DicStartup objectForKey:@"users-following"],
-                                                                                [DicStartup objectForKey:@"total-views"]];
+                                [DicStartup objectForKey:@"total-views"]];
+    
+    dragView.LabelRating.text =[NSString stringWithFormat:@"%@ ",[DicStartup objectForKey:@"users-following"]];
+    
+    if ( [[DicStartup objectForKey:@"users-following"] integerValue] == 1) {
+        dragView.LabelRating.text = [dragView.LabelRating.text stringByAppendingString:@"upvote"];
+    }else{
+        dragView.LabelRating.text = [dragView.LabelRating.text stringByAppendingString:@"upvotes"];
+    }
+    
     
     dragView.PreMoneyValuation.text =[NSString stringWithFormat:@"%@", [DicStartup objectForKey:@"preMoneyValuation"]];
     dragView.RaisingAmount.text =[NSString stringWithFormat:@"%@",  [DicStartup objectForKey:@"raisingAmount"]];
-    dragView.Market.text =[NSString stringWithFormat:@"%@",   [DicStartup objectForKey:@"market"]];
+    dragView.Market.text  = [@"Markets : " stringByAppendingString: [NSString stringWithFormat:@"%@", [DicStartup objectForKey:@"market"]]] ;
+    dragView.TextViewInvestorsLiked.text = @"";
 
     //set image
     NSString *theImagePath = [DicStartup objectForKey:@"imagePath"];
@@ -86,13 +103,96 @@
     
     [self.view addSubview:dragView];
     
-    //add invesotrs :
-    NSString *user_id = [[[NSUserDefaults standardUserDefaults] objectForKey:@"userDictionary"] objectForKey:@"user_id"];
-    [self POSTwithUrl:[[[@"http://app208.herokuapp.com/user/" stringByAppendingString:user_id]
-                                                                stringByAppendingString:@"/company/"]
-                                                                stringByAppendingString:self.startupId]
-        andData:nil
-        andParameters:[NSString stringWithFormat:@"&token=%@", [[[NSUserDefaults standardUserDefaults]objectForKey:@"userDictionary" ] objectForKey:@"token"]]];
+    [self defineLayoutXibCard];
+    
+    
+    //add investors :
+    if ([[[[NSUserDefaults standardUserDefaults] objectForKey:@"userDictionary"] objectForKey:@"investor"] boolValue] == NO  ) {
+        dragView.TextViewInvestorsLiked.hidden = YES;
+        //        dragView.labelTargeted.hidden = YES;
+        dragView.imageViewLocker.hidden = NO;
+        dragView.activityInvestors.hidden = YES;
+    }else{
+        dragView.imageViewLocker.hidden = YES;
+        
+        NSString *user_id = [[[NSUserDefaults standardUserDefaults] objectForKey:@"userDictionary"] objectForKey:@"user_id"];
+        [self POSTwithUrl:[[[@"http://app208.herokuapp.com/user/" stringByAppendingString:user_id]
+                            stringByAppendingString:@"/company/"]
+                           stringByAppendingString:self.startupId]
+                  andData:nil
+            andParameters:[NSString stringWithFormat:@"&token=%@", [[[NSUserDefaults standardUserDefaults]objectForKey:@"userDictionary" ] objectForKey:@"token"]]];
+    }
+
+}
+
+-(int) bottomCoordinateForView : (UIView*) view{
+    return view.frame.origin.y + view.frame.size.height;
+}
+
+-(void) defineLayoutXibCard{
+    //layout
+    
+    //->define somewhere else the size of the scroll for investors
+    
+    
+    
+    // get the size of the UITextView based on what it would be with the text
+    CGFloat fixedWidth = dragView.LabelStartupDescription.frame.size.width;
+    CGSize newSize = [dragView.LabelStartupDescription sizeThatFits:CGSizeMake(fixedWidth, MAXFLOAT)];
+    CGRect newFrame = dragView.LabelStartupDescription.frame;
+    newFrame.size = CGSizeMake(fmaxf(newSize.width, fixedWidth), newSize.height);
+    newFrame.origin.y = [self bottomCoordinateForView:dragView.TextViewInvestorsLiked];
+    NSLog(@"new size : %@", NSStringFromCGSize(newFrame.size));
+    dragView.LabelStartupDescription.frame = newFrame;
+    
+    #define SPACE_IN_BETWEEN 5
+    
+    CGRect frame = dragView.Market.frame;
+    frame.origin.y = [self bottomCoordinateForView:dragView.LabelStartupDescription] + SPACE_IN_BETWEEN ;
+    dragView.Market.frame = frame;
+    NSLog(@"frame for markets : %@", NSStringFromCGRect(frame));
+    
+    //Location
+    frame = dragView.LabelLocation.frame;
+    frame.origin.y = [self bottomCoordinateForView:dragView.Market];
+    dragView.LabelLocation.frame = frame;
+    
+    frame = dragView.labelTitleLocation.frame;
+    frame.origin.y = dragView.LabelLocation.frame.origin.y;
+    dragView.labelTitleLocation.frame = frame;
+
+    //Raised
+    frame = dragView.LabelRaisedAmount.frame;
+    frame.origin.y = [self bottomCoordinateForView:dragView.LabelLocation];
+    dragView.LabelRaisedAmount.frame = frame;
+    
+    frame = dragView.labelTitleRaisedAmount.frame;
+    frame.origin.y = dragView.LabelRaisedAmount.frame.origin.y;
+    dragView.labelTitleRaisedAmount.frame = frame;
+    
+    //Raising
+    frame = dragView.RaisingAmount.frame;
+    frame.origin.y = [self bottomCoordinateForView:dragView.LabelRaisedAmount];
+    dragView.RaisingAmount.frame = frame;
+    
+    frame = dragView.labelTitleRaisingAmount.frame;
+    frame.origin.y = dragView.RaisingAmount.frame.origin.y;
+    dragView.labelTitleRaisingAmount.frame = frame;
+    
+    //valuation
+    frame = dragView.PreMoneyValuation.frame;
+    frame.origin.y = [self bottomCoordinateForView:dragView.RaisingAmount];
+    dragView.PreMoneyValuation.frame = frame;
+    
+    frame = dragView.labelTitleValuation.frame;
+    frame.origin.y = dragView.PreMoneyValuation.frame.origin.y;
+    dragView.labelTitleValuation.frame = frame;
+    
+
+    
+    dragView.scrollView.contentSize = CGSizeMake(300, [self bottomCoordinateForView:dragView.PreMoneyValuation] + 20);
+    
+
 }
 
 #pragma mark connection
@@ -112,6 +212,7 @@
     //    [self enableFields:NO];
     
 //    request.timeoutInterval = 15;
+    [dragView shouldStartActivity:YES];
     [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
         if (!error){
             //do something with data
@@ -132,20 +233,51 @@
                 
                 //update the investors in the view
                 
+                if ([[[dict objectForKey:@"hash"] objectForKey:@"investor-followers"] objectForKey:@"investor-follower"] == nil) {
+                    return;
+                }
+                
                 NSMutableArray *investors = [[[dict objectForKey:@"hash"] objectForKey:@"investor-followers"] objectForKey:@"investor-follower"];
                 if (![investors isKindOfClass:[NSArray class]])
                 {
                     // if 'list' isn't an array, we create a new array containing our object
                     investors = [NSMutableArray arrayWithObject:investors];
                 }
-                NSString *names ;
+                
+                NSString *names = @"";
+                int compte = 0;
                 for (NSDictionary *investor in investors) {
-                    [names stringByAppendingString:[[investor objectForKey:@"name,"]objectForKey:@"text"]];
+                
+                    names = [names stringByAppendingString:[investor objectForKey:@"text"]] ;
+                    
+                    if (compte == ([investors count] - 1)){
+                        NSLog(@"virgule");
+                        names = [names stringByAppendingString:@"."];
+                    }
+                    else {
+                        names = [names stringByAppendingString:@", "];
+                        NSLog(@"point");
+                    }
+                    
+                    compte++;
                 }
                 NSLog(@"names : %@", names );
                 
                 NSLog(@"invertors are : %@", [investors description]);
                 dragView.TextViewInvestorsLiked.text = names;
+                
+                
+                // get the size of the UITextView based on what it would be with the text
+                CGFloat fixedWidth = dragView.TextViewInvestorsLiked.frame.size.width;
+                CGSize newSize = [dragView.TextViewInvestorsLiked sizeThatFits:CGSizeMake(fixedWidth, MAXFLOAT)];
+                CGRect newFrame = dragView.TextViewInvestorsLiked.frame;
+                newFrame.size = CGSizeMake(fmaxf(newSize.width, fixedWidth), newSize.height);
+                NSLog(@"new size : %@", NSStringFromCGSize(newFrame.size));
+                dragView.TextViewInvestorsLiked.frame = newFrame;
+                
+                [self defineLayoutXibCard];
+                
+                [dragView shouldStartActivity:NO];
             });
             
             NSLog(@"data response : %@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
@@ -169,7 +301,9 @@
                     return;
                 }
                 
-                [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"An error occured, please try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+                [dragView shouldStartActivity:NO];
+                
+//                [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"An error occured, please try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
             });
     }];
 }
@@ -181,6 +315,7 @@
 - (IBAction)SegmentValueChanged:(UISegmentedControl*)sender {
     if (sender.selectedSegmentIndex == 0) {
         NSLog(@"0");
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
         
         [UIView animateWithDuration:0.2 animations:^{
             self.webView.frame = CGRectMake(0, 0, 10, 10);
@@ -190,6 +325,9 @@
         }];
         
     }else{
+        
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+        
         //show the website !
         NSString *websiteUrl = dragView.startupWebsite;
 //        NSString *websiteUrl = @"http://www.google.com";
@@ -223,6 +361,9 @@
 }
 
 - (IBAction)back:(UIButton *)sender {
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 - (IBAction)share:(id)sender {
