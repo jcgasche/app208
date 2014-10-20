@@ -28,10 +28,12 @@ class CompaniesController < ApplicationController
 			puts "_____________________________"
 			puts "page: " << page.to_s
 			puts "total: " << last_page.to_s
-			puts "number of cs: " << Company.all.count.to_i
+			puts "number of cs: " << Company.count.to_s
 
 			# Take each company individually and create company in database 
 			companies.each do |company| 
+				break if Company.count >= limit
+
 				markets = ""
 				company['markets'].each do |market_tag|
 					markets = markets << market_tag['display_name'] << ", "
@@ -72,7 +74,7 @@ class CompaniesController < ApplicationController
 				end
 			end
 
-			break if companies_to_load?( page, last_page, limit)
+			break unless companies_to_load?( page, last_page, limit)
 		end 
 
 		redirect_to companies_path

@@ -145,7 +145,7 @@ class UsersController < ApplicationController
 
 	def show
 		@response = {errors: [], companies: []}
-		User.find(params[:user_id]).unviewed_companies.shuffle[0..9].each { |company| @response[:companies].push(company.info) }
+		User.find(params[:user_id]).unviewed_companies[0..9].each { |company| @response[:companies].push(company.info) }
 		if @response.empty?
 			@response[:status] = "failure"
 		else
@@ -236,9 +236,9 @@ class UsersController < ApplicationController
 	private
 
 		def correct_user
-			unless User.find_by(id: params[:user_id]).token == params[:token]
-				@response = {errors: ["invalidCredentials"]}
-				@response[:status] = "failure"
+			user = User.find_by(id: params[:user_id])
+			unless user.blank? || user.token == params[:token]
+				@response = {errors: ["invalidCredentials"], status: "failure"}
 				render xml: @response
 			end
 		end
