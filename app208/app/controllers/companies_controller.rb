@@ -4,7 +4,7 @@ class CompaniesController < ApplicationController
 	def fill_db
 
 		page = 1
-		limit = nil unless limit = params[:limit]
+		limit = nil unless limit = params[:limit].to_i
 
 		loop do
 
@@ -28,7 +28,7 @@ class CompaniesController < ApplicationController
 			puts "_____________________________"
 			puts "page: " << page.to_s
 			puts "total: " << last_page.to_s
-			puts "number of cs: " << Company.all.count
+			puts "number of cs: " << Company.all.count.to_i
 
 			# Take each company individually and create company in database 
 			companies.each do |company| 
