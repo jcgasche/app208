@@ -30,6 +30,11 @@ class StaticPagesController < ApplicationController
 			for index in 0 .. 3
 				@markets[index] = ordered_markets[index].first
 			end
+		else
+			@best_startups = []
+			@random_startups = []
+			@markets = []
+				
 		end
 
 	end

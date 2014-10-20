@@ -6,7 +6,7 @@ class CompaniesController < ApplicationController
 		page = 1
 		limit = nil unless limit = params[:limit]
 
-		begin
+		loop do
 
 			# Get companies raising - from AngelCo API
 			url = URI.parse("http://api.angel.co/1/startups?filter=raising&page=#{page}")
@@ -72,8 +72,8 @@ class CompaniesController < ApplicationController
 				end
 			end
 
-
-		end while companies_to_load?( page, last_page, limit)
+			break if companies_to_load?( page, last_page, limit)
+		end 
 
 		redirect_to companies_path
 	end

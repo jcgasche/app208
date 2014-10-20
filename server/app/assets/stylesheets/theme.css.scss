@@ -4,14 +4,10 @@
 
 
 
-$indian: #EA2E49; /* replace by: indian; */
 $lightGrey: #F2F5F8;
 $mediumGrey: #808A94;
 $darkGrey: #565A5F;
 $anthracite: #2f3238; /* used to be: $color1 */
-
-$blueAwesome: #00B2EE; /* replace by: aqua; */
-
 
 $beige: #eeeeed;
 $lemon: #f2ea00;
@@ -21,6 +17,9 @@ $orange: #f0aa14; /* -> is "amber" for backgrounds and QR codes.*/
 $sunset: #f08630; /* -> is "orange" for backgrounds and QR codes.*/
 
 $strawberry: #f07a60; /* -> is "red" for the QR codes.*/
+
+$color2: #04354B;
+$color1: #7fbadc;
 
 $red: #EB5745;
 $indian: #EA2E49;
@@ -41,10 +40,10 @@ $ghost: #35203B;
 
 
 .main-layer{
-  background: -webkit-linear-gradient(-45deg, $red, $indian); /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient(-45deg, $red, $indian); /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient(-45deg, $red, $indian); /* For Firefox 3.6 to 15 */
-  background: linear-gradient(-45deg, $red, $indian); /* Standard syntax */
+  background: -webkit-linear-gradient(-45deg, $color1, $color2); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(-45deg, $color1, $color2); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(-45deg, $color1, $color2); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(-45deg, $color1, $color2); /* Standard syntax */
   overflow: hidden;
   min-width: 100%; min-height: 100%;
   width: auto; height: auto; z-index: -100;
@@ -52,17 +51,17 @@ $ghost: #35203B;
 }
 
 .header{
-  background: -webkit-linear-gradient(-45deg, $red, $indian); /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient(-45deg, $red, $indian); /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient(-45deg, $red, $indian); /* For Firefox 3.6 to 15 */
-  background: linear-gradient(-45deg, $red, $indian); /* Standard syntax */
+  background: -webkit-linear-gradient(-45deg, $color1, $color2); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(-45deg, $color1, $color2); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(-45deg, $color1, $color2); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(-45deg, $color1, $color2); /* Standard syntax */
 }
 
 .gradient-background{
-  background: -webkit-linear-gradient(135deg, $red, $indian) !important; /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient(135deg, $red, $indian) !important; /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient(135deg, $red, $indian) !important; /* For Firefox 3.6 to 15 */
-  background: linear-gradient(135deg, $red, $indian) !important; /* Standard syntax */
+  background: -webkit-linear-gradient(135deg, $color1, $color2) !important; /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(135deg, $color1, $color2) !important; /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(135deg, $color1, $color2) !important; /* For Firefox 3.6 to 15 */
+  background: linear-gradient(135deg, $color1, $color2) !important; /* Standard syntax */
 }
 
 .img-center{
@@ -106,7 +105,7 @@ h4,
 h5,
 h6{
 	font-family: Lato, sans-serif;
-	color: $red;
+	color: $blue;
 }
 
 h1 {
@@ -124,13 +123,14 @@ h1.section-title{
     line-height:64px;
     font-weight:300;
     text-align:center;
-    color:$red;
+    color: $blue;
     z-index:1;
 }
 
 .section-title span {
     font-size:150%;
     font-weight:400;
+    color: $blue;
 }
 
 .section-title [class*=icon]{
@@ -148,6 +148,7 @@ h2 {
     line-height:24px;
     font-weight:bold;
     text-transform:uppercase;
+    color: $blue;
 }
 
 p {
@@ -166,13 +167,13 @@ a:focus {
 }
 
 a {
-  color: $indian;
+  color: $color2;
   text-decoration: none;
 }
 
 a:hover,
 a:focus {
-  color: $indian;
+  color: $color2;
   text-decoration: none;
 }
 
@@ -200,7 +201,7 @@ body {
 
 .btn-theme{
 	color:#fff;
-	background-color:$red;
+	background-color:$color1;
 	padding:15px 90px;
 	font-size:24px;
 	font-weight:300;
@@ -241,7 +242,7 @@ body {
 .btn-theme.transparent:hover,
 .btn-theme.transparent:focus,
 .btn-theme.transparent:active{
-	color:$red;
+	color:$color1;
 	background-color:#fff;
 	border:2px solid #fff;
 	opacity:1;
@@ -268,7 +269,7 @@ body {
 }
 
 #main-nav.scrolled .navbar-brand{
-    color:$red;
+    color:$color1;
 }
 
 #main-nav{
@@ -285,12 +286,12 @@ body {
 }
 
 #main-nav.scrolled .navbar-toggle{
-    color:$red;
-    border-color:$red;
+    color:$color1;
+    border-color:$color1;
 }
 
 #main-nav.scrolled .navbar-toggle .icon-bar{
-    background:$red;
+    background:$color1;
 }
 
 #main-nav .container{
@@ -318,7 +319,7 @@ body {
 #main-nav.scrolled .nav a,
 #main-nav.scrolled .nav a:active,
 #main-nav.scrolled .nav a:hover{
-    color:$red;
+    color:$color1;
 }
 
 
@@ -363,8 +364,8 @@ body {
 
 #main-nav.scrolled .nav a:hover:before,
 #main-nav.scrolled .nav li.active a:before {
-	color: $red;
-	text-shadow: 12px 0 $red, -12px 0 $red;
+	color: $color1;
+	text-shadow: 12px 0 $color1, -12px 0 $color1;
 }
 
 .no-textshadow #main-nav .nav a:before {
@@ -381,7 +382,7 @@ body {
 ------------------------*/
 
 .banner {
-    background:$red;
+    background:$color1;
     color:#fff;
     padding:80px 0;
     text-align: center;
@@ -427,7 +428,7 @@ body {
 
 .jumbotron {
     background:transparent;
-    color:$red;
+    color:$color1;
 }
 
 header.jumbotron{
@@ -515,7 +516,7 @@ header.jumbotron{
 
 #services .row.line {
     height:6px;
-    background:$indian;
+    background:$color1;
     margin-bottom:24px;
 }
 
@@ -524,7 +525,7 @@ header.jumbotron{
     display:block;
     width:20px;
     height:20px;
-    background:$indian;
+    background:$color1;
     border:5px solid #fff;
     border-radius:50%;
 }
@@ -541,7 +542,7 @@ header.jumbotron{
     line-height:130px;
     color:#ccc;
     background:none;
-    border:10px solid $indian;
+    border:10px solid $color1;
     border-radius:50%;
     z-index:1;
     -webkit-transition:color 0.2s ease-in;
@@ -558,9 +559,9 @@ header.jumbotron{
     position:absolute;
     width:100%;
     height:100%;
-    background:$indian;
+    background:$color1;
     border-radius:50%;
-    border:2px solid $indian;
+    border:2px solid $color1;
 	-webkit-box-sizing: content-box; 
 	-moz-box-sizing: content-box; 
 	box-sizing: content-box;
@@ -617,7 +618,7 @@ header.jumbotron{
 ------------------------*/
 
 #about {
-    background:$red;
+    background:$color1;
     color:#fff;
     padding:80px 0;
 }
@@ -658,7 +659,7 @@ header.jumbotron{
 ------------------------*/
 
 #download {
-    background:$red;
+    background:$color1;
     color:#fff;
     padding:80px 0;
     text-align: center;
@@ -700,7 +701,7 @@ header.jumbotron{
 #skills {
     padding-top:80px;
 	background:#fff;
-    color: $indian;
+    color: $color2;
 }
 
 .skills .col-sm-3 {
@@ -738,7 +739,7 @@ header.jumbotron{
 }
 
 #skills h2 {
-    color: $indian;
+    color: $color1;
     text-align: center;
     margin:0 0 80px;
 }
@@ -759,7 +760,7 @@ header.jumbotron{
 }
 
 #portfolio .section-title {
-    color: $indian;
+    color: $color2;
     font-weight:300;
     margin-bottom:60px;
 }
@@ -818,7 +819,7 @@ header.jumbotron{
 
 #filter-works ul li:hover a,
 #filter-works ul li.active a{
-    color:$red;
+    color:$color1;
 }
 
 .masonry-wrapper{
@@ -886,7 +887,7 @@ header.jumbotron{
     height:100%;
     top:0;
     left:0;
-    background:$red;
+    background:$color1;
     opacity:0;
 	filter:alpha(opacity=0);
     -webkit-transition:all 0.3s ease-out;
@@ -1039,7 +1040,7 @@ header.jumbotron{
 .modal-header{
     height:60px;
     border:none;
-    border-bottom:1px solid $red;
+    border-bottom:1px solid $color1;
     margin-bottom:10px;
 }
 
@@ -1052,7 +1053,7 @@ header.jumbotron{
 }
 
 .modal-header .close:hover{
-    color:$red;
+    color:$color1;
     opacity:1;
 }
 
@@ -1080,7 +1081,7 @@ header.jumbotron{
 }
 
 .modal-body h1{
-    color:$indian;
+    color:$color2;
     margin:200px 0 24px;
     font-size:32px;
 }
@@ -1128,7 +1129,7 @@ header.jumbotron{
 
 #twitter {
     color:#fff;
-    background:$red;
+    background:$color1;
     padding:60px 0;
 }
 
@@ -1244,12 +1245,12 @@ header.jumbotron{
 }
 
 #contact .section-title {
-    color: $red;
+    color: $color1;
     margin-bottom:84px;
 }
 
 #contact .section-title [class*=icon]{
-    color:$red;
+    color:$color1;
 	-webkit-transform: rotate(-15deg);
 	-moz-transform: rotate(-15deg);
 	-ms-transform: rotate(-15deg);
@@ -1265,7 +1266,7 @@ header.jumbotron{
     font-size:18px;
     line-height:30px;
     font-weight:400;
-    color: $red;
+    color: $color1;
 }
 
 
@@ -1298,7 +1299,7 @@ header.jumbotron{
 
 #contact .socials li a:hover{
     padding:0;
-    color:$red;
+    color:$color1;
     text-decoration:none;
 }
 
@@ -1309,7 +1310,7 @@ header.jumbotron{
     line-height:24px;
     font-weight:400;
     text-transform:uppercase;
-    color: $red;
+    color: $color1;
 }
 
 #contact-form.no-placeholder .form-group label{
@@ -1328,7 +1329,7 @@ header.jumbotron{
     font-size:30px;
     line-height:48px;
     font-weight:300;
-    color:$red;
+    color:$color1;
     padding-left:64px;
 }
 
@@ -1342,7 +1343,7 @@ header.jumbotron{
     position:absolute;
     top:0;
     left:5px;
-    color:$red;
+    color:$color1;
     font-size:32px;
     line-height:68px;
     text-align:center;
@@ -1370,22 +1371,22 @@ header.jumbotron{
 }
 
 #contact-form .form-control::-webkit-input-placeholder { /* WebKit browsers */
-    color:    $red;
+    color:    $color1;
 }
 #contact-form .form-control:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-    color:    $red;
+    color:    $color1;
     opacity:1;
 }
 #contact-form .form-control::-moz-placeholder { /* Mozilla Firefox 19+ */
-    color:    $red;
+    color:    $color1;
     opacity:1;
 }
 #contact-form .form-control:-ms-input-placeholder { /* Internet Explorer 10+ */
-    color:    $red;
+    color:    $color1;
 }
 
 #contact-form .error-message {
-    background:$red;
+    background:$color1;
     padding:10px 20px;
     position:absolute;
     top:-10px;
@@ -1399,7 +1400,7 @@ header.jumbotron{
 ------------------------*/
 #main-footer {
     background:#fff;
-    color:$red;
+    color:$color1;
     padding:30px 0;
 }
 
@@ -1410,7 +1411,7 @@ header.jumbotron{
     font-size:24px;
     line-height:24px;
     font-weight:normal;
-    color:$red;
+    color:$color1;
 }
 
 #main-footer .small-logo span {
@@ -1433,7 +1434,7 @@ header.jumbotron{
     display:inline-block;
     padding:0 15px;
     line-height:24px;
-    border-right:1px solid $red;
+    border-right:1px solid $color1;
 }
 
 #main-footer ul.footer-nav li:first-child{
@@ -1445,7 +1446,7 @@ header.jumbotron{
 }
 
 #main-footer ul.footer-nav li a{
-    color:$red;
+    color:$color1;
     text-decoration:none;
     font-size:14px;
     line-height:24px;
@@ -1459,12 +1460,12 @@ header.jumbotron{
 
 #main-footer ul.footer-nav li a:hover,
 #main-footer ul.footer-nav li a:active{
-    color: $indian;
+    color: $color2;
     text-decoration:none;
 }
 
 #main-footer p{
-    color:$red;
+    color:$color1;
     font-size:14px;
     line-height:24px;
     font-weight:400;
@@ -1662,7 +1663,7 @@ header.jumbotron{
 @media (max-width: 768px) {
 
 #main-nav .navbar-brand{
-    color:$red;
+    color:$color1;
 }
 
 #main-nav{
@@ -1671,12 +1672,12 @@ header.jumbotron{
 }
 
 #main-nav .navbar-toggle{
-    color:$red;
-    border-color:$red;
+    color:$color1;
+    border-color:$color1;
 }
 
 #main-nav .navbar-toggle .icon-bar{
-    background:$red;
+    background:$color1;
 }
 
 #main-nav .container{
@@ -1686,7 +1687,7 @@ header.jumbotron{
 #main-nav .nav a,
 #main-nav .nav a:active,
 #main-nav .nav a:hover{
-    color:$red;
+    color:$color1;
     line-height:42px;
     text-align:center;
 }
