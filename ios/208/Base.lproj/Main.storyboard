@@ -5,10 +5,9 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <customFonts key="customFonts">
-        <mutableArray key="JosefinSans-Regular.ttf">
-            <string>JosefinSans</string>
-        </mutableArray>
         <mutableArray key="ProximaNova-Regular.otf">
+            <string>ProximaNova-Regular</string>
+            <string>ProximaNova-Regular</string>
             <string>ProximaNova-Regular</string>
             <string>ProximaNova-Regular</string>
             <string>ProximaNova-Regular</string>
@@ -21,6 +20,7 @@
             <string>ProximaNova-Regular</string>
         </mutableArray>
         <mutableArray key="ProximaNova-Semibold.otf">
+            <string>ProximaNova-Semibold</string>
             <string>ProximaNova-Semibold</string>
             <string>ProximaNova-Semibold</string>
             <string>ProximaNova-Semibold</string>
@@ -160,34 +160,16 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="kOx-qe-pY4">
-                                <rect key="frame" x="68" y="174" width="191" height="82"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                                <state key="normal">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="reloadStartups:" destination="KFv-yS-f5L" eventType="touchUpInside" id="hqS-WB-xNl"/>
-                                </connections>
-                            </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-yes" id="vCm-XS-nK0">
                                 <rect key="frame" x="269" y="225" width="51" height="110"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zaf-RU-B2P">
-                                <rect key="frame" x="52" y="152" width="223" height="92"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="JosefinSans" family="Josefin Sans" pointSize="17"/>
-                                <color key="textColor" red="0.92156862750000001" green="0.3411764706" blue="0.27058823529999998" alpha="1" colorSpace="deviceRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-no" id="Xd6-PF-hOO">
                                 <rect key="frame" x="0.0" y="225" width="55" height="110"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="NVf-an-dXI">
-                                <rect key="frame" x="74" y="325" width="172" height="64"/>
+                                <rect key="frame" x="77" y="323" width="172" height="64"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <string key="text">Just a moment,
 we're hunting the
@@ -227,6 +209,28 @@ trendiest startups !</string>
                                     <action selector="goLeft:" destination="KFv-yS-f5L" eventType="touchUpInside" id="EPv-t1-ZAF"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="kOx-qe-pY4">
+                                <rect key="frame" x="104" y="217" width="119" height="87.5"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                <state key="normal" image="button-reload-white">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="reloadStartups:" destination="KFv-yS-f5L" eventType="touchUpInside" id="hqS-WB-xNl"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="EMW-kk-LIs">
+                                <rect key="frame" x="59" y="306" width="203" height="114"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">Come back soon ! 
+
+More startups will have subscribed to 208 !
+</string>
+                                <fontDescription key="fontDescription" name="ProximaNova-Regular" family="Proxima Nova" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -238,7 +242,7 @@ trendiest startups !</string>
                         <outlet property="ImageViewDeny" destination="Xd6-PF-hOO" id="d5U-DZ-POP"/>
                         <outlet property="ImageViewLoadingDart" destination="r40-BK-pha" id="1Zb-0s-w54"/>
                         <outlet property="buttonReloadJobs" destination="kOx-qe-pY4" id="Cgc-RT-c9Q"/>
-                        <outlet property="labelNoJobs" destination="zaf-RU-B2P" id="G2X-xU-89h"/>
+                        <outlet property="labelNoJobs" destination="EMW-kk-LIs" id="eMO-b9-VlG"/>
                         <outlet property="textUI" destination="NVf-an-dXI" id="rdC-MG-lBd"/>
                     </connections>
                 </viewController>
@@ -361,7 +365,7 @@ trendiest startups !</string>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zvs-e0-VG8">
-                                <rect key="frame" x="113" y="33" width="95" height="31"/>
+                                <rect key="frame" x="113" y="20" width="95" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="ProximaNova-Semibold" family="Proxima Nova" pointSize="25"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -383,7 +387,7 @@ trendiest startups !</string>
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background-login" id="PDs-qa-fyQ">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background-gradient" id="PDs-qa-fyQ">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -394,7 +398,7 @@ trendiest startups !</string>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="nhz-FU-ENd" kind="modal" id="rGw-qJ-2aQ"/>
+                                    <action selector="loginTwitter:" destination="ull-EY-d9K" eventType="touchUpInside" id="UR7-xw-GRc"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Dzv-Lc-cZZ">
@@ -412,13 +416,25 @@ trendiest startups !</string>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="color" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                             </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Startups, products, money" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="u9G-Wx-XiO">
+                                <rect key="frame" x="58" y="206" width="205" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="ProximaNova-Regular" family="Proxima Nova" pointSize="25"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="login-logo" id="tYf-uF-ycD">
+                                <rect key="frame" x="103" y="77" width="115" height="121"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="t30-cY-g6I"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
-                        <outlet property="activity" destination="JHH-eu-Psp" id="YqZ-Bj-r0f"/>
+                        <outlet property="activity" destination="JHH-eu-Psp" id="he0-Mh-ErW"/>
+                        <outlet property="imageDart" destination="tYf-uF-ycD" id="QBP-7g-Mzo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FTo-Vt-cMP" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -482,7 +498,7 @@ trendiest startups !</string>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" id="CbT-T1-zP5">
                                 <rect key="frame" x="142" y="265" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" red="0.79215686269999996" green="0.10980392160000001" blue="0.20784313730000001" alpha="1" colorSpace="deviceRGB"/>
+                                <color key="color" red="0.20000000000000001" green="0.51372549020000002" blue="0.56470588239999997" alpha="1" colorSpace="deviceRGB"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -527,14 +543,14 @@ trendiest startups !</string>
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="141" sectionHeaderHeight="22" sectionFooterHeight="22" id="6A4-0K-ukU">
-                                <rect key="frame" x="0.0" y="20" width="320" height="500"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="146" sectionHeaderHeight="22" sectionFooterHeight="22" id="6A4-0K-ukU" customClass="CustomTableVlew">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" rowHeight="141" id="1yv-uS-3bl">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" rowHeight="146" id="1yv-uS-3bl">
                                         <rect key="frame" x="0.0" y="22" width="320" height="181"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" tableViewCell="1yv-uS-3bl" id="3UV-7j-c69">
@@ -542,35 +558,42 @@ trendiest startups !</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" tag="555" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="tBh-AL-dzG">
-                                                    <rect key="frame" x="8" y="35" width="66" height="71"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="nav-icon-next" id="TUz-LA-p75">
-                                                    <rect key="frame" x="300" y="58" width="12" height="25"/>
+                                                    <rect key="frame" x="8" y="37" width="66" height="71"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="333" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Upvotes :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" id="P7D-H1-8qv">
-                                                    <rect key="frame" x="86" y="103" width="225" height="21"/>
+                                                    <rect key="frame" x="86" y="95" width="225" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="ProximaNova-Semibold" family="Proxima Nova" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="777" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="website" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="1" id="4Ow-uG-6ai">
+                                                    <rect key="frame" x="87" y="114" width="225" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="ProximaNova-Semibold" family="Proxima Nova" pointSize="17"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" id="OlT-Ul-5GL">
-                                                    <rect key="frame" x="87" y="20" width="225" height="21"/>
+                                                    <rect key="frame" x="87" y="11" width="225" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="ProximaNova-Semibold" family="Proxima Nova" pointSize="17"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" tag="222" contentMode="scaleToFill" editable="NO" selectable="NO" id="8va-ZL-tgD">
-                                                    <rect key="frame" x="82" y="42" width="212" height="57"/>
+                                                    <rect key="frame" x="82" y="34" width="212" height="57"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" name="ProximaNova-Regular" family="Proxima Nova" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 </textView>
+                                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-details" id="TUz-LA-p75">
+                                                    <rect key="frame" x="286" y="60" width="26" height="25"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.20000000000000001" green="0.51372549020000002" blue="0.56470588239999997" alpha="1" colorSpace="deviceRGB"/>
@@ -615,15 +638,10 @@ trendiest startups !</string>
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <webView contentMode="scaleToFill" id="ivc-VC-qjn">
-                                <rect key="frame" x="40" y="336" width="240" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </webView>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" id="hya-r6-Uwf">
                                 <rect key="frame" x="150" y="410" width="20" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" red="0.79215686269999996" green="0.10980392160000001" blue="0.20784313730000001" alpha="1" colorSpace="deviceRGB"/>
+                                <color key="color" red="0.20000000000000001" green="0.51372549020000002" blue="0.56470588239999997" alpha="1" colorSpace="deviceRGB"/>
                             </activityIndicatorView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="YxS-TN-PtV">
                                 <rect key="frame" x="274" y="530" width="46" height="37"/>
@@ -636,7 +654,7 @@ trendiest startups !</string>
                                 </connections>
                             </button>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="eA6-PM-03U">
-                                <rect key="frame" x="98" y="535" width="125" height="29"/>
+                                <rect key="frame" x="98" y="534" width="125" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="Details"/>
@@ -651,7 +669,7 @@ trendiest startups !</string>
                                 <rect key="frame" x="0.0" y="531" width="46" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" image="nav-icon-back">
+                                <state key="normal" image="nav-icon-down">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -659,6 +677,11 @@ trendiest startups !</string>
                                     <action selector="back:" destination="yBM-6K-Uhd" eventType="touchUpInside" id="mSO-LI-g5n"/>
                                 </connections>
                             </button>
+                            <webView contentMode="scaleToFill" id="ivc-VC-qjn">
+                                <rect key="frame" x="40" y="336" width="240" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -670,7 +693,7 @@ trendiest startups !</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Z0-3a-lUv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3168" y="1026"/>
+            <point key="canvasLocation" x="3630" y="378"/>
         </scene>
         <!--Share View Controller-->
         <scene sceneID="zY9-TU-tVw">
@@ -829,9 +852,11 @@ trendiest startups !</string>
         <image name="background-login" width="640" height="1136"/>
         <image name="button-login-angelList" width="217" height="60"/>
         <image name="button-login-twitter" width="217" height="40"/>
+        <image name="button-reload-white" width="40" height="44"/>
         <image name="button-share-twitter" width="148" height="37"/>
         <image name="button-share-twitter-full" width="148" height="37"/>
         <image name="icon-copylink" width="120" height="30"/>
+        <image name="icon-details" width="19" height="19"/>
         <image name="icon-email" width="86" height="30"/>
         <image name="icon-menu-addjob" width="164" height="45"/>
         <image name="icon-menu-myprofile" width="164" height="45"/>
@@ -840,9 +865,11 @@ trendiest startups !</string>
         <image name="icon-twitter" width="99" height="30"/>
         <image name="icon-yes" width="55" height="110"/>
         <image name="loading-dart" width="81" height="81"/>
+        <image name="login-logo" width="106" height="106"/>
         <image name="nav-icon-back" width="12" height="22"/>
         <image name="nav-icon-dart" width="23" height="23"/>
         <image name="nav-icon-dart-full" width="23" height="23"/>
+        <image name="nav-icon-down" width="22" height="12"/>
         <image name="nav-icon-next" width="12" height="22"/>
         <image name="nav-icon-settings" width="24" height="24"/>
         <image name="nav-icon-settings-full" width="24" height="24"/>

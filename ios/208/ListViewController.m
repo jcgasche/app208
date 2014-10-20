@@ -144,6 +144,17 @@
                                                              options:XMLReaderOptionsProcessNamespaces
                                                                error:&error];
                 NSLog(@"dic from server list: %@", dict);
+            
+            
+                if ([[[dict objectForKey:@"hash"] objectForKey:@"companies"] objectForKey:@"company"] == nil ||
+                [dict objectForKey:@"html"] != nil ) {
+                    
+                    
+                    
+                    return;
+                }
+            
+            
                 NSArray *Startups = [[[dict objectForKey:@"hash"] objectForKey:@"companies"] objectForKey:@"company"];
                 //                NSArray *Startups = [[dict objectForKey:@"hash"] objectForKey:@"companies"]; //returns 8 objects if 1 compynie likes !
                 
@@ -212,7 +223,7 @@
                     return;
                 }
                 
-                [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"An error occured, please try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+//                [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"An error occured, please try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
             });
     }];
 }
@@ -246,6 +257,7 @@
     
     UILabel *LabelPrice = (UILabel*)[cell viewWithTag:100];
     UILabel *LabeLikes = (UILabel*)[cell viewWithTag:333];
+    UILabel *labelWebsite = (UILabel*)[cell viewWithTag:777];
 
     UIImageView *imageView = (UIImageView*)[cell viewWithTag:555];
     UITextView *desc = (UITextView*)[cell viewWithTag:222];
@@ -261,7 +273,20 @@
     
     LabelPrice.text = [startupForCell objectForKey:@"name"];
     desc.text = [startupForCell objectForKey:@"highConcept"];
-//    LabelMarketTags.text = [startupForCell objectForKey:@"market"];
+    
+    //Website
+    if ([startupForCell objectForKey:@"website"] == nil ||
+        [[startupForCell objectForKey:@"website"] isEqualToString:@""]) {
+        labelWebsite.text = @"";
+    }else{
+        NSArray *myWords = [[startupForCell objectForKey:@"website"] componentsSeparatedByString:@"http://"];
+        if ([myWords objectAtIndex:1] != nil) {
+            labelWebsite.text = [myWords objectAtIndex:1];
+        }
+        else{
+            labelWebsite.text = [startupForCell objectForKey:@"website"];
+        }
+    }
     
     if ([startupForCell objectForKey:@"users-following"] == nil) {
         LabeLikes.text = @"Loading rate...";
@@ -270,8 +295,15 @@
         [activity startAnimating];
     }
     else{
-        LabeLikes.text =[NSString stringWithFormat:@"Upvotes : %@/%@", [startupForCell objectForKey:@"users-following"],
-                                                                    [startupForCell objectForKey:@"total-views"]];
+        
+        LabeLikes.text =[NSString stringWithFormat:@"%@ ", [startupForCell objectForKey:@"users-following"]];
+        
+        if ( [[startupForCell objectForKey:@"users-following"] integerValue] == 1) {
+            LabeLikes.text = [LabeLikes.text stringByAppendingString:@"upvote"];
+        }else{
+            LabeLikes.text = [LabeLikes.text stringByAppendingString:@"upvotes"];
+        }
+
         activity.hidden = YES;
         [activity stopAnimating];
     }

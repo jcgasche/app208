@@ -8,7 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GGDraggableView : UIView
+@protocol GGdragableProtocol;
+
+@interface GGDraggableView : UIView < UITextViewDelegate>
+
+
+@property (nonatomic, assign) id<GGdragableProtocol> delegate;
 
 //XIB view
 @property (strong, nonatomic) IBOutlet UIView *ViewXib;
@@ -21,7 +26,7 @@
 @property(nonatomic) NSString *StartupId;
 @property(nonatomic) NSString *startupWebsite;
 
-@property (nonatomic, strong) UIActivityIndicatorView *activity;
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView *activity;
 
 //IBOutlet ****
 //@property (strong, nonatomic) IBOutlet UIImageView *imageView;
@@ -41,5 +46,15 @@
 
 -(void) StartActivity: (BOOL) isActivityLoading;
 - (void)loadImageAndStyle : (UIImage *) imageJob;
+
+@end
+
+
+
+@protocol GGdragableProtocol
+
+-(void) PositionGGdraggableViewChanged : (int) position;
+-(void) GGdraggableViewWasSwiped : (GGDraggableView*)view;
+
 
 @end

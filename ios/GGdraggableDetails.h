@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GGdraggableDetails : UIView
+@interface GGdraggableDetails : UIView<UITextViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UIView *viewXib;
 
@@ -24,7 +24,10 @@
 
 @property UIImage *image;
 
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityInvestors;
 @property (nonatomic, strong) UIActivityIndicatorView *activity;
+
+@property ( strong, nonatomic) IBOutlet UIScrollView *scrollView;
 
 //IBOutlet ****
 //@property (strong, nonatomic) IBOutlet UIImageView *imageView;
@@ -39,12 +42,28 @@
 
 @property (strong, nonatomic) IBOutlet UILabel *RaisingAmount;
 @property (strong, nonatomic) IBOutlet UILabel *PreMoneyValuation;
+@property (strong, nonatomic) IBOutlet UILabel *labelTargeted;
+@property (strong, nonatomic) IBOutlet UIImageView *imageViewLocker;
 
 @property (strong, nonatomic) IBOutlet UILabel *LabelRating;
 @property (strong, nonatomic) IBOutlet UITextView *TextViewInvestorsLiked;
+
+
+//title
+@property (strong, nonatomic) IBOutlet UILabel *labelTitleLocation;
+@property (strong, nonatomic) IBOutlet UILabel *labelTitleRaisedAmount;
+@property (strong, nonatomic) IBOutlet UILabel *labelTitleRaisingAmount;
+@property (strong, nonatomic) IBOutlet UILabel *labelTitleValuation;
+
 //**************
 
 -(void) StartActivity: (BOOL) isActivityLoading;
+-(void) shouldStartActivity : (BOOL) value;
 - (void)loadImageAndStyle : (UIImage *) imageJob;
+
+
+//constraints
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *ConstrainDescriptionHeight;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *constraintInvestorsHeight;
 
 @end

@@ -14,6 +14,7 @@
 
 @interface LoginViewController ()
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activity;
+@property (strong, nonatomic) IBOutlet UIImageView *imageDart;
 
 @end
 
@@ -24,6 +25,7 @@
     // Do any additional setup after loading the view.
     
     [self.navigationController setNavigationBarHidden:YES];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
     self.activity.hidden = YES;
     
@@ -45,11 +47,17 @@
     
 }
 - (IBAction)loginTwitter:(UIButton *)sender {
-    self.activity.hidden = NO;
-    [self.activity startAnimating];
+//    self.activity.hidden = NO;
+//    [self.activity startAnimating];
+    [self startLoading];
     
     [PFTwitterUtils logInWithBlock:^(PFUser *user, NSError *error) {
-        if (!user) {
+        if (error) {
+//            self.activity.hidden = YES;
+//            [self.activity stopAnimating];
+            [self StopLoading];
+        }
+        else if (!user) {
             NSLog(@"Uh oh. The user cancelled the Twitter login.");
             return;
         } else if (user.isNew) {
@@ -101,8 +109,9 @@
                 //                [self enableFields:YES];
                 //                [self.activityIndicator stopAnimating];
                 //                self.activityIndicator.hidden=YES;
-                self.activity.hidden = YES;
-                [self.activity stopAnimating];
+//                self.activity.hidden = YES;
+//                [self.activity stopAnimating];
+                [self StopLoading];
             }
             
             NSLog(@"data response : %@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
@@ -125,8 +134,9 @@
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     
-                    self.activity.hidden = YES;
-                    [self.activity stopAnimating];
+//                    self.activity.hidden = YES;
+//                    [self.activity stopAnimating];
+                    [self StopLoading];
                     
                     UIStoryboard*  sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
                     ScrollViewController *vc1 = [sb instantiateViewControllerWithIdentifier:@"ScrollViewController"];
@@ -147,8 +157,8 @@
                 //                [self enableFields:YES];
                 //                [self.activityIndicator stopAnimating];
                 //                self.activityIndicator.hidden=YES;
-                self.activity.hidden = YES;
-                [self.activity stopAnimating];
+//                self.activity.hidden = YES;
+//                [self.activity stopAnimating];
                 
                 if ([[[error userInfo]objectForKey:@"NSLocalizedDescription"] isEqualToString:@"The Internet connection appears to be offline."]) {
                     
@@ -161,7 +171,7 @@
                     return;
                 }
                 
-                [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"An error occured, please try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+//                [[[UIAlertView alloc] initWithTitle:@"Alert" message:@"An error occured, please try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
             });
     }];
 }
@@ -194,5 +204,23 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+-(void) startLoading{
+if ([self.imageDart.layer animationForKey:@"SpinAnimation"] == nil) {
+    CABasicAnimation* animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+    animation.fromValue = [NSNumber numberWithFloat:0.0f];
+    animation.toValue = [NSNumber numberWithFloat: 2*M_PI];
+    animation.duration = 3.0f;
+    animation.repeatCount = INFINITY;
+    [self.imageDart.layer addAnimation:animation forKey:@"SpinAnimation"];
+}
+}
+
+-(void) StopLoading{
+    
+    [self.imageDart.layer removeAnimationForKey:@"SpinAnimation"];
+    
+    
+}
 
 @end

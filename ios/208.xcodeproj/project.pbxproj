@@ -28,7 +28,6 @@
 		AA930AB019EA02890084A250 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA930AAF19EA02890084A250 /* MenuViewController.m */; };
 		AA930AB319EA03FB0084A250 /* StartupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA930AB219EA03FB0084A250 /* StartupsViewController.m */; };
 		AA930AB619EA0CED0084A250 /* GGDraggableView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA930AB519EA0CED0084A250 /* GGDraggableView.m */; };
-		AA930ABC19EA0DF10084A250 /* GGOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA930ABB19EA0DF10084A250 /* GGOverlayView.m */; };
 		AA930ABF19EA0F1A0084A250 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA930ABE19EA0F1A0084A250 /* LoginViewController.m */; };
 		AA930AC219EA8B420084A250 /* LogInAngelListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA930AC119EA8B420084A250 /* LogInAngelListViewController.m */; };
 		AA930AC519EA8C860084A250 /* LogInEMailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA930AC419EA8C860084A250 /* LogInEMailViewController.m */; };
@@ -36,6 +35,9 @@
 		AA930ACD19EAF41F0084A250 /* JosefinSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA930ACB19EAF41F0084A250 /* JosefinSans-Light.ttf */; };
 		AA930ACE19EAF41F0084A250 /* JosefinSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA930ACC19EAF41F0084A250 /* JosefinSans-Regular.ttf */; };
 		AA930AD119EAFF0F0084A250 /* ListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA930AD019EAFF0F0084A250 /* ListViewController.m */; };
+		AA98E92819F575AC00294919 /* FadeTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA98E92719F575AC00294919 /* FadeTextView.m */; };
+		AA98E92B19F597DB00294919 /* CustomScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA98E92A19F597DB00294919 /* CustomScrollView.m */; };
+		AA98E92E19F5A22300294919 /* CustomTableVlew.m in Sources */ = {isa = PBXBuildFile; fileRef = AA98E92D19F5A22300294919 /* CustomTableVlew.m */; };
 		AAA1C34819EF460800C257FE /* ScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA1C34719EF460800C257FE /* ScrollViewController.m */; };
 		AAA1C34A19F07F5600C257FE /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAA1C34919F07F5600C257FE /* Accounts.framework */; };
 		AAA1C34C19F07F5B00C257FE /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAA1C34B19F07F5B00C257FE /* Twitter.framework */; };
@@ -106,8 +108,6 @@
 		AA930AB219EA03FB0084A250 /* StartupsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StartupsViewController.m; sourceTree = "<group>"; };
 		AA930AB419EA0CED0084A250 /* GGDraggableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGDraggableView.h; sourceTree = "<group>"; };
 		AA930AB519EA0CED0084A250 /* GGDraggableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGDraggableView.m; sourceTree = "<group>"; };
-		AA930ABA19EA0DF10084A250 /* GGOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGOverlayView.h; sourceTree = "<group>"; };
-		AA930ABB19EA0DF10084A250 /* GGOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GGOverlayView.m; sourceTree = "<group>"; };
 		AA930ABD19EA0F1A0084A250 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		AA930ABE19EA0F1A0084A250 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		AA930AC019EA8B420084A250 /* LogInAngelListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogInAngelListViewController.h; sourceTree = "<group>"; };
@@ -120,6 +120,12 @@
 		AA930ACC19EAF41F0084A250 /* JosefinSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JosefinSans-Regular.ttf"; sourceTree = "<group>"; };
 		AA930ACF19EAFF0F0084A250 /* ListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListViewController.h; sourceTree = "<group>"; };
 		AA930AD019EAFF0F0084A250 /* ListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListViewController.m; sourceTree = "<group>"; };
+		AA98E92619F575AC00294919 /* FadeTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FadeTextView.h; sourceTree = "<group>"; };
+		AA98E92719F575AC00294919 /* FadeTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FadeTextView.m; sourceTree = "<group>"; };
+		AA98E92919F597DB00294919 /* CustomScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomScrollView.h; sourceTree = "<group>"; };
+		AA98E92A19F597DB00294919 /* CustomScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomScrollView.m; sourceTree = "<group>"; };
+		AA98E92C19F5A22300294919 /* CustomTableVlew.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomTableVlew.h; path = 208/CustomTableVlew.h; sourceTree = "<group>"; };
+		AA98E92D19F5A22300294919 /* CustomTableVlew.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomTableVlew.m; path = 208/CustomTableVlew.m; sourceTree = "<group>"; };
 		AAA1C34619EF460800C257FE /* ScrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollViewController.h; sourceTree = "<group>"; };
 		AAA1C34719EF460800C257FE /* ScrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollViewController.m; sourceTree = "<group>"; };
 		AAA1C34919F07F5600C257FE /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
@@ -186,6 +192,12 @@
 		AA930A3719E9F00E0084A250 = {
 			isa = PBXGroup;
 			children = (
+				AA98E92919F597DB00294919 /* CustomScrollView.h */,
+				AA98E92A19F597DB00294919 /* CustomScrollView.m */,
+				AA98E92619F575AC00294919 /* FadeTextView.h */,
+				AA98E92719F575AC00294919 /* FadeTextView.m */,
+				AA98E92C19F5A22300294919 /* CustomTableVlew.h */,
+				AA98E92D19F5A22300294919 /* CustomTableVlew.m */,
 				AAB59BEB19F4693E001F0EFA /* ShareView.h */,
 				AAB59BEC19F4693E001F0EFA /* ShareView.m */,
 				AAB59BEE19F46948001F0EFA /* ShareView.xib */,
@@ -240,8 +252,6 @@
 				AA930AB419EA0CED0084A250 /* GGDraggableView.h */,
 				AA930AB519EA0CED0084A250 /* GGDraggableView.m */,
 				AA72138C19F336BF003DEDEA /* GGdragViewStartup.xib */,
-				AA930ABA19EA0DF10084A250 /* GGOverlayView.h */,
-				AA930ABB19EA0DF10084A250 /* GGOverlayView.m */,
 				AA7EFFD119ED9EBE00CB3A2B /* GGdraggableDetails.h */,
 				AA7EFFD219ED9EBE00CB3A2B /* GGdraggableDetails.m */,
 				AA7EFFCE19ED9ADF00CB3A2B /* DetaillsStartupViewController.h */,
@@ -371,6 +381,7 @@
 				TargetAttributes = {
 					AA930A3F19E9F00E0084A250 = {
 						CreatedOnToolsVersion = 6.0.1;
+						DevelopmentTeam = H46W7A5TSE;
 					};
 					AA930A5819E9F00E0084A250 = {
 						CreatedOnToolsVersion = 6.0.1;
@@ -433,6 +444,7 @@
 			files = (
 				AA7EFFD019ED9ADF00CB3A2B /* DetaillsStartupViewController.m in Sources */,
 				AA930AB619EA0CED0084A250 /* GGDraggableView.m in Sources */,
+				AA98E92B19F597DB00294919 /* CustomScrollView.m in Sources */,
 				AAB59BEA19F44F03001F0EFA /* ShareViewController.m in Sources */,
 				AA930AB319EA03FB0084A250 /* StartupsViewController.m in Sources */,
 				AAA1C34819EF460800C257FE /* ScrollViewController.m in Sources */,
@@ -440,16 +452,17 @@
 				AA930A4C19E9F00E0084A250 /* ViewController.m in Sources */,
 				AA930AB019EA02890084A250 /* MenuViewController.m in Sources */,
 				AAB59BED19F4693E001F0EFA /* ShareView.m in Sources */,
+				AA98E92819F575AC00294919 /* FadeTextView.m in Sources */,
 				AA930A4919E9F00E0084A250 /* AppDelegate.m in Sources */,
 				AA930ABF19EA0F1A0084A250 /* LoginViewController.m in Sources */,
 				AA930AC219EA8B420084A250 /* LogInAngelListViewController.m in Sources */,
-				AA930ABC19EA0DF10084A250 /* GGOverlayView.m in Sources */,
 				AA930AAD19EA026D0084A250 /* SWRevealViewController.m in Sources */,
 				AAB59BE419F43CD6001F0EFA /* MyCustomSeguePushForward.m in Sources */,
 				AAFF4C0519EB140500729296 /* FirstVCViewController.m in Sources */,
 				AA930AC519EA8C860084A250 /* LogInEMailViewController.m in Sources */,
 				AA72138B19F32BA0003DEDEA /* testView.m in Sources */,
 				AA7EFFD319ED9EBE00CB3A2B /* GGdraggableDetails.m in Sources */,
+				AA98E92E19F5A22300294919 /* CustomTableVlew.m in Sources */,
 				AA930AD119EAFF0F0084A250 /* ListViewController.m in Sources */,
 				AA930ACA19EAC4AB0084A250 /* XMLReader.m in Sources */,
 				AAB59BE719F43D25001F0EFA /* MyCustomSeguePushBackward.m in Sources */,
@@ -576,6 +589,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -584,6 +599,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -592,6 +608,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -600,6 +618,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

@@ -35,14 +35,14 @@
 
     if ([self isUserLoggedIn]) { //user is logged in : show startup VC
 
-
-    UIStoryboard *mainstoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    ScrollViewController* loginViewController = [mainstoryboard      instantiateViewControllerWithIdentifier:@"ScrollViewController"];
-    [self.window makeKeyAndVisible];
-    [self.window.rootViewController presentViewController:loginViewController animated:NO completion:NULL];
+        UIStoryboard *mainstoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        ScrollViewController* loginViewController = [mainstoryboard      instantiateViewControllerWithIdentifier:@"ScrollViewController"];
+        [self.window makeKeyAndVisible];
+        [self.window.rootViewController presentViewController:loginViewController animated:NO completion:NULL];
     }
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
 //    [[UITextField appearance] setFont:[UIFont fontWithName:@"AvenirNextLTPro-Regular" size:17.0]];
 //    [[UITextView appearance] setFont:[UIFont fontWithName:@"AvenirNextLTPro-Regular" size:17.0]];
