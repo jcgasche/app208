@@ -7,6 +7,7 @@ App208::Application.routes.draw do
 
   match '/angel_callback',                  to: 'users#login_angelco',         via: 'get'
   match '/login_email/:email',              to: 'users#login_email',           via: 'post'
+  match '/login_twitter/:twitter_id',       to: 'users#login_twitter',         via: 'post'
 
 
 
@@ -27,6 +28,9 @@ App208::Application.routes.draw do
   match '/refill_companies_db',             to: 'companies#fill_db',                  via: 'get'
   match '/refill/:limit/companies',         to: 'companies#fill_db',                  via: 'get'
   match '/companies',                       to: 'companies#index',                    via: 'get'
+
+  match '/terms',                       to: 'static_pages#privacy',                    via: 'get'
+  match '/privacy',                       to: 'static_pages#privacy',                    via: 'get'
 
 
 

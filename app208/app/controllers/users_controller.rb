@@ -12,7 +12,7 @@ class UsersController < ApplicationController
 		@response = {errors: []}
 		
 
-		unless params[:code].blank?
+		if params[:code].present? && params[:error] != "access_denied"
 
 
 			uri = "https://angel.co/api/oauth/token?client_id=88382b671bafbc2f58f8d6cc75a2ddb2&client_secret=1c002227a66cc1147eca0f025e3138bc&code=#{params[:code]}&grant_type=authorization_code"
@@ -38,10 +38,9 @@ class UsersController < ApplicationController
 
 			if user
 				#user already exists, update token and return its logins (id and email)
-				user.angel_token = access_token
-				user.investor = response_hash["investor"] == 'true'
-				user.email = response_hash["email"]
-				if user.save
+				is_investor = response_hash["investor"] == 'true'
+				email = response_hash["email"]
+				if user.update_attributes(angel_token: access_token, investor: is_investor, email: email)
 					@response[:id] = user.id
 					@response[:token] = user.token
 					@response[:investor] = user.investor?.to_s
@@ -53,7 +52,7 @@ class UsersController < ApplicationController
 					@response[:status]= "unsure"
 				end
 				
-			else
+			elsif access_token.present? && response_hash["id"].present?
 				#create a new user, return the logins (id and email)
 				user = User.new(angel_id: response_hash["id"], 
 					angel_token: access_token, name: response_hash["name"],
@@ -69,23 +68,14 @@ class UsersController < ApplicationController
 				else
 					@response[:status]= "unsure"
 				end
-			end
-			
-		else
-			user = User.new(angel_id: params[:code], token: params[:token], name: "Test User")
-			user.investor = 'true'
-				
-			if user.save
-				@response[:id] = user.id
-				@response[:token] = user.token
-				@response[:investor] = user.investor?.to_s
-				@response[:status]= "success"
 			else
 				@response[:status]= "unsure"
 			end
-
-			#@response[:status]= "failure"
-			#@response[:errors].push("noCodeReceived")
+			
+		else
+			@response[:status]= "failure"
+			@response[:errors].push("accessDenied")
+			@response[:errors].push("noCodeReceived")
 		end
 
 		render xml: @response
@@ -102,11 +92,9 @@ class UsersController < ApplicationController
 			user = User.find_by_email(params[:email])
 
 			if user
-				#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-				user.investor = true
-				user.name = "Blanco Bernasconi"
-				user.save
 
+				#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				user.update_attributes(investor: true, name: "Ron Conway")
 
 				@response[:id] = user.id
 				@response[:token] = user.token
@@ -140,6 +128,51 @@ class UsersController < ApplicationController
 		render xml: @response
 	end
 
+
+
+	def login_twitter
+		@response = {errors: []}
+
+		unless params[:twitter_id].blank?
+
+			user = User.find_by_twitter_id(params[:twitter_id])
+
+			if user
+
+				#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				user.update_attributes(investor: true, name: "Ron Conway")
+
+				@response[:id] = user.id
+				@response[:token] = user.token
+				@response[:investor] = user.investor?.to_s
+				@response[:status] = "success"
+
+			else
+				#create a new user, return the logins (id)
+				user = User.new(twitter_id: params[:twitter_id])
+
+				#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				user.investor = true
+				user.name = "Blanco Bernasconi"
+
+				if user.save
+					@response[:id] = user.id
+					@response[:token] = user.token
+					@response[:investor] = user.investor?.to_s
+					@response[:status]= "success"
+				else
+					@response[:errors].push("validationFailed")
+					@response[:status]= "failure"
+				end
+			end
+			
+		else
+			@response[:status]= "failure"
+			@response[:errors].push("emailMissing")
+		end
+
+		render xml: @response
+	end
 
 					
 
