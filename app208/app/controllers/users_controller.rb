@@ -93,9 +93,6 @@ class UsersController < ApplicationController
 
 			if user
 
-				#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-				user.update_attributes(investor: true, name: "Ron Conway")
-
 				@response[:id] = user.id
 				@response[:token] = user.token
 				@response[:investor] = user.investor?.to_s
@@ -104,10 +101,6 @@ class UsersController < ApplicationController
 			else
 				#create a new user, return the logins (id)
 				user = User.new(email: params[:email])
-
-				#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-				user.investor = true
-				user.name = "Blanco Bernasconi"
 
 				if user.save
 					@response[:id] = user.id
@@ -139,9 +132,6 @@ class UsersController < ApplicationController
 
 			if user
 
-				#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-				user.update_attributes(investor: true, name: "Ron Conway")
-
 				@response[:id] = user.id
 				@response[:token] = user.token
 				@response[:investor] = user.investor?.to_s
@@ -150,10 +140,7 @@ class UsersController < ApplicationController
 			else
 				#create a new user, return the logins (id)
 				user = User.new(twitter_id: params[:twitter_id])
-
-				#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-				user.investor = true
-				user.name = "Blanco Bernasconi"
+				user.investor = false
 
 				if user.save
 					@response[:id] = user.id
