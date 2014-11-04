@@ -83,6 +83,15 @@ class CompaniesController < ApplicationController
 
 	def index
 		@companies = Company.all.paginate(page: params[:page], :per_page => 10)
+		@angelco_users = []
+		@twitter_users = []
+		User.all.each do |user|
+			if user.angel_id
+				@angelco_users.push(user) 
+			elsif user.twitter_id
+				@twitter_users.push(user) 
+			end
+		end
 	end
 
 
